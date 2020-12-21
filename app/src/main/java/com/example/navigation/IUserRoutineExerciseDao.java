@@ -34,7 +34,4 @@ public interface IUserRoutineExerciseDao {
     @Query("SELECT * FROM user_routine_exercise_table where exerciseTypeId=:exerciseId")
     List<RoutineDetails> getRoutineWithExerciseId(long exerciseId);
 
-//    @Transaction
-//    @Query("SELECT * FROM user_routine_exercise_table WHERE ")
-//    List<RoutineDetails> getRoutineWithExercises();
 }

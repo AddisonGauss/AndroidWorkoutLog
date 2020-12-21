@@ -41,8 +41,8 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
             if(currentWorkoutDetails.getWorkout().getFinishTime() != null){
                 long millis = Math.abs(currentWorkoutDetails.getWorkout().getFinishTime().getTime()- currentWorkoutDetails.getWorkout().getStartTime().getTime());
                 long minutes = TimeUnit.MINUTES.convert(millis,TimeUnit.MILLISECONDS);
-                System.out.println(minutes);
-                holder.txtWorkoutDuration.setText(String.valueOf(minutes) + " minutes");
+                holder.txtWorkoutDuration.setText(String.valueOf(minutes));
+                holder.txtWorkoutDuration.append(" minutes");
             }
 
 

@@ -4,20 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentContainer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.gson.Gson;
 
@@ -47,6 +43,7 @@ public class WorkoutFragment extends Fragment {
     public interface WorkoutDetailsListener {
         void sendWorkoutDetails(WorkoutDetails workoutDetails);
     }
+
     public WorkoutFragment() {
         // Required empty public constructor
     }
@@ -55,7 +52,7 @@ public class WorkoutFragment extends Fragment {
     // TODO: Rename and change types and number of parameters
     public static WorkoutFragment newInstance(String param1, String param2) {
         Log.d(TAG, "newInstance: ");
-        
+
         WorkoutFragment fragment = new WorkoutFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -114,9 +111,7 @@ public class WorkoutFragment extends Fragment {
                 long id = 0;
                 try {
                     id = workoutViewModel.insert(workout);
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
+                } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
                 workout.setId(id);
@@ -128,7 +123,8 @@ public class WorkoutFragment extends Fragment {
 
                 workoutDetailsListener.sendWorkoutDetails(workoutDetails);
 
-        }});
+            }
+        });
 
         btnGoToRunningWorkout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,9 +139,8 @@ public class WorkoutFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if(context instanceof WorkoutDetailsListener)
-        {
-            workoutDetailsListener =(WorkoutDetailsListener) context;
+        if (context instanceof WorkoutDetailsListener) {
+            workoutDetailsListener = (WorkoutDetailsListener) context;
         } else {
             throw new RuntimeException(context.toString() + " must implement WorkoutDetailsListener");
         }
@@ -170,12 +165,12 @@ public class WorkoutFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        SharedPreferences  mPrefs = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences mPrefs = getActivity().getPreferences(Context.MODE_PRIVATE);
         Gson gson = new Gson();
         SharedPreferences prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
         isWorkoutRunning = prefs.getBoolean("isRunning", false);
         System.out.println("isworkoutrunning: " + isWorkoutRunning);
-        if(isWorkoutRunning){
+        if (isWorkoutRunning) {
             btnGoToRunningWorkout.setVisibility(View.VISIBLE);
             btnLaunchFragment.setVisibility(View.GONE);
             String json = mPrefs.getString("workoutDetails", "");

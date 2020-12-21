@@ -36,10 +36,10 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
 
 
     public SetAdapter(Context mContext, RoutineDetails currentExercise, addSetClickHandler sendExternalClick, sendFromSetAdapterToExercise sendExerciseAdapterTextInfo, Button addSetButton, Set prevMaxSet) {
-       
+
         this.mContext = mContext;
         this.currentExercise = currentExercise;
-        if(currentExercise.getSets() == null){
+        if (currentExercise.getSets() == null) {
             Log.d(TAG, "SetAdapter: currentExercises.sets is null");
             currentExercise.setSets(new ArrayList<>());
         }
@@ -53,7 +53,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d(TAG, "SET ADAPTER onCreateViewHolder: ");
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.workout_set_item, parent,false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.workout_set_item, parent, false);
         return new ViewHolder(itemView);
     }
 
@@ -62,7 +62,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Log.d(TAG, "SET ADAPTER onBindViewHolder: ");
-        if(currentExercise.getSets() != null && currentExercise.getSets().size() > 0) {
+        if (currentExercise.getSets() != null && currentExercise.getSets().size() > 0) {
 
             currentSet = currentExercise.getSets().get(position);
             currentSet.setDisplayNumber(position + 1);
@@ -71,7 +71,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
             holder.txtPrevMaxSet.setText(prevMaxSet.getWeight() + " x " + prevMaxSet.getReps());
             holder.editTxtWeight.setText(String.valueOf(currentSet.getWeight()));
             holder.editTxtReps.setText(String.valueOf(currentSet.getReps()));
-            if(currentSet.isComplete()){
+            if (currentSet.isComplete()) {
                 holder.btnSetComplete.setText("complete");
                 holder.btnSetComplete.setBackgroundColor(Color.GREEN);
             } else {
@@ -91,9 +91,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                 public void onClick(View v) {
                     try {
                         sendExternalClick.onItemClickedAt(currentExercise.getSets().get(position), "delete");
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
+                    } catch (ExecutionException | InterruptedException e) {
                         e.printStackTrace();
                     }
 
@@ -106,16 +104,16 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "onClick: ");
-                    if (String.valueOf(holder.editTxtWeight.getText()).trim().equals("")){
+                    if (String.valueOf(holder.editTxtWeight.getText()).trim().equals("")) {
                         holder.editTxtWeight.setText(String.valueOf(0));
                     }
-                    if(String.valueOf(holder.editTxtReps.getText()).trim().equals("")){
+                    if (String.valueOf(holder.editTxtReps.getText()).trim().equals("")) {
                         holder.editTxtReps.setText(String.valueOf(0));
                     }
                     currentSet = currentExercise.getSets().get(position);
 
                     //takes last entered set data in editText boxes and creates a new set with that data
-                    Set editedSet = new Set(Double.parseDouble(String.valueOf(holder.editTxtWeight.getText())),Double.parseDouble(String.valueOf(holder.editTxtReps.getText())), false);
+                    Set editedSet = new Set(Double.parseDouble(String.valueOf(holder.editTxtWeight.getText())), Double.parseDouble(String.valueOf(holder.editTxtReps.getText())), false);
 
                     //set currentSet's info to info written in edittextbox to retrieve correct values incase focusChange doesn't hit
                     currentSet.setWeight(editedSet.getWeight());
@@ -125,63 +123,35 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
 
                     currentExercise.getSets().add(editedSet);
 
-                    System.out.println(sendExerciseAdapterTextInfo==null);
-                    System.out.println(currentExercise);
                     //send exercise adapter reference to current exercise that add set button was clicked on
-                    if(sendExerciseAdapterTextInfo!=null){
+                    if (sendExerciseAdapterTextInfo != null) {
                         sendExerciseAdapterTextInfo.onItemClickedAt(currentExercise);
                     }
                 }
             });
 
-            //sets value of current set when textbox changes focus
-//            holder.editTxtReps.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//                private static final String TAG = "\t\t\t\t\t \n\n\nSetAdapter ONFOCUS CHANGE REPS";
-//                @Override
-//                public void onFocusChange(View v, boolean hasFocus) {
-//                    if (String.valueOf(holder.editTxtReps.getText()).trim().equals(""))
-//                    {
-//                        holder.editTxtReps.setText(String.valueOf(0));
-//                    }
-//                    currentExercise.getSets().get(position).setReps(Double.parseDouble(String.valueOf(holder.editTxtReps.getText())));
-//                }
-//            });
-//            holder.editTxtWeight.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//                private static final String TAG = "\t\t\t\t\t \n\n\nSetAdapter ONFOCUS CHANGE WEIGHT";
-//                @Override
-//                public void onFocusChange(View v, boolean hasFocus) {
-//                    if (String.valueOf(holder.editTxtWeight.getText()).trim().equals(""))
-//                    {
-//                        holder.editTxtWeight.setText(String.valueOf(0));
-//                    }
-//                    currentExercise.getSets().get(position).setWeight(Double.parseDouble(String.valueOf(holder.editTxtWeight.getText())));
-//                }
-//            });
 
             //sets values after editText is changed to prevent losing entered data whenever livedata is changed
             holder.editTxtWeight.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
                 }
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged: WEIGHT");
-                    System.out.println(s);
-                    if(!String.valueOf(s).equals("")) currentExercise.getSets().get(position).setWeight(Double.parseDouble(String.valueOf(s)));
+                    if (!String.valueOf(s).equals(""))
+                        currentExercise.getSets().get(position).setWeight(Double.parseDouble(String.valueOf(s)));
                 }
             });
             holder.editTxtReps.addTextChangedListener(new TextWatcher() {
-                
+
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    
                 }
 
                 @Override
@@ -192,8 +162,8 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged: REPS");
-                    System.out.println(s);
-                    if(!String.valueOf(s).equals("")) currentExercise.getSets().get(position).setReps(Double.parseDouble(String.valueOf(s)));
+                    if (!String.valueOf(s).equals(""))
+                        currentExercise.getSets().get(position).setReps(Double.parseDouble(String.valueOf(s)));
                 }
             });
 
@@ -203,11 +173,11 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                     Set currentSet = currentExercise.getSets().get(position);
                     currentSet.setComplete(!currentSet.isComplete());
 
-                    if (currentSet.isComplete()){
+                    if (currentSet.isComplete()) {
                         //if marked complete add data to set and display complete design
                         holder.btnSetComplete.setBackgroundColor(Color.GREEN);
                         holder.btnSetComplete.setText("complete");
-                        if(!String.valueOf(holder.editTxtReps.getText()).equals("") &&!String.valueOf(holder.editTxtWeight.getText()).equals("") ){
+                        if (!String.valueOf(holder.editTxtReps.getText()).equals("") && !String.valueOf(holder.editTxtWeight.getText()).equals("")) {
                             currentSet.setReps(Double.parseDouble(String.valueOf(holder.editTxtReps.getText())));
                             currentSet.setWeight(Double.parseDouble(String.valueOf(holder.editTxtWeight.getText())));
                         }
@@ -220,14 +190,14 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                     sendExternalClick.onSetsClickedAt(currentExercise.getSets());
                 }
             });
-       }
-   }
+        }
+    }
 
 
     @Override
     public int getItemCount() {
         Log.d(TAG, "getItemCount: " + currentExercise.getSets().size());
-       return currentExercise.getSets().size();
+        return currentExercise.getSets().size();
     }
 
 
@@ -246,13 +216,13 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder  {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private ConstraintLayout parent;
         private EditText editTxtWeight, editTxtReps;
         private TextView txtSetNumber, txtPrevMaxSet;
         private Button btnSetComplete, btnRemoveSet;
 
-        public ViewHolder(@NonNull View itemView){
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             Log.d(TAG, "SET ADAPTER ViewHolder: ");
             parent = itemView.findViewById(R.id.parent);
@@ -269,20 +239,20 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
         @Override
         protected void finalize() throws Throwable {
             super.finalize();
-            Log.d(TAG, "\n\n\n\n\n\n\nfinalize: ");
+            Log.d(TAG, "finalize: ");
         }
     }
 
 
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-        Log.d(TAG, "\n\n\n\n\nonAttachedToRecyclerView: ");
+        Log.d(TAG, "onAttachedToRecyclerView: ");
         super.onAttachedToRecyclerView(recyclerView);
     }
 
     @Override
     public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
-        Log.d(TAG, "\n\n\n\n\nonDetachedFromRecyclerView: ");
+        Log.d(TAG, "onDetachedFromRecyclerView: ");
         super.onDetachedFromRecyclerView(recyclerView);
     }
 }

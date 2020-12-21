@@ -11,7 +11,7 @@ import java.util.List;
 
 public class WorkoutDetails implements Parcelable {
 
-    public WorkoutDetails(){
+    public WorkoutDetails() {
 
     }
 
@@ -19,7 +19,7 @@ public class WorkoutDetails implements Parcelable {
     private Workout workout;
 
     @Relation(parentColumn = "id", entityColumn = "workoutId", entity = UserRoutineExercise.class)
-    private List<RoutineDetails> userRoutineExercises = new ArrayList<RoutineDetails>();
+    private List<RoutineDetails> userRoutineExercises = new ArrayList<>();
 
 
     protected WorkoutDetails(Parcel in) {

@@ -31,12 +31,14 @@ public class Set implements Parcelable {
         this.reps = reps;
         this.complete = complete;
     }
+
     public Set(double weight, double reps) {
-        this.weight =0;
+        this.weight = 0;
         this.reps = 0;
         this.complete = false;
     }
-    public Set(){
+
+    public Set() {
 
     }
 

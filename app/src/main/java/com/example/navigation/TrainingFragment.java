@@ -1,29 +1,21 @@
 package com.example.navigation;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link TrainingFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class TrainingFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -39,7 +31,7 @@ public class TrainingFragment extends Fragment {
     private ExerciseNameListener exerciseNameListener;
     private workoutExerciseListener workoutExerciseListener;
 
-    public interface workoutExerciseListener{
+    public interface workoutExerciseListener {
         void sendExercise(List<Exercise> selectedExercisesToAdd);
     }
 
@@ -47,14 +39,6 @@ public class TrainingFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment TrainingFragment.
-     */
     // TODO: Rename and change types and number of parameters
     public static TrainingFragment newInstance(String param1, String param2) {
         TrainingFragment fragment = new TrainingFragment();
@@ -92,7 +76,7 @@ public class TrainingFragment extends Fragment {
         exerciseNameListener = new ExerciseNameListener() {
             @Override
             public void showExerciseNames(boolean isSelected) {
-                if(isSelected){
+                if (isSelected) {
                     btnAddExercise.setVisibility(View.VISIBLE);
                 } else {
                     btnAddExercise.setVisibility(View.GONE);
@@ -105,8 +89,7 @@ public class TrainingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 List<Exercise> exerciseList = trainingAdapter.getSelectedExercises();
-                //workoutExerciseListener.sendExercise(exerciseList.get(0));
-               workoutExerciseListener.sendExercise(exerciseList);
+                workoutExerciseListener.sendExercise(exerciseList);
             }
         });
 
@@ -115,25 +98,13 @@ public class TrainingFragment extends Fragment {
         trainingAdapter = new TrainingAdapter(exerciseNameListener, this.getActivity());
         recyclerView.setAdapter(trainingAdapter);
 
-//        trainingAdapter.setOnItemClickListener(new TrainingAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemCLick(Exercise exercise) {
-//                exercise.setSelected(!exercise.isSelected());
-//                if(exercise.isSelected()){
-//                    btnAddExercise.setVisibility(View.VISIBLE);
-//                } else {
-//                    btnAddExercise.setVisibility(View.GONE);
-//                }
-//            }
-//        });
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if(context instanceof workoutExerciseListener)
-        {
-            workoutExerciseListener =(workoutExerciseListener) context;
+        if (context instanceof workoutExerciseListener) {
+            workoutExerciseListener = (workoutExerciseListener) context;
         } else {
             throw new RuntimeException(context.toString() + " must implement workoutExerciseListener");
 

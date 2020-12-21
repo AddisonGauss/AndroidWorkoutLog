@@ -22,7 +22,6 @@ public interface IWorkoutDao {
     @Delete
     void delete(Workout workout);
 
-    //define a database operation with @Query
     @Query("DELETE FROM workout_table")
     void deleteAllWorkouts();
 

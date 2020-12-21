@@ -11,44 +11,22 @@ import java.util.Date;
 @Entity(tableName = "workout_table")
 public class Workout implements Parcelable {
 
+    public Workout() {
+
+    }
+
     @PrimaryKey(autoGenerate = true)
     private long id;
-
 
     private Date startTime;
 
     private Date finishTime;
 
-    public Workout( Date startTime, Date finishTime) {
+    public Workout(Date startTime, Date finishTime) {
         this.startTime = startTime;
         this.finishTime = finishTime;
     }
 
-    public Workout(){
-
-    }
-
-//    /**
-//     * constructor that maps the {@link PublisherDetails} to {@link Publisher}
-//     */
-//    public Workout(WorkoutDetails workoutDetails) {
-//        this.id = workoutDetails.getWorkout().getId();
-//        this.startTime = workoutDetails.getWorkout().getStartTime();
-//        this.finishTime = workoutDetails.getWorkout().getFinishTime();
-//        this.routines = this.getRoutines(workoutDetails.getUserRoutineExercises());
-//    }
-//
-//
-//    private List<Author> getAuthors(List<AuthorBookDetails> authorBookDetails) {
-//        for (AuthorBookDetails details : authorBookDetails) {
-//            Author author = details.getAuthor();
-//            author.setBooks(details.getBooks());
-//            this.setAuthor(details.getAuthor());
-//        }
-//        return this.authors;
-//    }
-//    @ForeignKey(entity = User.class, parentColumns = "id", childColumns = "userId", onDelete = CASCADE)
-//    private Integer userId;
 
     protected Workout(Parcel in) {
         id = in.readLong();
@@ -76,8 +54,6 @@ public class Workout implements Parcelable {
         return id;
     }
 
-
-
     public Date getStartTime() {
         return startTime;
     }
@@ -85,8 +61,6 @@ public class Workout implements Parcelable {
     public Date getFinishTime() {
         return finishTime;
     }
-
-
 
     public void setStartTime(Date startTime) {
         this.startTime = startTime;

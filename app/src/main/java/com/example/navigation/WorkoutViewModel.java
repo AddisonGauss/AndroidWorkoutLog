@@ -22,7 +22,6 @@ public class WorkoutViewModel extends AndroidViewModel {
 
     }
 
-
     public long insert(Workout workout) throws ExecutionException, InterruptedException {
         return repository.insert(workout);
     }
@@ -34,6 +33,7 @@ public class WorkoutViewModel extends AndroidViewModel {
     public void delete(Workout workout) {
         repository.delete(workout);
     }
+
     public void deleteAllWorkouts(Workout workout) {
         repository.deleteAllWorkouts();
     }
@@ -41,7 +41,8 @@ public class WorkoutViewModel extends AndroidViewModel {
     public long insertSet(Set set) throws ExecutionException, InterruptedException {
         return repository.insertSet(set);
     }
-    public void deleteSet(Set set) throws ExecutionException, InterruptedException {
+
+    public void deleteSet(Set set) {
         repository.deleteSet(set);
     }
 
@@ -56,15 +57,16 @@ public class WorkoutViewModel extends AndroidViewModel {
     public List<RoutineDetails> getListOfRoutinesForWorkout(long workoutId) throws ExecutionException, InterruptedException {
         return repository.getListOfRoutinesForWorkout(workoutId);
     }
-    public LiveData<List<WorkoutDetails>> getAllWorkouts(long id){
+
+    public LiveData<List<WorkoutDetails>> getAllWorkouts(long id) {
         return allWorkouts;
     }
 
-    public LiveData<List<WorkoutDetails>> getAllWorkoutsAll(){
+    public LiveData<List<WorkoutDetails>> getAllWorkoutsAll() {
         return repository.getAllWorkoutsAll();
     }
 
-    public LiveData<List<RoutineDetails>> getAllRoutinesForCurrentWorkout(long id){
+    public LiveData<List<RoutineDetails>> getAllRoutinesForCurrentWorkout(long id) {
         return repository.getAllRoutinesForCurrentWorkout(id);
     }
 }

@@ -1,14 +1,14 @@
 package com.example.navigation;
 
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
-
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity implements TrainingFragment.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -44,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements TrainingFragment.
         Executor myExecutor = Executors.newSingleThreadExecutor();
         myExecutor.execute(() -> {
             List<BestSet> listOfBestSets = (Database.getInstance(getApplication()).setDao().getAllBestSets());
-            for(BestSet bestSet: listOfBestSets) {
+            for (BestSet bestSet : listOfBestSets) {
                 System.out.println(bestSet);
                 System.out.println("FOR EXERCISE : " + bestSet.getExercise().getName() + " THE HIGHEST WEIGHT IS : " + bestSet.getWeight());
                 System.out.println("ON DATE : " + bestSet.getWorkout().getFinishTime());
@@ -66,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements TrainingFragment.
         Log.d(TAG, "sendExercise: ");
         workoutViewModel = new ViewModelProvider.AndroidViewModelFactory(this.getApplication()).create(WorkoutViewModel.class);
 
-        for(int i = 0; i<selectedExercisesToAdd.size(); i++){
+        for (int i = 0; i < selectedExercisesToAdd.size(); i++) {
             userRoutineExercise = new UserRoutineExercise();
             userRoutineExercise.setWorkoutId(workoutDetails.getWorkout().getId());
             userRoutineExercise.setExerciseTypeId(selectedExercisesToAdd.get(i).getId());
@@ -84,9 +82,7 @@ public class MainActivity extends AppCompatActivity implements TrainingFragment.
             long userRoutineExerciseId = 0;
             try {
                 userRoutineExerciseId = workoutViewModel.insertUserRoutineExercise(routineDetails.getUserRoutineExercise());
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
             routineDetails.getUserRoutineExercise().setId(userRoutineExerciseId);
@@ -98,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements TrainingFragment.
 
         NavController navController = Navigation.findNavController(this, R.id.fragment);
         navController.navigate(R.id.inProgressWorkoutFragment, args);
-        navController.popBackStack(R.id.trainingFragment,true);
+        navController.popBackStack(R.id.trainingFragment, true);
 
     }
 
@@ -116,8 +112,6 @@ public class MainActivity extends AppCompatActivity implements TrainingFragment.
         NavController navController = Navigation.findNavController(this, R.id.fragment);
         navController.popBackStack();
         navController.navigate(R.id.inProgressWorkoutFragment, args);
-
-
     }
 
     @Override
@@ -129,8 +123,6 @@ public class MainActivity extends AppCompatActivity implements TrainingFragment.
         navController.popBackStack();
         navController.navigate(R.id.finishedWorkoutFragment, args);
     }
-
-
 
 
 }
