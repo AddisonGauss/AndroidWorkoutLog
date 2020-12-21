@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_nav"
+    app:startDestination="@id/workoutFragment">
+
+
+
+        <fragment
+            android:id="@+id/workoutFragment"
+            android:name="com.example.navigation.WorkoutFragment"
+            android:label="fragment_dash_board"
+            tools:layout="@layout/fragment_workout" >
+            <action
+                android:id="@+id/action_dashBoardFragment_to_insideDashboardFragment"
+                app:destination="@id/inProgressWorkoutFragment" />
+            <argument
+                android:name="workoutDetails"
+                app:argType="com.example.navigation.WorkoutDetails" />
+        </fragment>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.navigation.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.navigation.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/inProgressWorkoutFragment"
+        android:name="com.example.navigation.InProgressWorkoutFragment"
+        android:label="fragment_inside_dashboard"
+        tools:layout="@layout/fragment_in_progress_workout_fragment" >
+        <action
+            android:id="@+id/action_insideDashboardFragment_to_dashBoardFragment"
+            app:destination="@id/workoutFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_insideDashboardFragment_to_trainingFragment"
+            app:destination="@id/trainingFragment" />
+        <argument
+            android:name="workoutDetails"
+            app:argType="com.example.navigation.WorkoutDetails" />
+        <argument
+            android:name="exerciseToAdd"
+            app:argType="com.example.navigation.Exercise" />
+        <action
+            android:id="@+id/action_inProgressWorkoutFragment_to_finishedWorkoutFragment"
+            app:destination="@id/finishedWorkoutFragment"
+            app:popUpTo="@id/my_nav"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/trainingFragment"
+        android:name="com.example.navigation.TrainingFragment"
+        android:label="fragment_training"
+        tools:layout="@layout/fragment_training" >
+        <action
+            android:id="@+id/action_trainingFragment_to_insideDashboardFragment"
+            app:destination="@id/inProgressWorkoutFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/finishedWorkoutFragment"
+        android:name="com.example.navigation.FinishedWorkoutFragment"
+        android:label="fragment_finished_workout"
+        tools:layout="@layout/fragment_finished_workout" />
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.example.navigation.History"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history" />
+
+</navigation>
