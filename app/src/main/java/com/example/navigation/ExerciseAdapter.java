@@ -30,14 +30,12 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         public void onItemClickedAt(RoutineDetails routineDetails) {
             Log.d(TAG, "onItemClickedAt: ");
             //insert all sets with valid data entered into database
-            //setAdapter.setSets(routineDetails.getSets());
             addSetClickHandler.onSetsClickedAt(routineDetails.getSets());
         }
     };
 
 
     public ExerciseAdapter(Context context, addSetClickHandler addSetClickHandler, List<RoutineDetails> exercises, WorkoutViewModel workoutViewModel) {
-        Log.d(TAG, "\t\t\t\t\t\t\t\t\t\t************************************************************************************ExerciseAdapter:  CONSTRUCTOR " + exercises.toString());
         this.context = context;
         this.exercises = exercises;
         this.addSetClickHandler = addSetClickHandler;
@@ -74,9 +72,8 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
 
                     if(setSize ==0 ) {
                         //first set template will be added to the selected exercise
-                        Log.d(TAG, "===================onClick: IN ELSE SETSIZE < 0===================");
                         blankSet.setUserRoutineExerciseRoutineId(exercises.get(position).getUserRoutineExercise().getId());
-                        //setAdapter.addToSets(blankSet);
+
                         try {
                             addSetClickHandler.onItemClickedAt(blankSet,"insert");
                         } catch (ExecutionException e) {
@@ -87,31 +84,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
                     }
                 }
             });
-//                    if(se > 0) {
-//                        Set lastEnteredSet = exercises.get(position).getSets().get(Setsize - 1);
-//
-//                        if(lastEnteredSet.getWeight() > 0 && lastEnteredSet.getReps() > 0)
-//                        {
-//                            lastEnteredSet.setComplete(true);
-//                        }
-//                        Set copy = new Set(lastEnteredSet.getWeight(), lastEnteredSet.getReps(), false);
-//                        copy.setUserRoutineExerciseRoutineId(exercises.get(position).getUserRoutineExercise().getId());
-
-                        //setAdapter.addToSets(copy);
-
-
-//            sendFromSetAdapterToExercise = new sendFromSetAdapterToExercise() {
-//                @Override
-//                public void onItemClickedAt(RoutineDetails routineDetails) {
-//                    Log.d(TAG, "onItemClickedAt: ");
-//                    //insert all sets with valid data entered into database
-//                    //setAdapter.setSets(routineDetails.getSets());
-//                    addSetClickHandler.onSetsClickedAt(routineDetails.getSets());
-//                }
-//            };
-
-
-
         }else {
             return;
         }

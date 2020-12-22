@@ -70,6 +70,7 @@ public abstract class Database extends RoomDatabase {
         protected Void doInBackground(Void... voids) {
             Log.d(TAG, "doInBackground: ");
 
+            //Starting exercises to choose from
             exerciseDao.insert(new Exercise( "Bench Press", "Chest"));
             exerciseDao.insert(new Exercise( "Squat", "Legs"));
             exerciseDao.insert(new Exercise( "Deadlift", "Back"));
@@ -82,34 +83,6 @@ public abstract class Database extends RoomDatabase {
             exerciseDao.insert(new Exercise( "Neck Curl", "Neck"));
             exerciseDao.insert(new Exercise( "Stiff Leg Deadlift", "Hamstring"));
             exerciseDao.insert(new Exercise( "Quad Extension", "Quadricep"));
-//            List<Set> sets = new ArrayList<>();
-//            System.out.println("adding set");
-//            sets.add(new Set(225, 10, true));
-//            List<UserRoutineExercise> routines = new ArrayList<>();
-
-//            Set set = new Set(150,10,true);
-//            Set set2 = new Set(225,10,true);
-//            set.setUserRoutineExerciseRoutineId(1);
-//            set2.setUserRoutineExerciseRoutineId(2);
-//            Exercise exercise = new Exercise("Squat", "Legs");
-//            Exercise exercise2 = new Exercise("Deadlift", "Back");
-//            User user = new User("add", "add", "add");
-//            UserRoutineExercise userRoutineExercise = new UserRoutineExercise("add", 1,1);
-//            UserRoutineExercise userRoutineExercise2 = new UserRoutineExercise("add", 1,2);
-
-
-//            routines.add(userRoutineExercise);
-//
-//            Workout workout = new Workout(new Date(), new Date());
-//
-//
-//            exerciseDao.insert(exercise);
-//            exerciseDao.insert(exercise2);
-//            userRoutineExerciseDao.insert(userRoutineExercise);
-//            userRoutineExerciseDao.insert(userRoutineExercise2);
-//            setDao.insert(set);
-//            setDao.insert(set2);
-//            workoutDao.insert(workout);
             return null;
         }
     }

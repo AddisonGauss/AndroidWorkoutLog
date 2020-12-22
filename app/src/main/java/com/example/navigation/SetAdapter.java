@@ -36,7 +36,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
 
 
     public SetAdapter(Context mContext, RoutineDetails currentExercise, addSetClickHandler sendExternalClick, sendFromSetAdapterToExercise sendExerciseAdapterTextInfo, Button addSetButton, Set prevMaxSet) {
-
         this.mContext = mContext;
         this.currentExercise = currentExercise;
         if (currentExercise.getSets() == null) {
