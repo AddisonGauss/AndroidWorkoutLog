@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements TrainingFragment.
 
         for (int i = 0; i < selectedExercisesToAdd.size(); i++) {
             userRoutineExercise = new UserRoutineExercise();
+            System.out.println("WORKOUT DETAILS IN MAIN IS ----" + workoutDetails);
             userRoutineExercise.setWorkoutId(workoutDetails.getWorkout().getId());
             userRoutineExercise.setExerciseTypeId(selectedExercisesToAdd.get(i).getId());
 

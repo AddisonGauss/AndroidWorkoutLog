@@ -1,5 +1,5 @@
 package com.example.navigation;
 
-interface sendFromSetAdapterToExercise {
+interface ISendFromSetAdapterToExercise {
     void onItemClickedAt(RoutineDetails routineDetails);
 }

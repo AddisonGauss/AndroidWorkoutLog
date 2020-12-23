@@ -13,15 +13,12 @@ public class WorkoutRepository {
     private static final String TAG = "WorkoutRepository";
     private IWorkoutDao workoutDao;
     private IWorkoutDetailsDao workoutDetailsDao;
-    private LiveData<List<Workout>> allWorkouts;
     private LiveData<List<WorkoutDetails>> allWorkoutDetails;
     private IExerciseDao exerciseDao;
     private ISetDao setDao;
     private IUserRoutineExerciseDao userRoutineExerciseDao;
     private IRoutineDetails routineDetailsDao;
-    private static boolean complete = false;
-    private WorkoutDetails currentWorkoutDetails;
-    private RoutineDetails routineDetailsWithExerciseId;
+    private List<RoutineDetails> allRoutineDetails;
 
     public WorkoutRepository(Application application) {
         Log.d(TAG, "WorkoutRepository: ");
@@ -32,8 +29,7 @@ public class WorkoutRepository {
         setDao = workoutDatabase.setDao();
         userRoutineExerciseDao = workoutDatabase.userRoutineExerciseDao();
         routineDetailsDao = workoutDatabase.routineDetailsDao();
-        allWorkoutDetails = workoutDetailsDao.getAllWorkouts(1);
-
+        //allWorkoutDetails = workoutDetailsDao.getAllWorkouts(1);
     }
 
 
@@ -71,8 +67,8 @@ public class WorkoutRepository {
         new DeleteAllWorkoutsAsyncTask(workoutDao).execute();
     }
 
-    public LiveData<List<WorkoutDetails>> getAllWorkouts(long id) {
-        return allWorkoutDetails;
+    public LiveData<List<WorkoutDetails>> getAllWorkoutsWithWorkoutId(long id) {
+        return workoutDetailsDao.getAllWorkoutsWithWorkoutId(id);
 
     }
 
@@ -84,13 +80,24 @@ public class WorkoutRepository {
     public LiveData<List<RoutineDetails>> getAllRoutinesForCurrentWorkout(long id) {
         return routineDetailsDao.getAllRoutinesForWorkout(id);
     }
+    public BestSet getBestSetFromWorkoutWithExercise(long workoutId, long exerciseId) throws ExecutionException, InterruptedException {
+        return new GetBestSetFromWorkoutWithExerciseAsyncTask(setDao).execute(workoutId,exerciseId).get();
+    }
 
-    public List<Exercise> getAllExercises() {
-        return exerciseDao.getAllExerciseNames();
+    public List<Exercise> getAllExercises() throws ExecutionException, InterruptedException {
+        return new GetAllExercisesAsyncTask(exerciseDao).execute().get();
+    }
+
+    public List<WorkoutDetails> getAllWorkoutsWithExercise(long exerciseId) throws ExecutionException, InterruptedException {
+        return new GetAllWorkoutDetailsWithExerciseAsyncTask(workoutDetailsDao).execute(exerciseId).get();
     }
 
     public List<RoutineDetails> getListOfRoutinesForWorkout(long workoutId) throws ExecutionException, InterruptedException {
         return new GetRoutinesForWorkoutAsyncTask(routineDetailsDao).execute(workoutId).get();
+    }
+
+    public List<WorkoutDetails> getListOfAllWorkoutDetails() throws ExecutionException, InterruptedException {
+        return new GetAllWorkoutDetailsAsyncTask(workoutDetailsDao).execute().get();
     }
 
 
@@ -219,6 +226,58 @@ public class WorkoutRepository {
         @Override
         protected List<RoutineDetails> doInBackground(Long... longs) {
             return routineDetailsDao.getListOfRoutinesForWorkout(longs[0]);
+        }
+    }
+
+    private static class GetAllWorkoutDetailsAsyncTask extends AsyncTask<Void, Void, List<WorkoutDetails>> {
+        private IWorkoutDetailsDao workoutDetailsDao;
+
+        private GetAllWorkoutDetailsAsyncTask(IWorkoutDetailsDao workoutDetailsDao) {
+            this.workoutDetailsDao = workoutDetailsDao;
+        }
+
+        @Override
+        protected List<WorkoutDetails> doInBackground(Void... voids) {
+            return workoutDetailsDao.getAllWorkoutDetails();
+        }
+    }
+
+    private static class GetAllWorkoutDetailsWithExerciseAsyncTask extends AsyncTask<Long, Void, List<WorkoutDetails>> {
+        private IWorkoutDetailsDao workoutDetailsDao;
+
+        private GetAllWorkoutDetailsWithExerciseAsyncTask(IWorkoutDetailsDao workoutDetailsDao) {
+            this.workoutDetailsDao = workoutDetailsDao;
+        }
+
+        @Override
+        protected List<WorkoutDetails> doInBackground(Long... longs) {
+            return workoutDetailsDao.getAllWorkoutDetailsWithExercise(longs[0]);
+        }
+    }
+
+    private static class GetBestSetFromWorkoutWithExerciseAsyncTask extends AsyncTask<Long, Void, BestSet> {
+        private ISetDao setDao;
+
+        private GetBestSetFromWorkoutWithExerciseAsyncTask(ISetDao setDao) {
+            this.setDao = setDao;
+        }
+
+        @Override
+        protected BestSet doInBackground(Long... longs) {
+            return setDao.getBestSetFromWorkoutWithExercise(longs[0], longs[1]);
+        }
+    }
+
+    private static class GetAllExercisesAsyncTask extends AsyncTask<Void, Void, List<Exercise>> {
+        private IExerciseDao exerciseDao;
+
+        private GetAllExercisesAsyncTask(IExerciseDao exerciseDao) {
+            this.exerciseDao = exerciseDao;
+        }
+
+        @Override
+        protected List<Exercise> doInBackground(Void... voids) {
+            return exerciseDao.getAllExerciseNames();
         }
     }
 

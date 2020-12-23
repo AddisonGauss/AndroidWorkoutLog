@@ -10,27 +10,21 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 
 public class TrainingFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private Button btnAddExercise;
     private TrainingAdapter trainingAdapter;
     private ExerciseNameListener exerciseNameListener;
     private workoutExerciseListener workoutExerciseListener;
-
+    private List<Exercise> listOfExercises;
     public interface workoutExerciseListener {
         void sendExercise(List<Exercise> selectedExercisesToAdd);
     }
@@ -39,12 +33,10 @@ public class TrainingFragment extends Fragment {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
-    public static TrainingFragment newInstance(String param1, String param2) {
+
+    public static TrainingFragment newInstance() {
         TrainingFragment fragment = new TrainingFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,8 +45,13 @@ public class TrainingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+
+        WorkoutViewModel workoutViewModel = workoutViewModel = new ViewModelProvider.AndroidViewModelFactory((getActivity().getApplication())).create(WorkoutViewModel.class);
+        try {
+            listOfExercises = workoutViewModel.getAllExercises();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -93,10 +90,12 @@ public class TrainingFragment extends Fragment {
             }
         });
 
-        RecyclerView recyclerView = getView().findViewById(R.id.recViewTraining);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-        trainingAdapter = new TrainingAdapter(exerciseNameListener, this.getActivity());
-        recyclerView.setAdapter(trainingAdapter);
+        if(listOfExercises != null) {
+            RecyclerView recyclerView = getView().findViewById(R.id.recViewTraining);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+            trainingAdapter = new TrainingAdapter(exerciseNameListener, this.getContext(), listOfExercises);
+            recyclerView.setAdapter(trainingAdapter);
+        }
 
     }
 

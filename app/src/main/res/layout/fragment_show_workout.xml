@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FinishedWorkoutFragment">
-
-    <!-- TODO: Update blank fragment layout -->
+    tools:context=".ShowWorkoutFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -18,22 +16,38 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/txtWorkoutDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Finished Workout Stats"
-                android:textSize="32sp" />
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Date"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtFinishedWorkoutDetails"
+                android:id="@+id/txtDuration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginLeft="8dp"
+                android:text="Duration" />
+
+            <TextView
+                android:id="@+id/txtListOfExercises"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="List of Exercises" />
+
+            <Button
+                android:id="@+id/btnPerformWorkoutAgain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="50dp"
-                android:text="Workout results"
-                android:textSize="14sp" />
+                android:layout_gravity="center"
+                android:text="Perform Again" />
         </LinearLayout>
     </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

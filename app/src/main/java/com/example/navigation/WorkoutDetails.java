@@ -19,7 +19,7 @@ public class WorkoutDetails implements Parcelable {
     private Workout workout;
 
     @Relation(parentColumn = "id", entityColumn = "workoutId", entity = UserRoutineExercise.class)
-    private List<RoutineDetails> userRoutineExercises = new ArrayList<>();
+    private List<RoutineDetails> userRoutineExercises;
 
 
     protected WorkoutDetails(Parcel in) {

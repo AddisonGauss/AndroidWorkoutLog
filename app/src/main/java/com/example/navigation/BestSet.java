@@ -28,7 +28,7 @@ public class BestSet implements Parcelable {
     @Relation(parentColumn = "workoutId",entityColumn = "id", entity= Workout.class)
     private Workout workout;
 
-    private int weight;
+    private double weight;
 
 
     protected BestSet(Parcel in) {
@@ -36,7 +36,7 @@ public class BestSet implements Parcelable {
         set = in.readParcelable(Set.class.getClassLoader());
         exercise = in.readParcelable(Exercise.class.getClassLoader());
         workout = in.readParcelable(Workout.class.getClassLoader());
-        weight = in.readInt();
+        weight = in.readDouble();
     }
 
     @Override
@@ -45,7 +45,7 @@ public class BestSet implements Parcelable {
         dest.writeParcelable(set, flags);
         dest.writeParcelable(exercise, flags);
         dest.writeParcelable(workout, flags);
-        dest.writeInt(weight);
+        dest.writeDouble(weight);
     }
 
     @Override
@@ -98,11 +98,11 @@ public class BestSet implements Parcelable {
         this.exercise = exercise;
     }
 
-    public int getWeight() {
+    public double getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
 

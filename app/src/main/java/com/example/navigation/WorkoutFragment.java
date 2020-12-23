@@ -30,14 +30,6 @@ public class WorkoutFragment extends Fragment {
     private Boolean isWorkoutRunning;
     private WorkoutDetailsListener workoutDetailsListener;
     private WorkoutDetails workoutDetails;
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
 
     public interface WorkoutDetailsListener {
@@ -49,14 +41,12 @@ public class WorkoutFragment extends Fragment {
     }
 
 
-    // TODO: Rename and change types and number of parameters
-    public static WorkoutFragment newInstance(String param1, String param2) {
+
+    public static WorkoutFragment newInstance() {
         Log.d(TAG, "newInstance: ");
 
         WorkoutFragment fragment = new WorkoutFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,8 +70,6 @@ public class WorkoutFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -107,6 +95,7 @@ public class WorkoutFragment extends Fragment {
 
                 //initialize new workout and insert workout into database to retrieve id and set workoutDetail's workoutId to that id
                 Workout workout = new Workout();
+
                 workout.setStartTime(new Date());
                 long id = 0;
                 try {
@@ -115,9 +104,11 @@ public class WorkoutFragment extends Fragment {
                     e.printStackTrace();
                 }
                 workout.setId(id);
+
                 WorkoutDetails workoutDetails = new WorkoutDetails();
                 workoutDetails.setWorkout(workout);
                 workoutDetails.setUserRoutineExercises(new ArrayList<RoutineDetails>());
+
 
                 isWorkoutRunning = true;
 
@@ -155,7 +146,7 @@ public class WorkoutFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-
+        //save value isWorkoutRunning to be able to go back to this workout if app is closed
         SharedPreferences prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("isRunning", isWorkoutRunning);
@@ -166,11 +157,15 @@ public class WorkoutFragment extends Fragment {
     public void onResume() {
         super.onResume();
         SharedPreferences mPrefs = getActivity().getPreferences(Context.MODE_PRIVATE);
+
         Gson gson = new Gson();
         SharedPreferences prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+
+        //search for value that would have been saved in the inProgressWorkout fragment to decide if workout is running or not
         isWorkoutRunning = prefs.getBoolean("isRunning", false);
         System.out.println("isworkoutrunning: " + isWorkoutRunning);
         if (isWorkoutRunning) {
+            //if there is a workout running, set view of buttons and save the workout details to JSON inside shared preferences to retrieve if app is closed.
             btnGoToRunningWorkout.setVisibility(View.VISIBLE);
             btnLaunchFragment.setVisibility(View.GONE);
             String json = mPrefs.getString("workoutDetails", "");

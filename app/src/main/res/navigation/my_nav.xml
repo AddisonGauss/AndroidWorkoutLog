@@ -70,8 +70,23 @@
         tools:layout="@layout/fragment_finished_workout" />
     <fragment
         android:id="@+id/historyFragment"
-        android:name="com.example.navigation.History"
+        android:name="com.example.navigation.HistoryFragment"
         android:label="fragment_history"
-        tools:layout="@layout/fragment_history" />
+        tools:layout="@layout/fragment_history" >
+        <action
+            android:id="@+id/action_historyFragment_to_showWorkoutFragment"
+            app:destination="@id/showWorkoutFragment"
+            app:popUpTo="@id/historyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/showWorkoutFragment"
+        android:name="com.example.navigation.ShowWorkoutFragment"
+        android:label="fragment_show_workout"
+        tools:layout="@layout/fragment_show_workout" >
+        <action
+            android:id="@+id/action_showWorkoutFragment_to_inProgressWorkoutFragment"
+            app:destination="@id/inProgressWorkoutFragment"
+            app:popUpTo="@id/my_nav" />
+    </fragment>
 
 </navigation>

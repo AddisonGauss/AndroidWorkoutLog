@@ -1,5 +1,8 @@
 package com.example.navigation;
 
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.LeadingMarginSpan;
@@ -9,8 +12,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
+
+import java.security.PrivateKey;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +30,11 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
 
     private List<WorkoutDetails> listOfFinishedWorkouts = new ArrayList<>();
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMMM-dd-yyyy");
+    private Activity activity;
 
-
+   public WorkoutAdapter (Activity activity){
+    this.activity = activity;
+    }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -67,7 +79,19 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
 
                 holder.txtExercises.setText(content);
 
+                holder.parent.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle args = new Bundle();
+                        args.putParcelable("workoutDetails", listOfFinishedWorkouts.get(position));
+                        NavController navController = Navigation.findNavController(activity, R.id.fragment);
+                        navController.navigate(R.id.action_historyFragment_to_showWorkoutFragment,args );
+                    }
+                });
+
+
         }
+
 
 
     }
@@ -84,9 +108,10 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView txtWorkoutDate, txtWorkoutDuration, txtExercises;
-
+        private MaterialCardView parent;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            parent = itemView.findViewById(R.id.parent);
             txtWorkoutDate = itemView.findViewById(R.id.txtWorkoutDate);
             txtWorkoutDuration = itemView.findViewById(R.id.txtDuration);
             txtExercises = itemView.findViewById(R.id.txtListOfExercises);

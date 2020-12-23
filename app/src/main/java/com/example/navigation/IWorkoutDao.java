@@ -25,7 +25,5 @@ public interface IWorkoutDao {
     @Query("DELETE FROM workout_table")
     void deleteAllWorkouts();
 
-    @Query("SELECT * FROM workout_table")
-    LiveData<List<Workout>> getAllWorkouts1();
 
 }

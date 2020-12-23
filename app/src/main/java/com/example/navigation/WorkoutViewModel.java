@@ -18,8 +18,6 @@ public class WorkoutViewModel extends AndroidViewModel {
     public WorkoutViewModel(@NonNull Application application) {
         super(application);
         repository = new WorkoutRepository(application);
-        allWorkouts = repository.getAllWorkouts(1);
-
     }
 
     public long insert(Workout workout) throws ExecutionException, InterruptedException {
@@ -54,12 +52,25 @@ public class WorkoutViewModel extends AndroidViewModel {
         return repository.insertUserRoutineExercise(userRoutineExercise);
     }
 
+    public BestSet getBestSetFromWorkoutWithExercise(long workoutId, long exerciseId) throws ExecutionException, InterruptedException {
+        return repository.getBestSetFromWorkoutWithExercise(workoutId,exerciseId);
+    }
+    public List<Exercise> getAllExercises() throws ExecutionException, InterruptedException {
+        return repository.getAllExercises();
+    }
+
     public List<RoutineDetails> getListOfRoutinesForWorkout(long workoutId) throws ExecutionException, InterruptedException {
         return repository.getListOfRoutinesForWorkout(workoutId);
     }
+    public List<WorkoutDetails> getAllWorkoutDetails() throws ExecutionException, InterruptedException {
+        return repository.getListOfAllWorkoutDetails();
+    }
+    public List<WorkoutDetails> getAllWorkoutDetailsWithExercise(long exerciseId) throws ExecutionException, InterruptedException {
+        return repository.getAllWorkoutsWithExercise(exerciseId);
+    }
 
-    public LiveData<List<WorkoutDetails>> getAllWorkouts(long id) {
-        return allWorkouts;
+    public LiveData<List<WorkoutDetails>> getWorkoutDetailsFromWorkoutId(long id) {
+        return repository.getAllWorkoutsWithWorkoutId(id);
     }
 
     public LiveData<List<WorkoutDetails>> getAllWorkoutsAll() {
@@ -69,4 +80,5 @@ public class WorkoutViewModel extends AndroidViewModel {
     public LiveData<List<RoutineDetails>> getAllRoutinesForCurrentWorkout(long id) {
         return repository.getAllRoutinesForCurrentWorkout(id);
     }
+
 }

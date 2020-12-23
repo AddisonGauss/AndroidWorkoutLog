@@ -1,9 +1,11 @@
 package com.example.navigation;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +16,7 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -29,9 +32,9 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class InProgressWorkoutFragment extends Fragment {
-
+    private static final String TAG = "InProgressWorkoutFragme";
+    
     private static final String ARG_WORKOUT_DETAILS = "workoutDetails";
-    private static final String ARG_PARAM2 = "param2";
     private Button btnAddExercise;
     private Workout currentWorkout;
     private WorkoutDetails workoutDetails;
@@ -44,9 +47,6 @@ public class InProgressWorkoutFragment extends Fragment {
     private ExerciseAdapter exerciseAdapter;
     private sendFinishedWorkoutInfo sendFinishedWorkoutInfoListener;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public interface sendFinishedWorkoutInfo {
         void sendWorkoutInfo(List<RoutineDetails> routineDetails);
@@ -66,17 +66,17 @@ public class InProgressWorkoutFragment extends Fragment {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onActivityCreated: ");
         super.onActivityCreated(savedInstanceState);
 
         setHasOptionsMenu(true);
         if (workoutDetails == null && getArguments() != null) {
             workoutDetails = getArguments().getParcelable(ARG_WORKOUT_DETAILS);
-            System.out.println("WORKOUT DETAILS = " + workoutDetails.toString());
-
         }
 
+        System.out.println("WORKOUT DETAILS = " + workoutDetails);
         workoutId = workoutDetails.getWorkout().getId();
-        addSetClickHandler addSetClickHandler = new addSetClickHandler() {
+        IAddSetClickHandler IAddSetClickHandler = new IAddSetClickHandler() {
             @Override
             public void onItemClickedAt(Set set, String operation) throws ExecutionException, InterruptedException {
 
@@ -100,11 +100,14 @@ public class InProgressWorkoutFragment extends Fragment {
                 }
             }
         };
+
         workoutViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(WorkoutViewModel.class);
+
         final RecyclerView recyclerView = getView().findViewById(R.id.recView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        exerciseAdapter = new ExerciseAdapter(getActivity(), addSetClickHandler, workoutDetails.getUserRoutineExercises(), workoutViewModel);
+        exerciseAdapter = new ExerciseAdapter(getActivity(), IAddSetClickHandler, workoutDetails.getUserRoutineExercises(), workoutViewModel);
         recyclerView.setAdapter(exerciseAdapter);
+
         workoutViewModel.getAllRoutinesForCurrentWorkout(workoutId).observe(getViewLifecycleOwner(), new Observer<List<RoutineDetails>>() {
             @Override
             public void onChanged(List<RoutineDetails> workouts) {
@@ -129,14 +132,12 @@ public class InProgressWorkoutFragment extends Fragment {
 
         if (getArguments() != null) {
             workoutDetails = getArguments().getParcelable(ARG_WORKOUT_DETAILS);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_in_progress_workout_fragment, container, false);
     }
 
@@ -149,7 +150,6 @@ public class InProgressWorkoutFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //start activity that lets user select an exercise to start a routine on
-
                 NavController navController = Navigation.findNavController(getActivity(), R.id.fragment);
                 navController.navigate(R.id.action_insideDashboardFragment_to_trainingFragment);
 
@@ -168,11 +168,24 @@ public class InProgressWorkoutFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save_workout:
-                try {
-                    saveWorkout();
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Finish Workout?")
+                            .setMessage("All valid sets will be marked as completed")
+                            .setPositiveButton("Finish", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    try {
+                                        saveWorkout();
+                                    } catch (ExecutionException | InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }).setNegativeButton("Cancel", null);
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -213,16 +226,20 @@ public class InProgressWorkoutFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        List<RoutineDetails> routinesToSave = exerciseAdapter.getCurrentRoutines();
-        for (int i = 0; i < routinesToSave.size(); i++) {
-            workoutViewModel.insertAllSets(routinesToSave.get(i).getSets());
+        Log.d(TAG, "onPause: ");
+        if(isRunning) {
+            Log.d(TAG, "onPause: isRunning");
+            List<RoutineDetails> routinesToSave = exerciseAdapter.getCurrentRoutines();
+            for (int i = 0; i < routinesToSave.size(); i++) {
+                workoutViewModel.insertAllSets(routinesToSave.get(i).getSets());
+            }
+            SharedPreferences mPrefs = this.getActivity().getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor prefsEditor = mPrefs.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(workoutDetails);
+            prefsEditor.putString("workoutDetails", json);
+            prefsEditor.commit();
         }
-        SharedPreferences mPrefs = this.getActivity().getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor prefsEditor = mPrefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(workoutDetails);
-        prefsEditor.putString("workoutDetails", json);
-        prefsEditor.commit();
     }
 
     @Override

@@ -22,12 +22,7 @@ import java.util.concurrent.ExecutionException;
 
 public class FinishedWorkoutFragment extends Fragment {
     private static final String TAG = "FinishedWorkoutFragment";
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-
-    private String mParam1;
-    private String mParam2;
     private WorkoutDetails workoutDetails;
     private TextView txtFinishedWorkoutDetails;
     private List<RoutineDetails> listOfFinishedRoutines;
@@ -37,11 +32,9 @@ public class FinishedWorkoutFragment extends Fragment {
     }
 
 
-    public static FinishedWorkoutFragment newInstance(String param1, String param2) {
+    public static FinishedWorkoutFragment newInstance() {
         FinishedWorkoutFragment fragment = new FinishedWorkoutFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,8 +43,6 @@ public class FinishedWorkoutFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
             workoutDetails = getArguments().getParcelable("workoutDetails");
         }
     }
@@ -79,28 +70,27 @@ public class FinishedWorkoutFragment extends Fragment {
             e.printStackTrace();
         }
 
+        //Need to convert all exercise names and their sets to strings to display a summary of the finished workout
+
         List<List<Set>> listOfListsOfSets = new ArrayList<>();
+
+        //get all the completed routines for the finished workout and add to list
         for (RoutineDetails routineDetails : listOfRoutinesForWorkout) {
             listOfListsOfSets.add(routineDetails.getSets());
         }
 
-
+        //Each element will hold an array of Strings that contain the exercise name in index 0, each index after will contain a weight and rep value
         List<String[]> listOfStringArrays = new ArrayList<>();
-
-        System.out.println(listOfListsOfSets.size());
 
 
         for (RoutineDetails routineDetails : listOfRoutinesForWorkout) {
+            //add 1 to size to account for the first element holding the exercise name
             String[] setStringArray = new String[routineDetails.getSets().size() + 1];
-            System.out.println("setStringarray size is " + setStringArray.length);
             for (int i = 0; i < routineDetails.getSets().size(); i++) {
-                System.out.println("Inside for loop i = " + i);
                 if (i == 0) {
                     setStringArray[i] = routineDetails.getExercise().getName() + "\n";
                 }
                 setStringArray[i + 1] = "\t" + (i + 1) + ". " + routineDetails.getSets().get(i).getWeight() + " x " + routineDetails.getSets().get(i).getReps() + "\n";
-                System.out.println(setStringArray[i]);
-                System.out.println(setStringArray[i + 1]);
             }
             listOfStringArrays.add(setStringArray);
         }

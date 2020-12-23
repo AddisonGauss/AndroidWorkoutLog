@@ -28,18 +28,17 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
 
     private Context mContext;
     private RoutineDetails currentExercise;
-    public addSetClickHandler sendExternalClick;
-    public sendFromSetAdapterToExercise sendExerciseAdapterTextInfo;
+    public IAddSetClickHandler sendExternalClick;
+    public ISendFromSetAdapterToExercise sendExerciseAdapterTextInfo;
     private Button addSetButton;
     private Set prevMaxSet;
     private Set currentSet;
 
 
-    public SetAdapter(Context mContext, RoutineDetails currentExercise, addSetClickHandler sendExternalClick, sendFromSetAdapterToExercise sendExerciseAdapterTextInfo, Button addSetButton, Set prevMaxSet) {
+    public SetAdapter(Context mContext, RoutineDetails currentExercise, IAddSetClickHandler sendExternalClick, ISendFromSetAdapterToExercise sendExerciseAdapterTextInfo, Button addSetButton, Set prevMaxSet) {
         this.mContext = mContext;
         this.currentExercise = currentExercise;
         if (currentExercise.getSets() == null) {
-            Log.d(TAG, "SetAdapter: currentExercises.sets is null");
             currentExercise.setSets(new ArrayList<>());
         }
         this.sendExternalClick = sendExternalClick;
@@ -77,12 +76,12 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                 holder.btnSetComplete.setText("not complete");
                 holder.btnSetComplete.setBackgroundColor(Color.GRAY);
             }
-//            if (Double.parseDouble(String.valueOf(holder.editTxtReps.getText())) == 0.0){
-//                holder.editTxtReps.setText(String.valueOf(0));
-//            }
-//            if (Double.parseDouble(String.valueOf(holder.editTxtWeight.getText())) == 0.0){
-//                holder.editTxtWeight.setText(String.valueOf(0));
-//            }
+            if (Double.parseDouble(String.valueOf(holder.editTxtReps.getText())) == 0.0){
+                holder.editTxtReps.setText(String.valueOf(0));
+            }
+            if (Double.parseDouble(String.valueOf(holder.editTxtWeight.getText())) == 0.0){
+                holder.editTxtWeight.setText(String.valueOf(0));
+            }
 
 
             holder.btnRemoveSet.setOnClickListener(new View.OnClickListener() {
@@ -195,13 +194,11 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        Log.d(TAG, "getItemCount: " + currentExercise.getSets().size());
         return currentExercise.getSets().size();
     }
 
 
     public void addToSets(Set set) {
-        Log.d(TAG, "addToSets: " + currentExercise.toString());
         set.setUserRoutineExerciseRoutineId(currentExercise.getUserRoutineExercise().getId());
         currentExercise.getSets().add(set);
         notifyDataSetChanged();
@@ -210,7 +207,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
 
 
     public void setSets(List<Set> sets) {
-        Log.d(TAG, "setSets: ");
         currentExercise.setSets(sets);
         notifyDataSetChanged();
     }
