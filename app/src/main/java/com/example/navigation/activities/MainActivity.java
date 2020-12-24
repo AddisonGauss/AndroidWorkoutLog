@@ -1,5 +1,7 @@
 package com.example.navigation.activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -14,11 +16,13 @@ import com.example.navigation.database.WorkoutViewModel;
 import com.example.navigation.fragments.InProgressWorkoutFragment;
 import com.example.navigation.fragments.TrainingFragment;
 import com.example.navigation.fragments.WorkoutFragment;
+import com.example.navigation.helpers.Constants;
 import com.example.navigation.models.Exercise;
 import com.example.navigation.models.RoutineDetails;
 import com.example.navigation.models.UserRoutineExercise;
 import com.example.navigation.models.WorkoutDetails;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements TrainingFragment.
     private RoutineDetails routineDetails;
     private InProgressWorkoutFragment inProgressWorkoutFragment;
     private WorkoutDetails workoutDetails;
+    private Boolean isRunning;
 
 
     @Override
@@ -39,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements TrainingFragment.
         Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         NavController navController = Navigation.findNavController(this, R.id.fragment);
@@ -102,12 +108,31 @@ public class MainActivity extends AppCompatActivity implements TrainingFragment.
 
 
         Bundle args = new Bundle();
-        args.putParcelable("workoutDetails", workoutDetails);
+        args.putParcelable(Constants.ARG_WORKOUT_DETAILS, workoutDetails);
 
         NavController navController = Navigation.findNavController(this, R.id.fragment);
         navController.popBackStack();
         navController.navigate(R.id.inProgressWorkoutFragment, args);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences prefs = getSharedPreferences(Constants.ARG_PREFS, Context.MODE_PRIVATE);
+        isRunning = prefs.getBoolean(Constants.ARG_IS_RUNNING, false);
+
+        if(isRunning){
+            Gson gson = new Gson();
+            String json = prefs.getString(Constants.ARG_WORKOUT_DETAILS, "");
+            workoutDetails = gson.fromJson(json, WorkoutDetails.class);
+        }
+
+    }
 }
+
 

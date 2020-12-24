@@ -124,7 +124,7 @@ public class InProgressWorkoutFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        getActivity().findViewById(R.id.bottomNavigationView).setVisibility(View.GONE);
+        //getActivity().findViewById(R.id.bottomNavigationView).setVisibility(View.GONE);
 
         super.onCreate(savedInstanceState);
 

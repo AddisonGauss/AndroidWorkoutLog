@@ -82,25 +82,25 @@ public class ProfileFragment extends Fragment implements OnChartGestureListener,
 
             for (int i = 0; i < exerciseList.size(); i++) {
                 listOfWorkoutDetails = workoutViewModel.getAllWorkoutDetailsWithExercise(exerciseList.get(i).getId());
+                
+                if(listOfWorkoutDetails.size() > 0) {
+                    ChartData chartData = new ChartData(new String[listOfWorkoutDetails.size()], new ArrayList<>());
+                    chartData.setExercise(exerciseList.get(i));
 
-                ChartData chartData = new ChartData(new String[listOfWorkoutDetails.size()], new ArrayList<>());
-                chartData.setExercise(exerciseList.get(i));
-
-                for (int j = 0; j < listOfWorkoutDetails.size(); j++) {
-                    chartData.getDates()[j] = DATE_FORMAT.format(listOfWorkoutDetails.get(j).getWorkout().getStartTime());
-                    try {
-                        float weight;
-                        BestSet set = workoutViewModel.getBestSetFromWorkoutWithExercise(listOfWorkoutDetails.get(j).getWorkout().getId(), exerciseList.get(i).getId());
-                        weight = (float) set.getWeight();
-                        System.out.println("WEIGHT = " + weight + " for set.getweight = " + set.getWeight());
-                        chartData.getyValues().add(new Entry(j, weight));
-                    } catch (ExecutionException | InterruptedException e) {
-                        e.printStackTrace();
+                    for (int j = 0; j < listOfWorkoutDetails.size(); j++) {
+                        chartData.getDates()[j] = DATE_FORMAT.format(listOfWorkoutDetails.get(j).getWorkout().getStartTime());
+                        try {
+                            float weight;
+                            BestSet set = workoutViewModel.getBestSetFromWorkoutWithExercise(listOfWorkoutDetails.get(j).getWorkout().getId(), exerciseList.get(i).getId());
+                            weight = (float) set.getWeight();
+                            chartData.getyValues().add(new Entry(j, weight));
+                        } catch (ExecutionException | InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
+                    chartDataList.add(chartData);
                 }
-                chartDataList.add(chartData);
             }
-
 
             RecyclerView recyclerView = getView().findViewById(R.id.recViewChart);
             recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));

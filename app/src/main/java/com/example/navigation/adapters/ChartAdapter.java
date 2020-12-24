@@ -50,6 +50,7 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (chartDataList != null && chartDataList.size() > 0 && chartDataList.get(position).getyValues().size() > 0) {
 
+            System.out.println(chartDataList.size());
             holder.mChart.setDragEnabled(true);
             holder.mChart.setScaleEnabled(true);
             holder.mChart.setTouchEnabled(true);
