@@ -5,8 +5,7 @@
     android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".MainActivity"
-    >
+    tools:context=".activities.MainActivity">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView2"
@@ -38,8 +37,7 @@
                 android:id="@+id/tableLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
-                >
+                android:layout_marginBottom="0dp">
 
                 <TableRow>
 
@@ -61,17 +59,15 @@
 
                     <TextView
                         android:layout_column="3"
-                        android:width="105dp"
                         android:layout_marginLeft="12dp"
+                        android:width="105dp"
                         android:gravity="center"
                         android:padding="8dp"
                         android:text="WEIGHT"
                         android:textSize="12sp"
-
                         android:textStyle="bold" />
 
                     <TextView
-
                         android:layout_column="4"
                         android:width="115dp"
                         android:gravity="center"
@@ -79,29 +75,21 @@
                         android:text="REPS"
                         android:textSize="12sp"
                         android:textStyle="bold" />
-
                 </TableRow>
-
-
             </TableLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recViewSet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-            </androidx.recyclerview.widget.RecyclerView>
+                android:layout_marginTop="10dp"></androidx.recyclerview.widget.RecyclerView>
 
             <Button
                 android:id="@+id/btnAddSet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="ADD"
-                tools:visibility="visible">
-
-            </Button>
-
+                android:text="ADD SET"
+                tools:visibility="visible"></Button>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

@@ -40,36 +40,40 @@
 
     <EditText
         android:id="@+id/editTxtPounds"
-        android:layout_width="75dp"
+        android:layout_width="85dp"
         android:layout_height="wrap_content"
         android:digits="0123456789."
-        android:ems="10"
+        android:ems="6"
         android:inputType="numberDecimal"
-        android:text="Name"
         android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        android:padding="7dp"
+        android:background="@drawable/rounded_edittext_states"
         app:layout_constraintEnd_toStartOf="@+id/editTextReps"
         app:layout_constraintStart_toEndOf="@+id/txtPrevMax"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editTextReps"
-        android:layout_width="75dp"
+        android:layout_width="85dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="30dp"
         android:digits="0123456789."
-        android:ems="10"
+        android:ems="6"
         android:inputType="numberDecimal"
-        android:text="Name"
         android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        android:padding="7dp"
+        android:background="@drawable/rounded_edittext_states"
         app:layout_constraintEnd_toStartOf="@+id/btnComplete"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btnComplete"
-        android:layout_width="60dp"
+        android:layout_width="30dp"
         android:layout_height="30dp"
-        android:text="not complete"
-        android:textSize="4sp"
+        android:background="@drawable/rounded_imgbutton_states"
+        android:src="@drawable/imagebutton_state"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

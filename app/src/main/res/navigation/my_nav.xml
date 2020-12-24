@@ -9,7 +9,7 @@
 
         <fragment
             android:id="@+id/workoutFragment"
-            android:name="com.example.navigation.WorkoutFragment"
+            android:name="com.example.navigation.fragments.WorkoutFragment"
             android:label="fragment_dash_board"
             tools:layout="@layout/fragment_workout" >
             <action
@@ -17,22 +17,23 @@
                 app:destination="@id/inProgressWorkoutFragment" />
             <argument
                 android:name="workoutDetails"
-                app:argType="com.example.navigation.WorkoutDetails" />
+                app:argType="com.example.navigation.models.WorkoutDetails" />
         </fragment>
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.navigation.ProfileFragment"
+        android:name="com.example.navigation.fragments.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.navigation.SettingsFragment"
+        android:name="com.example.navigation.fragments.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/inProgressWorkoutFragment"
-        android:name="com.example.navigation.InProgressWorkoutFragment"
+        android:name="com.example.navigation.fragments.InProgressWorkoutFragment"
         android:label="fragment_inside_dashboard"
         tools:layout="@layout/fragment_in_progress_workout_fragment" >
         <action
@@ -44,10 +45,10 @@
             app:destination="@id/trainingFragment" />
         <argument
             android:name="workoutDetails"
-            app:argType="com.example.navigation.WorkoutDetails" />
+            app:argType="com.example.navigation.models.WorkoutDetails" />
         <argument
             android:name="exerciseToAdd"
-            app:argType="com.example.navigation.Exercise" />
+            app:argType="com.example.navigation.models.Exercise" />
         <action
             android:id="@+id/action_inProgressWorkoutFragment_to_finishedWorkoutFragment"
             app:destination="@id/finishedWorkoutFragment"
@@ -56,7 +57,7 @@
     </fragment>
     <fragment
         android:id="@+id/trainingFragment"
-        android:name="com.example.navigation.TrainingFragment"
+        android:name="com.example.navigation.fragments.TrainingFragment"
         android:label="fragment_training"
         tools:layout="@layout/fragment_training" >
         <action
@@ -65,22 +66,23 @@
     </fragment>
     <fragment
         android:id="@+id/finishedWorkoutFragment"
-        android:name="com.example.navigation.FinishedWorkoutFragment"
+        android:name="com.example.navigation.fragments.FinishedWorkoutFragment"
         android:label="fragment_finished_workout"
         tools:layout="@layout/fragment_finished_workout" />
     <fragment
         android:id="@+id/historyFragment"
-        android:name="com.example.navigation.HistoryFragment"
+        android:name="com.example.navigation.fragments.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/fragment_history" >
         <action
             android:id="@+id/action_historyFragment_to_showWorkoutFragment"
             app:destination="@id/showWorkoutFragment"
-            app:popUpTo="@id/historyFragment" />
+            app:popUpTo="@id/my_nav"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/showWorkoutFragment"
-        android:name="com.example.navigation.ShowWorkoutFragment"
+        android:name="com.example.navigation.fragments.ShowWorkoutFragment"
         android:label="fragment_show_workout"
         tools:layout="@layout/fragment_show_workout" >
         <action
