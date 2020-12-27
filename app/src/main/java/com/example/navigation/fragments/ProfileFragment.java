@@ -80,13 +80,16 @@ public class ProfileFragment extends Fragment implements OnChartGestureListener,
         try {
             List<Exercise> exerciseList = workoutViewModel.getAllExercises();
 
+            //loop through all exercises and search for all workouts with that exercise
             for (int i = 0; i < exerciseList.size(); i++) {
                 listOfWorkoutDetails = workoutViewModel.getAllWorkoutDetailsWithExercise(exerciseList.get(i).getId());
-                
+
                 if(listOfWorkoutDetails.size() > 0) {
+                    //x value for chart data will be the date of the workout, y value will be the max weight lifted for that workout and certain exercise
                     ChartData chartData = new ChartData(new String[listOfWorkoutDetails.size()], new ArrayList<>());
                     chartData.setExercise(exerciseList.get(i));
 
+                    //loop through all workouts dealing with a specific exercise and get the max weight lifted
                     for (int j = 0; j < listOfWorkoutDetails.size(); j++) {
                         chartData.getDates()[j] = DATE_FORMAT.format(listOfWorkoutDetails.get(j).getWorkout().getStartTime());
                         try {
@@ -98,10 +101,12 @@ public class ProfileFragment extends Fragment implements OnChartGestureListener,
                             e.printStackTrace();
                         }
                     }
+                    //add
                     chartDataList.add(chartData);
                 }
             }
 
+            //display charts in recycler view
             RecyclerView recyclerView = getView().findViewById(R.id.recViewChart);
             recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
             chartAdapter = new ChartAdapter(chartDataList, getContext());

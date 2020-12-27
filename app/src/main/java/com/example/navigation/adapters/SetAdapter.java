@@ -75,7 +75,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
             holder.txtSetNumber.setText(String.valueOf(currentSet.getDisplayNumber()));
             holder.txtPrevMaxSet.setText(prevMaxSet.getWeight() + " x " + prevMaxSet.getReps());
 
-
             //display hint data in edittext's hint if currentset's values are 0
             if (currentSet.getWeight() == 0) {
                 holder.editTxtWeight.setHint(String.valueOf(currentSet.getHintWeight()));
@@ -89,6 +88,10 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                 holder.editTxtReps.setText(String.valueOf(currentSet.getReps()));
             }
 
+            if(!String.valueOf(holder.editTxtReps.getText()).equals("") && !String.valueOf(holder.editTxtWeight.getText()).equals(""))
+            {
+                holder.btnSetComplete.setActivated(true);
+            }
 
             if (currentSet.isComplete()) {
 
@@ -154,8 +157,16 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged: WEIGHT");
-                    if (!String.valueOf(s).equals(""))
+                    if (!String.valueOf(s).equals("")){
                         currentExercise.getSets().get(position).setWeight(Double.parseDouble(String.valueOf(s)));
+                        if (!String.valueOf(holder.editTxtReps.getText()).equals("")){
+                            holder.btnSetComplete.setActivated(true);
+                        }
+                    }  else {
+                    holder.btnSetComplete.setActivated(false);
+                    currentExercise.getSets().get(position).setWeight(0);
+                }
+
                 }
             });
             holder.editTxtReps.addTextChangedListener(new TextWatcher() {
@@ -172,8 +183,17 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged: REPS");
-                    if (!String.valueOf(s).equals(""))
+                    if (!String.valueOf(s).equals("")){
                         currentExercise.getSets().get(position).setReps(Double.parseDouble(String.valueOf(s)));
+                        if (!String.valueOf(holder.editTxtWeight.getText()).equals("")){
+                            holder.btnSetComplete.setActivated(true);
+                        }
+                    } else {
+                        holder.btnSetComplete.setActivated(false);
+                        currentExercise.getSets().get(position).setReps(0);
+                    }
+
+
                 }
             });
 

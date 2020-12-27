@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,8 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.navigation.R;
 import com.example.navigation.database.WorkoutViewModel;
 import com.example.navigation.adapters.TrainingAdapter;
-import com.example.navigation.interfaces.ExerciseNameListener;
+import com.example.navigation.interfaces.IExerciseNameListener;
 import com.example.navigation.models.Exercise;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -26,9 +26,9 @@ import java.util.concurrent.ExecutionException;
 
 public class TrainingFragment extends Fragment {
 
-    private Button btnAddExercise;
+    private FloatingActionButton btnAddExercise;
     private TrainingAdapter trainingAdapter;
-    private ExerciseNameListener exerciseNameListener;
+    private IExerciseNameListener IExerciseNameListener;
     private workoutExerciseListener workoutExerciseListener;
     private List<Exercise> listOfExercises;
 
@@ -74,10 +74,11 @@ public class TrainingFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        btnAddExercise = view.findViewById(R.id.btnAddExercises);
+        btnAddExercise = view.findViewById(R.id.btnAddExercise);
+        btnAddExercise.setBackgroundColor(getResources().getColor(R.color.purple_500));
 
         //if an exercise is selected show add exercise button
-        exerciseNameListener = new ExerciseNameListener() {
+        IExerciseNameListener = new IExerciseNameListener() {
             @Override
             public void showExerciseNames(boolean isSelected) {
                 if (isSelected) {
@@ -100,7 +101,7 @@ public class TrainingFragment extends Fragment {
         if (listOfExercises != null) {
             RecyclerView recyclerView = getView().findViewById(R.id.recViewTraining);
             recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-            trainingAdapter = new TrainingAdapter(exerciseNameListener, this.getContext(), listOfExercises);
+            trainingAdapter = new TrainingAdapter(IExerciseNameListener, this.getContext(), listOfExercises);
             recyclerView.setAdapter(trainingAdapter);
         }
 

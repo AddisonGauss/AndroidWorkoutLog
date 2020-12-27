@@ -11,16 +11,16 @@ import java.util.Date;
 @Entity(tableName = "workout_table")
 public class Workout implements Parcelable {
 
-    public Workout() {
-
-    }
-
     @PrimaryKey(autoGenerate = true)
     private long id;
 
     private Date startTime;
 
     private Date finishTime;
+
+    public Workout() {
+
+    }
 
     public Workout(Date startTime, Date finishTime) {
         this.startTime = startTime;

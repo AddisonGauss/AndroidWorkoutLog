@@ -1,5 +1,5 @@
 package com.example.navigation.interfaces;
 
-public interface ExerciseNameListener {
+public interface IExerciseNameListener {
     void showExerciseNames(boolean isSelected);
 }

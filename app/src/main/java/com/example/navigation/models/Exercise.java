@@ -21,6 +21,7 @@ public class Exercise implements Parcelable {
     public Exercise() {
 
     }
+
     public Exercise(String name, String targetedBodyPart) {
         this.name = name;
         this.targetedBodyPart = targetedBodyPart;

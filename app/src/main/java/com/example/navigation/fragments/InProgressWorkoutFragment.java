@@ -33,6 +33,7 @@ import com.example.navigation.interfaces.IAddSetClickHandler;
 import com.example.navigation.models.RoutineDetails;
 import com.example.navigation.models.Set;
 import com.example.navigation.models.WorkoutDetails;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
 import java.util.Date;
@@ -124,7 +125,7 @@ public class InProgressWorkoutFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        //getActivity().findViewById(R.id.bottomNavigationView).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.bottomNavigationView).setVisibility(View.GONE);
 
         super.onCreate(savedInstanceState);
 
@@ -147,7 +148,7 @@ public class InProgressWorkoutFragment extends Fragment {
         btnAddExercise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //start activity that lets user select an exercise to start a routine on
+                //start fragment that lets user select an exercise to start a routine on
                 NavController navController = Navigation.findNavController(getActivity(), R.id.fragment);
                 navController.navigate(R.id.action_insideDashboardFragment_to_trainingFragment);
 

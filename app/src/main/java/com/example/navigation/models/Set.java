@@ -23,8 +23,10 @@ public class Set implements Parcelable {
 
     private int displayNumber;
 
+    //used for editText's hint value
     private double hintWeight;
-//
+
+    //used for editText's hint value
     private double hintReps;
 
     @ForeignKey(entity = UserRoutineExercise.class, parentColumns = "id", childColumns = "userRoutineExerciseId", onDelete = CASCADE)

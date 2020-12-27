@@ -30,14 +30,13 @@
                 android:layout_marginTop="5dp"
                 android:text="Squat (Barbell)"
                 android:textColor="@color/teal_700"
-                android:textSize="22sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TableLayout
                 android:id="@+id/tableLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp">
+                android:layout_height="wrap_content">
 
                 <TableRow>
 
@@ -81,15 +80,15 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recViewSet"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"></androidx.recyclerview.widget.RecyclerView>
+                android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
 
             <Button
                 android:id="@+id/btnAddSet"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:text="ADD SET"
-                tools:visibility="visible"></Button>
+                tools:visibility="visible"
+                android:backgroundTint="@color/teal_700"></Button>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

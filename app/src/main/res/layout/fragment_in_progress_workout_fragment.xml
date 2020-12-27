@@ -31,7 +31,8 @@
                 android:id="@+id/btnAddExercise"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Add New Exercise" />
+                android:text="Add New Exercise"
+                android:backgroundTint="@color/purple_500"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

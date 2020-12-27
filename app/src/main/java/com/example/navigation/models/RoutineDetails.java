@@ -11,9 +11,6 @@ import java.util.List;
 
 public class RoutineDetails implements Parcelable {
 
-    public RoutineDetails(){
-    }
-
     @Embedded
     public UserRoutineExercise userRoutineExercise;
 
@@ -22,6 +19,10 @@ public class RoutineDetails implements Parcelable {
 
     @Relation(parentColumn = "exerciseTypeId",entityColumn = "id", entity= Exercise.class)
     Exercise exercise;
+
+    public RoutineDetails(){
+    }
+
 
     protected RoutineDetails(Parcel in) {
         userRoutineExercise = in.readParcelable(UserRoutineExercise.class.getClassLoader());

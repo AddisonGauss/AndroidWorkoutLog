@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,7 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.navigation.R;
-import com.example.navigation.interfaces.ExerciseNameListener;
+import com.example.navigation.interfaces.IExerciseNameListener;
 import com.example.navigation.models.Exercise;
 
 import java.util.ArrayList;
@@ -24,11 +23,11 @@ import java.util.List;
 public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHolder> {
 
     private List<Exercise> listOfExercises;
-    private ExerciseNameListener listener;
+    private IExerciseNameListener listener;
     private Context context;
     private Activity activity;
 
-    public TrainingAdapter(ExerciseNameListener listener, Context context, List<Exercise> listOfExercises) {
+    public TrainingAdapter(IExerciseNameListener listener, Context context, List<Exercise> listOfExercises) {
         this.listOfExercises = listOfExercises;
         this.listener = listener;
         this.context = context;
@@ -95,15 +94,13 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
         private TextView txtExerciseName, txtTargetedBodyPart;
         private ImageView exerciseImage;
         private ConstraintLayout parent;
-        private Button btnAdd;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             parent = itemView.findViewById(R.id.parent);
             txtExerciseName = itemView.findViewById(R.id.txtExerciseName);
             txtTargetedBodyPart = itemView.findViewById(R.id.txtTargetBodyPart);
-            btnAdd = itemView.findViewById(R.id.btnAddExercises);
+
         }
     }
 }

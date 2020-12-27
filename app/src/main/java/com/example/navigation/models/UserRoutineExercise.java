@@ -12,16 +12,6 @@ import static androidx.room.ForeignKey.CASCADE;
 @Entity(tableName = "user_routine_exercise_table")
 public class UserRoutineExercise implements Parcelable {
 
-    public UserRoutineExercise(String user, Long workoutId, Long exerciseTypeId) {
-        this.user = user;
-        this.exerciseTypeId = exerciseTypeId;
-        this.workoutId = workoutId;
-    }
-
-    public UserRoutineExercise() {
-
-    }
-
     @PrimaryKey(autoGenerate = true)
     private long id;
 
@@ -33,6 +23,15 @@ public class UserRoutineExercise implements Parcelable {
     @ForeignKey(entity = Workout.class, parentColumns = "id", childColumns = "workoutId", onDelete = CASCADE)
     private Long workoutId;
 
+    public UserRoutineExercise(String user, Long workoutId, Long exerciseTypeId) {
+        this.user = user;
+        this.exerciseTypeId = exerciseTypeId;
+        this.workoutId = workoutId;
+    }
+
+    public UserRoutineExercise() {
+
+    }
 
     protected UserRoutineExercise(Parcel in) {
         id = in.readLong();

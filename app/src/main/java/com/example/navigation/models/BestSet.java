@@ -8,10 +8,6 @@ import androidx.room.Relation;
 
 public class BestSet implements Parcelable {
 
-    public BestSet() {
-
-    }
-
     @Embedded
     private UserRoutineExercise userRoutineExercise;
 
@@ -27,6 +23,9 @@ public class BestSet implements Parcelable {
 
     private double weight;
 
+    public BestSet() {
+
+    }
 
     protected BestSet(Parcel in) {
         userRoutineExercise = in.readParcelable(UserRoutineExercise.class.getClassLoader());

@@ -10,10 +10,6 @@ import java.util.List;
 
 public class WorkoutDetails implements Parcelable {
 
-    public WorkoutDetails() {
-
-    }
-
     @Embedded
     private Workout workout;
 
@@ -21,17 +17,19 @@ public class WorkoutDetails implements Parcelable {
     private List<RoutineDetails> userRoutineExercises;
 
 
+    public WorkoutDetails() {
+
+    }
+
     protected WorkoutDetails(Parcel in) {
         this.workout = in.readParcelable(Workout.class.getClassLoader());
         in.readList(this.userRoutineExercises, RoutineDetails.class.getClassLoader());
-
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable(this.workout, flags);
         dest.writeList(userRoutineExercises);
-
     }
 
     @Override

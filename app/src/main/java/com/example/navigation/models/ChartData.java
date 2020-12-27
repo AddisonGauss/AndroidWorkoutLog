@@ -6,10 +6,13 @@ import java.util.ArrayList;
 
 public class ChartData {
 
+    //used as x value for charting
     private String[] dates;
 
+    //used as y value for charting
     private ArrayList<Entry> yValues;
 
+    //reference to exercise to display exercise name as chart title
     private Exercise exercise;
 
     public ChartData(String[] dates, ArrayList<Entry> yValues) {

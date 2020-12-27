@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements TrainingFragment.
         NavController navController = Navigation.findNavController(this, R.id.fragment);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
         NavigationUI.setupActionBarWithNavController(this, navController);
-        navController.popBackStack(R.id.workoutFragment, false);
 
     }
 
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements TrainingFragment.
 
 
         Bundle args = new Bundle();
-        args.putParcelable("workoutDetails", workoutDetails);
+        args.putParcelable(Constants.ARG_WORKOUT_DETAILS, workoutDetails);
 
         NavController navController = Navigation.findNavController(this, R.id.fragment);
         navController.navigate(R.id.inProgressWorkoutFragment, args);
@@ -111,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements TrainingFragment.
         args.putParcelable(Constants.ARG_WORKOUT_DETAILS, workoutDetails);
 
         NavController navController = Navigation.findNavController(this, R.id.fragment);
-        navController.popBackStack();
+        //navController.popBackStack();
         navController.navigate(R.id.inProgressWorkoutFragment, args);
     }
 

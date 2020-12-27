@@ -5,8 +5,8 @@
     <item android:state_focused="true"
         android:drawable="@drawable/ic_check_white" /> <!-- focused -->
     <item android:state_activated="true"
-        android:drawable="@drawable/ic_check_grey"/>
-    <item
         android:drawable="@drawable/ic_check_black"/>
+    <item
+        android:drawable="@drawable/ic_check_grey"/>
      <!-- default -->
 </selector>
