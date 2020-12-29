@@ -14,7 +14,9 @@
             tools:layout="@layout/fragment_workout" >
             <action
                 android:id="@+id/action_dashBoardFragment_to_insideDashboardFragment"
-                app:destination="@id/inProgressWorkoutFragment" />
+                app:destination="@id/inProgressWorkoutFragment"
+                app:popUpTo="@id/my_nav"
+                app:popUpToInclusive="true" />
             <argument
                 android:name="workoutDetails"
                 app:argType="com.example.navigation.models.WorkoutDetails" />
@@ -37,10 +39,6 @@
         android:label="fragment_inside_dashboard"
         tools:layout="@layout/fragment_in_progress_workout_fragment" >
         <action
-            android:id="@+id/action_insideDashboardFragment_to_dashBoardFragment"
-            app:destination="@id/workoutFragment"
-            app:popUpToInclusive="false" />
-        <action
             android:id="@+id/action_insideDashboardFragment_to_trainingFragment"
             app:destination="@id/trainingFragment" />
         <argument
@@ -59,11 +57,7 @@
         android:id="@+id/trainingFragment"
         android:name="com.example.navigation.fragments.TrainingFragment"
         android:label="fragment_training"
-        tools:layout="@layout/fragment_training" >
-        <action
-            android:id="@+id/action_trainingFragment_to_insideDashboardFragment"
-            app:destination="@id/inProgressWorkoutFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_training" />
     <fragment
         android:id="@+id/finishedWorkoutFragment"
         android:name="com.example.navigation.fragments.FinishedWorkoutFragment"

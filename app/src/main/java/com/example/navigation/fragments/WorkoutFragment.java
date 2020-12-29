@@ -118,6 +118,13 @@ public class WorkoutFragment extends Fragment {
 
                 isWorkoutRunning = true;
 
+                Gson gson = new Gson();
+                SharedPreferences prefs = getActivity().getSharedPreferences(Constants.ARG_PREFS, Context.MODE_PRIVATE);
+                SharedPreferences.Editor prefsEditor = prefs.edit();
+                String json = gson.toJson(workoutDetails);
+                prefsEditor.putString(Constants.ARG_WORKOUT_DETAILS, json);
+                prefsEditor.apply();
+
                 workoutDetailsListener.sendWorkoutDetails(workoutDetails);
 
             }
@@ -161,6 +168,7 @@ public class WorkoutFragment extends Fragment {
 
     @Override
     public void onResume() {
+        Log.d(TAG, "onResume: ");
         super.onResume();
 
         Gson gson = new Gson();
@@ -170,12 +178,13 @@ public class WorkoutFragment extends Fragment {
         isWorkoutRunning = prefs.getBoolean(Constants.ARG_IS_RUNNING, false);
 
         if (isWorkoutRunning) {
-            //if there is a workout running, set view of buttons and save the workout details to JSON inside shared preferences to retrieve if app is closed.
+            //if there is a workout running, set view of buttons and retrieve the workout details that would have been saved to JSON inside shared preferences to retrieve if app is closed.
             btnGoToRunningWorkout.setVisibility(View.VISIBLE);
             btnLaunchFragment.setVisibility(View.GONE);
 
             String json = prefs.getString(Constants.ARG_WORKOUT_DETAILS, "");
             workoutDetails = gson.fromJson(json, WorkoutDetails.class);
+            System.out.println("WORKOUTFRAG ON RESUME = " + workoutDetails);
 
         } else {
             btnGoToRunningWorkout.setVisibility(View.GONE);

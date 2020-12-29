@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements TrainingFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         NavController navController = Navigation.findNavController(this, R.id.fragment);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
@@ -96,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements TrainingFragment.
 
         NavController navController = Navigation.findNavController(this, R.id.fragment);
         navController.navigate(R.id.inProgressWorkoutFragment, args);
+        //prevent from going back to exercise selection screen once an exercise has been chosen and added to the routine
         navController.popBackStack(R.id.trainingFragment, true);
 
     }
@@ -110,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements TrainingFragment.
         args.putParcelable(Constants.ARG_WORKOUT_DETAILS, workoutDetails);
 
         NavController navController = Navigation.findNavController(this, R.id.fragment);
-        //navController.popBackStack();
         navController.navigate(R.id.inProgressWorkoutFragment, args);
     }
 
@@ -125,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements TrainingFragment.
         SharedPreferences prefs = getSharedPreferences(Constants.ARG_PREFS, Context.MODE_PRIVATE);
         isRunning = prefs.getBoolean(Constants.ARG_IS_RUNNING, false);
 
-        if(isRunning){
+        if (isRunning) {
             Gson gson = new Gson();
             String json = prefs.getString(Constants.ARG_WORKOUT_DETAILS, "");
             workoutDetails = gson.fromJson(json, WorkoutDetails.class);

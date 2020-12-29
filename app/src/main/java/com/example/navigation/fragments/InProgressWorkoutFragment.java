@@ -69,13 +69,14 @@ public class InProgressWorkoutFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onActivityCreated: ");
         super.onActivityCreated(savedInstanceState);
+        getActivity().findViewById(R.id.bottomNavigationView).setVisibility(View.GONE);
 
         setHasOptionsMenu(true);
         if (workoutDetails == null && getArguments() != null) {
             workoutDetails = getArguments().getParcelable(Constants.ARG_WORKOUT_DETAILS);
         }
 
-        workoutId = workoutDetails.getWorkout().getId();
+
         IAddSetClickHandler IAddSetClickHandler = new IAddSetClickHandler() {
             @Override
             public void onItemClickedAt(Set set, String operation) throws ExecutionException, InterruptedException {
@@ -93,12 +94,15 @@ public class InProgressWorkoutFragment extends Fragment {
 
             @Override
             public void onSetsClickedAt(List<Set> sets) {
+
                 try {
                     workoutViewModel.insertAllSets(sets);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+
+
         };
 
         workoutViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(WorkoutViewModel.class);
@@ -107,8 +111,10 @@ public class InProgressWorkoutFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         exerciseAdapter = new ExerciseAdapter(getActivity(), IAddSetClickHandler, workoutDetails.getUserRoutineExercises(), workoutViewModel);
         recyclerView.setAdapter(exerciseAdapter);
+        System.out.println("WORKOUT DETAILS IN INPROGRESSWORKOUTFRAGMENT = " + workoutDetails);
+        //exerciseAdapter.setExercises(workoutDetails.getUserRoutineExercises());
 
-        workoutViewModel.getAllRoutinesForCurrentWorkout(workoutId).observe(getViewLifecycleOwner(), new Observer<List<RoutineDetails>>() {
+        workoutViewModel.getAllRoutinesForCurrentWorkout(workoutDetails.getWorkout().getId()).observe(getViewLifecycleOwner(), new Observer<List<RoutineDetails>>() {
             @Override
             public void onChanged(List<RoutineDetails> workouts) {
 
@@ -125,7 +131,8 @@ public class InProgressWorkoutFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        getActivity().findViewById(R.id.bottomNavigationView).setVisibility(View.GONE);
+        Log.d(TAG, "onCreate: ");
+        //getActivity().findViewById(R.id.bottomNavigationView).setVisibility(View.GONE);
 
         super.onCreate(savedInstanceState);
 
@@ -221,8 +228,10 @@ public class InProgressWorkoutFragment extends Fragment {
         super.onStop();
     }
 
+
     @Override
     public void onPause() {
+        Log.d(TAG, "onPause: ");
         super.onPause();
 
         SharedPreferences prefs = getActivity().getSharedPreferences(Constants.ARG_PREFS, Context.MODE_PRIVATE);
@@ -234,6 +243,7 @@ public class InProgressWorkoutFragment extends Fragment {
                 workoutViewModel.insertAllSets(routinesToSave.get(i).getSets());
             }
 
+            //if workout is running, save workoutDetails to JSON inside shared preferences
             SharedPreferences.Editor prefsEditor = prefs.edit();
             Gson gson = new Gson();
             String json = gson.toJson(workoutDetails);
@@ -241,6 +251,7 @@ public class InProgressWorkoutFragment extends Fragment {
             prefsEditor.apply();
         }
     }
+
 
     @Override
     public void onAttach(@NonNull Context context) {

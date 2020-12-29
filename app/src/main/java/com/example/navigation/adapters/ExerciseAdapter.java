@@ -14,27 +14,30 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.navigation.R;
+import com.example.navigation.database.WorkoutViewModel;
 import com.example.navigation.interfaces.IAddSetClickHandler;
 import com.example.navigation.interfaces.ISendFromSetAdapterToExercise;
 import com.example.navigation.models.RoutineDetails;
 import com.example.navigation.models.Set;
-import com.example.navigation.database.WorkoutViewModel;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHolder>{
+public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHolder> {
     private static final String TAG = "ExerciseAdapter";
     private Context context;
     public List<RoutineDetails> exercises;
     private IAddSetClickHandler IAddSetClickHandler;
     private Set prevMaxSet = new Set();
     private WorkoutViewModel workoutViewModel;
+
     private ISendFromSetAdapterToExercise ISendFromSetAdapterToExercise = new ISendFromSetAdapterToExercise() {
         @Override
         public void onItemClickedAt(RoutineDetails routineDetails) {
             //insert all sets with valid data entered into database
-            IAddSetClickHandler.onSetsClickedAt(routineDetails.getSets());
+            for (RoutineDetails routine : exercises) {
+                IAddSetClickHandler.onSetsClickedAt(routine.getSets());
+            }
         }
     };
 
@@ -49,47 +52,49 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.exercise_item, parent,false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.exercise_item, parent, false);
         return new ViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder: ");
-        if(exercises != null && exercises.size() > 0) {
+        if (exercises != null && exercises.size() > 0) {
             holder.txtSetName.setText(exercises.get(position).getExercise().getName());
 
             holder.recyclerView.setLayoutManager(new LinearLayoutManager(holder.recyclerView.getContext()));
-
-            SetAdapter setAdapter = new SetAdapter(context, exercises.get(position), IAddSetClickHandler, ISendFromSetAdapterToExercise,holder.btnAddSet,prevMaxSet);
+            SetAdapter setAdapter = new SetAdapter(context, exercises.get(position), IAddSetClickHandler, ISendFromSetAdapterToExercise, holder.btnAddSet, prevMaxSet);
             holder.recyclerView.setAdapter(setAdapter);
 
             holder.btnAddSet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Log.d(TAG, "onClick: ");
 
-                    Set blankSet = new Set();
+                    int setSize = exercises.get(position).getSets().size();
 
-                    int setSize =  exercises.get(position).getSets().size();
-
-                    if(setSize == 0 ) {
+                    if (setSize == 0) {
+                        Set blankSet = new Set();
                         //first set template will be added to the selected exercise
                         blankSet.setUserRoutineExerciseRoutineId(exercises.get(position).getUserRoutineExercise().getId());
 
+                        exercises.get(position).getSets().add(blankSet);
+                        setExercises(exercises);
+
                         try {
-                            IAddSetClickHandler.onItemClickedAt(blankSet,"insert");
+                            IAddSetClickHandler.onItemClickedAt(blankSet, "insert");
                         } catch (ExecutionException | InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
                 }
             });
-        }else {
+        } else {
             return;
         }
     }
 
-    public List<RoutineDetails> getCurrentRoutines(){
+    public List<RoutineDetails> getCurrentRoutines() {
         return exercises;
     }
 
@@ -98,12 +103,8 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         return exercises.size();
     }
 
-    public void addExercise(RoutineDetails exercise){
-        exercises.add(exercise);
-        notifyDataSetChanged();
-    }
 
-    public void setExercises(List<RoutineDetails>exercises){
+    public void setExercises(List<RoutineDetails> exercises) {
         this.exercises = exercises;
         notifyDataSetChanged();
     }
@@ -114,7 +115,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         private ConstraintLayout parent;
         private Button btnAddSet;
         private RecyclerView recyclerView;
-        private TextView txtSetName,txtPrevMaxSet;
+        private TextView txtSetName, txtPrevMaxSet;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -125,6 +126,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
             btnAddSet = itemView.findViewById(R.id.btnAddSet);
         }
     }
+
 
 }
 

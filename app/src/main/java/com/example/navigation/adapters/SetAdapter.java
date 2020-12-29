@@ -25,6 +25,7 @@ import com.example.navigation.interfaces.IAddSetClickHandler;
 import com.example.navigation.interfaces.ISendFromSetAdapterToExercise;
 import com.example.navigation.models.RoutineDetails;
 import com.example.navigation.models.Set;
+import com.example.navigation.models.WorkoutDetails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
     private Button addSetButton;
     private Set prevMaxSet;
     private Set currentSet;
+    private WorkoutDetails workoutDetails;
 
 
     public SetAdapter(Context mContext, RoutineDetails currentExercise, IAddSetClickHandler sendExternalClick, ISendFromSetAdapterToExercise sendExerciseAdapterTextInfo, Button addSetButton, Set prevMaxSet) {
@@ -87,12 +89,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
             } else {
                 holder.editTxtReps.setText(String.valueOf(currentSet.getReps()));
             }
-
-            if(!String.valueOf(holder.editTxtReps.getText()).equals("") && !String.valueOf(holder.editTxtWeight.getText()).equals(""))
-            {
-                holder.btnSetComplete.setActivated(true);
-            }
-
             if (currentSet.isComplete()) {
 
                 holder.btnSetComplete.setPressed(true);
@@ -104,6 +100,11 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
 
                 holder.editTxtWeight.setText(String.valueOf(currentSet.getWeight()));
                 holder.editTxtReps.setText(String.valueOf(currentSet.getReps()));
+            }
+
+
+            if (!String.valueOf(holder.editTxtReps.getText()).equals("") && !String.valueOf(holder.editTxtWeight.getText()).equals("")) {
+                holder.btnSetComplete.setActivated(true);
             }
 
 
@@ -124,10 +125,10 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
             addSetButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "onClick: ");
+                    Log.d(TAG, "onClick: position is " + position);
                     currentSet = currentExercise.getSets().get(position);
-                    Set editedSet = new Set();
 
+                    Set editedSet = new Set();
                     //takes the last edittext's text data or the edittext's hint data and creates a new set with that hint data to display on next recycler view cycle
                     editedSet.setHintWeight(Double.parseDouble(String.valueOf(String.valueOf(holder.editTxtWeight.getText()).equals("") ? currentSet.getHintWeight() : holder.editTxtWeight.getText())));
                     editedSet.setHintReps(Double.parseDouble(String.valueOf(String.valueOf(holder.editTxtReps.getText()).equals("") ? currentSet.getHintReps() : holder.editTxtReps.getText())));
@@ -135,6 +136,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                     editedSet.setUserRoutineExerciseRoutineId(currentExercise.getUserRoutineExercise().getId());
 
                     currentExercise.getSets().add(editedSet);
+                    //addToSets(editedSet);
 
                     //send exercise adapter reference to current exercise that add set button was clicked on
                     if (sendExerciseAdapterTextInfo != null) {
@@ -152,23 +154,32 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    Log.d(TAG, "onTextChanged: s = " + s);
+                    Log.d(TAG, "onTextChanged: start = " + start + " before = " + before);
+                    Log.d(TAG, "onTextChanged: count = " + count);
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged: WEIGHT");
-                    if (!String.valueOf(s).equals("")){
+                    Log.d(TAG, "afterTextChanged: position = " + position);
+                    Log.d(TAG, "afterTextChanged: WEIGHT" + currentExercise.getSets().get(position));
+                    Log.d(TAG, "afterTextChanged: " + s);
+                    if (!String.valueOf(s).equals("")) {
+                        //if edittext weight isnt blank, set this set's data to whatever is typed in as it changes
                         currentExercise.getSets().get(position).setWeight(Double.parseDouble(String.valueOf(s)));
-                        if (!String.valueOf(holder.editTxtReps.getText()).equals("")){
+                        if (!String.valueOf(holder.editTxtReps.getText()).equals("") && !holder.btnSetComplete.isPressed()) {
+                            //if the edit text's rep value also has data, then change the complete checkmark logo to appear clickable
                             holder.btnSetComplete.setActivated(true);
                         }
-                    }  else {
-                    holder.btnSetComplete.setActivated(false);
-                    currentExercise.getSets().get(position).setWeight(0);
-                }
+                    } else {
+                        //nothing is typed in the edit text's weight so set the checkmark to appear unclickable
+                        holder.btnSetComplete.setActivated(false);
+                        currentExercise.getSets().get(position).setWeight(0);
+                    }
 
                 }
             });
+
             holder.editTxtReps.addTextChangedListener(new TextWatcher() {
 
                 @Override
@@ -182,18 +193,19 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged: REPS");
-                    if (!String.valueOf(s).equals("")){
+                    Log.d(TAG, "afterTextChanged: REPS position = " + position);
+                    if (!String.valueOf(s).equals("")) {
+                        //if edittext reps isnt blank, set this set's data to whatever is typed in, as it changes
                         currentExercise.getSets().get(position).setReps(Double.parseDouble(String.valueOf(s)));
-                        if (!String.valueOf(holder.editTxtWeight.getText()).equals("")){
+                        if (!String.valueOf(holder.editTxtWeight.getText()).equals("") && !holder.btnSetComplete.isPressed()) {
+                            //if the edit text's weight value also has data, then change the complete checkmark logo to appear clickable
                             holder.btnSetComplete.setActivated(true);
                         }
                     } else {
+                        //nothing is typed in the edit text's reps so set the checkmark to appear unclickable
                         holder.btnSetComplete.setActivated(false);
                         currentExercise.getSets().get(position).setReps(0);
                     }
-
-
                 }
             });
 
@@ -204,13 +216,14 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                     currentSet.setComplete(!currentSet.isComplete());
 
                     if (currentSet.isComplete()) {
-                        //if marked complete and no text has been entered, add hint data to set and display complete design
+                        //if marked complete and no text has been entered, add the hint data to set and display complete design
                         if (String.valueOf(holder.editTxtReps.getText()).equals((""))) {
                             currentSet.setReps(Double.parseDouble(String.valueOf(holder.editTxtReps.getHint())));
                         }
                         if (String.valueOf(holder.editTxtWeight.getText()).equals((""))) {
                             currentSet.setWeight(Double.parseDouble(String.valueOf(holder.editTxtWeight.getHint())));
                         }
+
                     }
                     //send the current exercise's sets to insert into database to prevent view from not updating this and any other set's text boxes that were edited after adding.
                     sendExternalClick.onSetsClickedAt(currentExercise.getSets());
@@ -229,13 +242,15 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
     public void addToSets(Set set) {
         set.setUserRoutineExerciseRoutineId(currentExercise.getUserRoutineExercise().getId());
         currentExercise.getSets().add(set);
-        notifyDataSetChanged();
+        notifyItemChanged(currentExercise.getSets().size() - 1);
 
     }
 
 
     public void setSets(List<Set> sets) {
+        System.out.println("SET SETS " + sets);
         currentExercise.setSets(sets);
+        System.out.println("CURRENT EXERCISE IS NOW = " + currentExercise);
         notifyDataSetChanged();
     }
 
@@ -256,6 +271,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
             txtSetNumber = itemView.findViewById(R.id.txtSetNumber);
             btnSetComplete = itemView.findViewById(R.id.btnComplete);
             btnRemoveSet = itemView.findViewById(R.id.btnRemoveSet);
+            //only allow a certain amount of digits in edit text
             editTxtWeight.setFilters(new InputFilter[]{new DecimalDigitsInputFilter()});
             editTxtReps.setFilters(new InputFilter[]{new DecimalDigitsInputFilter()});
         }
