@@ -4,19 +4,23 @@
     <item
         android:id="@+id/workoutFragment"
         android:title="Workout"
-        android:icon="@drawable/ic_baseline_home_24"/>
+        android:icon="@drawable/ic_baseline_home_24"
+        android:iconTint="@color/white" />
 
     <item
         android:id="@+id/historyFragment"
         android:title="History"
-        android:icon="@drawable/ic__history"/>
+        android:icon="@drawable/ic__history"
+        android:iconTint="@color/white"/>
     <item
         android:id="@+id/profileFragment"
         android:title="Profile"
-        android:icon="@drawable/ic_baseline_person_24"/>
+        android:icon="@drawable/ic_baseline_person_24"
+        android:iconTint="@color/white"/>
     <item
         android:id="@+id/settingsFragment"
         android:title="Settings"
-        android:icon="@drawable/ic_baseline_settings_24"/>
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:iconTint="@color/white"/>
 
 </menu>

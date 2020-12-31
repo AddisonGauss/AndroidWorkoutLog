@@ -17,26 +17,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/imgbutton_menu_background"
+                android:src="@drawable/ic_exercise_item_menu"
+                android:layout_alignParentRight="true"
+                android:id="@+id/exerciseItemMenu"
+                />
             <TextView
                 android:id="@+id/txtSetName"
+                android:layout_alignParentTop="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginStart="24dp"
                 android:text="Squat (Barbell)"
                 android:textColor="@color/teal_700"
                 android:textSize="20sp"
                 android:textStyle="bold" />
-
             <TableLayout
                 android:id="@+id/tableLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtSetName"
+                android:stretchColumns="3,4">
 
                 <TableRow>
 
@@ -58,19 +68,17 @@
 
                     <TextView
                         android:layout_column="3"
-                        android:layout_marginLeft="12dp"
-                        android:width="105dp"
-                        android:gravity="center"
-                        android:padding="8dp"
+                        android:layout_marginLeft="32dp"
+                        android:width="90dp"
+                        android:gravity="left"
                         android:text="WEIGHT"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_column="4"
-                        android:width="115dp"
-                        android:gravity="center"
-                        android:padding="8dp"
+                        android:width="90dp"
+                        android:gravity="left"
                         android:text="REPS"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -80,7 +88,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recViewSet"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tableLayout"></androidx.recyclerview.widget.RecyclerView>
 
             <Button
                 android:id="@+id/btnAddSet"
@@ -88,9 +97,10 @@
                 android:layout_height="45dp"
                 android:text="ADD SET"
                 tools:visibility="visible"
-                android:backgroundTint="@color/teal_700"></Button>
+                android:backgroundTint="@color/teal_700"
+                android:layout_below="@+id/recViewSet"></Button>
 
-        </LinearLayout>
+        </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
 
 
