@@ -3,11 +3,14 @@ package com.example.workoutlog.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
@@ -29,6 +32,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHolder> {
+    private static final String TAG = "ExerciseAdapter";
     private Context context;
     public List<RoutineDetails> exercises;
     private WorkoutViewModel workoutViewModel;
@@ -98,6 +102,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
             holder.imgBtnCurrentExerciseMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     PopupMenu popup = new PopupMenu(context, holder.imgBtnCurrentExerciseMenu);
                     popup.inflate(R.menu.exercise_item_menu);
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -108,14 +113,23 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
                                     AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
                                     alertBuilder.setTitle("Remove " + exercises.get(position).getExercise().getName() + " from your workout?")
                                             .setMessage("If you remove this exercise, all the sets with it will be deleted.")
-                                            .setPositiveButton("Remove", new DialogInterface.OnClickListener() {
+                                            .setPositiveButton("REMOVE", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     workoutViewModel.deleteUserRoutineExercise(exercises.get(position).getUserRoutineExercise());
                                                 }
-                                            }).setNegativeButton("Cancel", null)
-                                            .create()
-                                            .show();
+                                            }).setNegativeButton("CANCEL", null);
+                                           final AlertDialog builtAlert = alertBuilder.create();
+                                           builtAlert.setOnShowListener(new DialogInterface.OnShowListener() {
+                                               @Override
+                                               public void onShow(DialogInterface dialog) {
+                                                   builtAlert.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(R.attr.colorOnBackground);
+                                                   builtAlert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(R.attr.colorOnBackground);
+                                               }
+                                           });
+
+                                    builtAlert.show();
+
                                     return true;
                                 default:
                                     return false;
@@ -143,6 +157,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
 
 
     public void setExercises(List<RoutineDetails> exercises) {
+        Log.d(TAG, "`````````setExercises: ");
         this.exercises = exercises;
         notifyDataSetChanged();
     }

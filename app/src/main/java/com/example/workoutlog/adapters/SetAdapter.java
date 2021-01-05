@@ -61,7 +61,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (currentExercise.getSets() != null && currentExercise.getSets().size() > 0) {

@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,6 +43,7 @@ import java.util.concurrent.ExecutionException;
 public class InProgressWorkoutFragment extends Fragment {
 
     private Button btnAddExercise;
+    private TextView txtCancelWorkout;
     private WorkoutDetails workoutDetails;
     private WorkoutViewModel workoutViewModel;
     private boolean isRunning;
@@ -140,6 +142,7 @@ public class InProgressWorkoutFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         btnAddExercise = view.findViewById(R.id.btnAddExercise);
+        txtCancelWorkout = view.findViewById(R.id.txtCancelWorkout);
 
         btnAddExercise.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,6 +150,40 @@ public class InProgressWorkoutFragment extends Fragment {
                 //start fragment that lets user select an exercise to start a routine on
                 NavController navController = Navigation.findNavController(getActivity(), R.id.fragment);
                 navController.navigate(R.id.action_insideDashboardFragment_to_trainingFragment);
+            }
+        });
+
+        txtCancelWorkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+                alertBuilder.setTitle("Cancel Workout?")
+                        .setMessage("Are you sure you want to cancel this workout?")
+                        .setPositiveButton("Delete Workout", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                workoutViewModel.delete(workoutDetails.getWorkout());
+                                isRunning = false;
+                                SharedPreferences prefs = getActivity().getSharedPreferences(Constants.ARG_PREFS, Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = prefs.edit();
+                                editor.putBoolean(Constants.ARG_IS_RUNNING, false);
+                                editor.apply();
+                                NavController navController = Navigation.findNavController(getActivity(), R.id.fragment);
+                                navController.popBackStack(R.id.workoutFragment,true);
+                                navController.navigate(R.id.workoutFragment);
+                            }
+                        })
+                        .setNegativeButton("No", null);
+
+                final AlertDialog alert = alertBuilder.create();
+                alert.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        alert.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(R.attr.colorOnBackground);
+                        alert.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(R.attr.colorOnBackground);
+                    }
+                });
+                alert.show();
             }
         });
     }
@@ -176,7 +213,14 @@ public class InProgressWorkoutFragment extends Fragment {
                             }
                         }).setNegativeButton("Cancel", null);
 
-                AlertDialog alert = builder.create();
+                final AlertDialog alert = builder.create();
+                alert.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        alert.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(R.attr.colorOnBackground);
+                        alert.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(R.attr.colorOnBackground);
+                    }
+                });
                 alert.show();
 
                 return true;

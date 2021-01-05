@@ -43,9 +43,18 @@
                 android:id="@+id/btnPerformWorkoutAgain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
+                android:layout_marginBottom="10dp"
                 android:layout_gravity="center"
                 android:text="Perform Again" />
+
+            <Button
+                android:id="@+id/btnDeleteWorkout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="50dp"
+                android:text="Delete Workout"
+                android:backgroundTint="@color/red"/>
         </LinearLayout>
     </ScrollView>
 

@@ -42,7 +42,7 @@ public interface ISetDao {
 
 
     @Transaction
-    @Query("SELECT *, MAX(set_table.weight) as weight  FROM set_table,user_routine_exercise_table,exercise_table WHERE set_table.userRoutineExerciseRoutineId = user_routine_exercise_table.id AND user_routine_exercise_table.exerciseTypeId = exercise_table.id GROUP BY user_routine_exercise_table.exerciseTypeId ")
+    @Query("SELECT *, MAX(set_table.weight) as weight FROM set_table,user_routine_exercise_table,exercise_table WHERE set_table.userRoutineExerciseRoutineId = user_routine_exercise_table.id AND user_routine_exercise_table.exerciseTypeId = exercise_table.id GROUP BY user_routine_exercise_table.exerciseTypeId ")
     List<BestSet> getAllBestSets();
 
     @Transaction

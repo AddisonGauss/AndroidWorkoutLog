@@ -1,12 +1,16 @@
 package com.example.workoutlog.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.LeadingMarginSpan;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,7 +20,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.workoutlog.R;
 import com.example.workoutlog.models.UserRoutineExercise;
@@ -27,6 +34,7 @@ import com.example.workoutlog.helpers.Constants;
 import com.example.workoutlog.models.RoutineDetails;
 import com.example.workoutlog.models.Set;
 
+import java.security.Provider;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,7 +46,7 @@ import java.util.concurrent.TimeUnit;
 public class ShowWorkoutFragment extends Fragment {
     private static final String TAG = "ShowWorkoutFragment";
     private TextView txtWorkoutDate, txtWorkoutDuration, txtExercises;
-    private Button btnPerformWorkoutAgain;
+    private Button btnPerformWorkoutAgain, btnDeleteWorkout;
     private WorkoutDetails workoutDetails;
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMMM-dd-yyyy");
     private Boolean isWorkoutRunning;
@@ -80,6 +88,7 @@ public class ShowWorkoutFragment extends Fragment {
         txtWorkoutDate = view.findViewById(R.id.txtWorkoutDate);
         txtExercises = view.findViewById(R.id.txtListOfExercises);
         btnPerformWorkoutAgain = view.findViewById(R.id.btnPerformWorkoutAgain);
+        btnDeleteWorkout = view.findViewById(R.id.btnDeleteWorkout);
 
         btnPerformWorkoutAgain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,6 +169,36 @@ public class ShowWorkoutFragment extends Fragment {
                 } else {
                     Toast.makeText(getContext(), "A workout is already running, please finish", Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+
+        btnDeleteWorkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+                alertBuilder.setTitle("Delete Workout?")
+                            .setMessage("Are you sure you want to delete this workout?")
+                            .setPositiveButton("Delete Workout", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    WorkoutViewModel workoutViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(WorkoutViewModel.class);
+                                    workoutViewModel.delete(workoutDetails.getWorkout());
+                                    NavController navController = Navigation.findNavController(getActivity(), R.id.fragment);
+                                    navController.popBackStack(R.id.showWorkoutFragment,true);
+                                    navController.navigate(R.id.historyFragment);
+
+                                }
+                            })
+                            .setNegativeButton("Cancel", null);
+                final AlertDialog alert = alertBuilder.create();
+                alert.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        alert.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(R.attr.colorOnBackground);
+                        alert.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(R.attr.colorOnBackground);
+                    }
+                });
+                alert.show();
             }
         });
     }

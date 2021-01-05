@@ -31,6 +31,17 @@ public class WorkoutViewModel extends AndroidViewModel {
     public long insert(Workout workout) throws ExecutionException, InterruptedException {
         return repository.insert(workout);
     }
+    public long insertSet(Set set) throws ExecutionException, InterruptedException {
+        return repository.insertSet(set);
+    }
+
+    public void insertAllSets(List<Set> setList) {
+        repository.insertAllSets(setList);
+    }
+
+    public long insertUserRoutineExercise(UserRoutineExercise userRoutineExercise) throws ExecutionException, InterruptedException {
+        return repository.insertUserRoutineExercise(userRoutineExercise);
+    }
 
     public void update(Workout workout) {
         repository.update(workout);
@@ -50,20 +61,13 @@ public class WorkoutViewModel extends AndroidViewModel {
 
     public void deleteUserRoutineExercise(UserRoutineExercise userRoutineExercise) {repository.deleteUserRoutineExercise(userRoutineExercise);}
 
-    public long insertSet(Set set) throws ExecutionException, InterruptedException {
-        return repository.insertSet(set);
-    }
-
-    public void insertAllSets(List<Set> setList) {
-        repository.insertAllSets(setList);
-    }
-
-    public long insertUserRoutineExercise(UserRoutineExercise userRoutineExercise) throws ExecutionException, InterruptedException {
-        return repository.insertUserRoutineExercise(userRoutineExercise);
-    }
 
     public BestSet getBestSetFromWorkoutWithExercise(long workoutId, long exerciseId) throws ExecutionException, InterruptedException {
         return repository.getBestSetFromWorkoutWithExercise(workoutId, exerciseId);
+    }
+
+    public List<BestSet> getAllBestSets() throws ExecutionException, InterruptedException {
+        return repository.getListOfBestSets();
     }
 
     public List<Exercise> getAllExercises() throws ExecutionException, InterruptedException {

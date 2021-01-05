@@ -11,10 +11,8 @@
         android:theme="@style/Theme.WorkoutLog">
         <activity android:name=".activities.MainActivity"
             android:configChanges="uiMode">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
