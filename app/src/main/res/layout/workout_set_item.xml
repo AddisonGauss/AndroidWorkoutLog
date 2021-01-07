@@ -8,81 +8,149 @@
 
     <Button
         android:id="@+id/btnRemoveSet"
-        android:layout_width="30dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:layout_height="30dp"
         android:background="@drawable/ic_baseline_delete_forever_24"
         app:backgroundTint="#D60505"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/editTxtPounds"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/txtSetNumber"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/txtSetNumber"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtSetNumber"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:text="TextView"
+        android:textColor="@color/teal_700"
         android:textSize="12sp"
-        app:layout_constraintLeft_toRightOf="@+id/btnRemoveSet"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/editTxtPounds"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtPrevMax"
-        android:layout_width="45dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:text="Name"
         android:textSize="10sp"
-        app:layout_constraintStart_toEndOf="@+id/txtSetNumber"
+        app:layout_constraintBottom_toBottomOf="@+id/editTxtPounds"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editTxtPounds"
-        android:layout_width="85dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:textColor="@color/black"
         android:background="@drawable/rounded_edittext_states"
         android:digits="0123456789."
-        android:ems="6"
+        android:ems="5"
         android:inputType="numberDecimal"
         android:padding="7dp"
-        android:textSize="16sp"
+        android:textColor="@color/black"
         android:textColorHint="@color/ltgray"
-        app:layout_constraintEnd_toStartOf="@+id/editTextReps"
-        app:layout_constraintStart_toEndOf="@+id/txtPrevMax"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline9"
+        app:layout_constraintStart_toStartOf="@+id/guideline10"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent=".2" />
 
     <EditText
         android:id="@+id/editTextReps"
-        android:layout_width="85dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textColor="@color/black"
         android:background="@drawable/rounded_edittext_states"
         android:digits="0123456789."
-        android:ems="6"
+        android:ems="5"
         android:inputType="numberDecimal"
         android:padding="7dp"
-        android:textSize="16sp"
+        android:textColor="@color/black"
         android:textColorHint="@color/ltgray"
-        app:layout_constraintEnd_toStartOf="@+id/btnComplete"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent=".2" />
 
     <ImageButton
         android:id="@+id/btnComplete"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/rounded_imgbutton_states"
         android:src="@drawable/imgbutton_state"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio=""
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent=".08" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".925" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".07" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".92" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".59" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".335" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,90 +17,172 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <RelativeLayout
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:background="@drawable/imgbutton_menu_background"
-                android:src="@drawable/ic_exercise_item_menu"
-                android:layout_alignParentRight="true"
                 android:id="@+id/exerciseItemMenu"
-                />
-            <TextView
-                android:id="@+id/txtSetName"
-                android:layout_alignParentTop="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginStart="24dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/imgbutton_menu_background"
+                android:src="@drawable/ic_exercise_item_menu"
+                app:layout_constraintBottom_toTopOf="@+id/tableLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtSetName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
                 android:text="Squat (Barbell)"
                 android:textColor="@color/teal_700"
                 android:textSize="20sp"
-                android:textStyle="bold" />
-            <TableLayout
-                android:id="@+id/tableLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txtSetName"
-                android:stretchColumns="3,4">
-
-                <TableRow>
-
-                    <TextView
-                        android:layout_column="1"
-                        android:gravity="left"
-                        android:padding="8dp"
-                        android:text="SET"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_column="2"
-                        android:gravity="left"
-                        android:padding="8dp"
-                        android:text="PreviousMax"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_column="3"
-                        android:layout_marginLeft="32dp"
-                        android:width="90dp"
-                        android:gravity="left"
-                        android:text="WEIGHT"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_column="4"
-                        android:width="90dp"
-                        android:gravity="left"
-                        android:text="REPS"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                </TableRow>
-            </TableLayout>
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recViewSet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tableLayout"></androidx.recyclerview.widget.RecyclerView>
+                android:layout_below="@id/tableLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tableLayout"></androidx.recyclerview.widget.RecyclerView>
 
             <Button
                 android:id="@+id/btnAddSet"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:text="ADD SET"
-                tools:visibility="visible"
+                android:layout_below="@+id/recViewSet"
                 android:backgroundTint="@color/teal_700"
-                android:layout_below="@+id/recViewSet"></Button>
+                android:text="ADD SET"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recViewSet"
+                tools:visibility="visible"></Button>
 
-        </RelativeLayout>
+            <TableLayout
+                android:id="@+id/tableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtSetName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtSetName">
+
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_column="1"
+                        android:layout_weight=".14"
+                        android:gravity="center"
+                        android:text="SET"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_column="2"
+                        android:layout_weight=".135"
+                        android:gravity="center"
+                        android:text="PreviousMax"
+                        android:textSize="8sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_column="3"
+                        android:layout_weight=".03"
+                        android:gravity="center"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_column="4"
+                        android:layout_weight=".245"
+                        android:gravity="center"
+                        android:text="WEIGHT"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_column="5"
+                        android:layout_weight=".29"
+                        android:gravity="center"
+                        android:text="REPS"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_column="6"
+                        android:layout_weight=".075"
+                        android:gravity="center"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+
+                </TableRow>
+            </TableLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".92" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.6" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".335"/>
+
+
+         <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".3"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".15"/>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
     </androidx.core.widget.NestedScrollView>
 
 
