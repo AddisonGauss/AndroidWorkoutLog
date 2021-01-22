@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/editWorkoutName"
+        android:title="Edit workout name" />
+    <item
+        android:id="@+id/editWorkoutDate"
+        android:title="Edit workout date/time" />
+</menu>

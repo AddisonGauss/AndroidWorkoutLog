@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,10 +13,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -48,7 +52,8 @@ public class InProgressWorkoutFragment extends Fragment {
     private WorkoutViewModel workoutViewModel;
     private boolean isRunning;
     private ExerciseAdapter exerciseAdapter;
-
+    private ImageView btnExerciseNameMenu;
+    private EditText editTextWorkoutName;
 
     public InProgressWorkoutFragment() {
         // Required empty public constructor
@@ -66,8 +71,8 @@ public class InProgressWorkoutFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().findViewById(R.id.bottomNavigationView).setVisibility(View.GONE);
-
         setHasOptionsMenu(true);
+
         if (workoutDetails == null && getArguments() != null) {
             workoutDetails = getArguments().getParcelable(Constants.ARG_WORKOUT_DETAILS);
         }
@@ -138,11 +143,47 @@ public class InProgressWorkoutFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_in_progress_workout_fragment, container, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         btnAddExercise = view.findViewById(R.id.btnAddExercise);
         txtCancelWorkout = view.findViewById(R.id.txtCancelWorkout);
+        btnExerciseNameMenu = view.findViewById(R.id.btnExerciseNameMenu);
+        editTextWorkoutName = view.findViewById(R.id.editTxtWorkoutName);
+
+        editTextWorkoutName.setText(workoutDetails.getWorkout().getName());
+        btnExerciseNameMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu menu = new PopupMenu(getContext(), btnExerciseNameMenu);
+                menu.inflate(R.menu.workout_name_menu);
+                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch(item.getItemId()){
+                            case R.id.editWorkoutName:
+                                editTextWorkoutName.requestFocus();
+                                editTextWorkoutName.setSelection(editTextWorkoutName.getText().length());
+                            return true;
+                            default:
+                                return false;
+                        }
+
+                    }
+                });
+                menu.show();
+            }
+        });
+
+        editTextWorkoutName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                workoutDetails.getWorkout().setName(String.valueOf(editTextWorkoutName.getText()));
+            }
+        });
+
+
 
         btnAddExercise.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,6 +239,8 @@ public class InProgressWorkoutFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save_workout:
+                //clear focus from workout name's edit text to make sure setOnChangeFocusListener gets called, in case user was changing name and then clicked finish workout
+                editTextWorkoutName.clearFocus();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Finish Workout?")
@@ -222,7 +265,6 @@ public class InProgressWorkoutFragment extends Fragment {
                     }
                 });
                 alert.show();
-
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

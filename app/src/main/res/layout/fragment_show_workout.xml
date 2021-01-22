@@ -16,35 +16,44 @@
             android:orientation="vertical" >
 
             <TextView
+                android:id="@+id/txtWorkoutName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="Workout Name" />
+
+            <TextView
                 android:id="@+id/txtWorkoutDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:text="Date"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                />
 
             <TextView
                 android:id="@+id/txtDuration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
                 android:text="Duration" />
 
             <TextView
                 android:id="@+id/txtListOfExercises"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="8dp"
                 android:text="List of Exercises" />
 
             <Button
                 android:id="@+id/btnPerformWorkoutAgain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_gravity="center"
+                android:textStyle="bold"
                 android:text="Perform Again" />
 
             <Button
@@ -52,8 +61,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="50dp"
                 android:text="Delete Workout"
+                android:textStyle="bold"
                 android:backgroundTint="@color/red"/>
         </LinearLayout>
     </ScrollView>

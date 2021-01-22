@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -127,18 +128,14 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
                                                    builtAlert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(R.attr.colorOnBackground);
                                                }
                                            });
-
-                                    builtAlert.show();
-
+                                           builtAlert.show();
                                     return true;
                                 default:
                                     return false;
-                        }
-
+                            }
                         }
                     });
                     popup.show();
-
                 }
             });
         } else {
@@ -157,7 +154,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
 
 
     public void setExercises(List<RoutineDetails> exercises) {
-        Log.d(TAG, "`````````setExercises: ");
         this.exercises = exercises;
         notifyDataSetChanged();
     }
@@ -168,7 +164,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         private Button btnAddSet;
         private RecyclerView recyclerView;
         private TextView txtSetName, txtPrevMaxSet;
-        private ImageButton imgBtnCurrentExerciseMenu;
+        private ImageView imgBtnCurrentExerciseMenu;
 
 
         public ViewHolder(@NonNull View itemView) {

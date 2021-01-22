@@ -23,7 +23,7 @@ import com.example.workoutlog.models.UserRoutineExercise;
 import com.example.workoutlog.models.Workout;
 
 
-@androidx.room.Database(entities = {Workout.class, Exercise.class, UserRoutineExercise.class, Set.class}, version = 4)
+@androidx.room.Database(entities = {Workout.class, Exercise.class, UserRoutineExercise.class, Set.class}, version = 5)
 @TypeConverters({Converters.class})
 public abstract class Database extends RoomDatabase {
     private static final String TAG = "Database";

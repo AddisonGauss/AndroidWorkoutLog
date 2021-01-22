@@ -7,12 +7,12 @@
 
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -21,32 +21,82 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/editTxtWorkoutName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:inputType="text"
+                    android:imeOptions="flagNoExtractUi"
+                    android:maxLines="1"
+                    android:background="@null"
+                    android:text="Workout"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintWidth_min="5dp"
+                   />
+
+                <ImageView
+                    android:id="@+id/btnExerciseNameMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:src="@drawable/ic_baseline_more_vert_24"
+                    app:layout_constraintBottom_toBottomOf="@+id/editTxtWorkoutName"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/editTxtWorkoutName"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".93"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </androidx.recyclerview.widget.RecyclerView>
+                android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
 
             <Button
                 android:id="@+id/btnAddExercise"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Add New Exercise"
-                android:backgroundTint="@color/purple_500"/>
+                android:backgroundTint="@color/purple_500"
+                android:text="Add New Exercise" />
 
             <TextView
                 android:id="@+id/txtCancelWorkout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:gravity="center"
                 android:layout_marginTop="10dp"
-                android:textSize="16sp"
+                android:gravity="center"
                 android:text="Cancel Workout"
-                android:textColor="@color/red"/>
+                android:textColor="@color/red"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

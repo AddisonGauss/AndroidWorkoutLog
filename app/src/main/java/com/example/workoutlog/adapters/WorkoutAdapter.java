@@ -47,6 +47,7 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
 
         if (listOfFinishedWorkouts != null && listOfFinishedWorkouts.size() > 0) {
             WorkoutDetails currentWorkoutDetails = listOfFinishedWorkouts.get(position);
+            holder.txtWorkoutName.setText(listOfFinishedWorkouts.get(position).getWorkout().getName());
             String date = DATE_FORMAT.format(listOfFinishedWorkouts.get(position).getWorkout().getStartTime());
             holder.txtWorkoutDate.setText(date);
 
@@ -103,12 +104,13 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView txtWorkoutDate, txtWorkoutDuration, txtExercises;
+        private TextView txtWorkoutName, txtWorkoutDate, txtWorkoutDuration, txtExercises;
         private MaterialCardView parent;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             parent = itemView.findViewById(R.id.parent);
+            txtWorkoutName = itemView.findViewById(R.id.txtWorkoutName);
             txtWorkoutDate = itemView.findViewById(R.id.txtWorkoutDate);
             txtWorkoutDuration = itemView.findViewById(R.id.txtDuration);
             txtExercises = itemView.findViewById(R.id.txtListOfExercises);

@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -45,7 +46,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ShowWorkoutFragment extends Fragment {
     private static final String TAG = "ShowWorkoutFragment";
-    private TextView txtWorkoutDate, txtWorkoutDuration, txtExercises;
+    private TextView txtWorkoutDate, txtWorkoutDuration, txtExercises, txtWorkoutName;
     private Button btnPerformWorkoutAgain, btnDeleteWorkout;
     private WorkoutDetails workoutDetails;
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMMM-dd-yyyy");
@@ -69,6 +70,8 @@ public class ShowWorkoutFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         if (getArguments() != null) {
             workoutDetails = getArguments().getParcelable(Constants.ARG_WORKOUT_DETAILS);
         }
@@ -84,6 +87,7 @@ public class ShowWorkoutFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        txtWorkoutName = view.findViewById(R.id.txtWorkoutName);
         txtWorkoutDuration = view.findViewById(R.id.txtDuration);
         txtWorkoutDate = view.findViewById(R.id.txtWorkoutDate);
         txtExercises = view.findViewById(R.id.txtListOfExercises);
@@ -208,6 +212,8 @@ public class ShowWorkoutFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         if (workoutDetails != null) {
+            txtWorkoutName.setText(workoutDetails.getWorkout().getName());
+
             String date = DATE_FORMAT.format(workoutDetails.getWorkout().getStartTime());
             txtWorkoutDate.setText(date);
 

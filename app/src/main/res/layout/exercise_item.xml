@@ -22,22 +22,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/exerciseItemMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/imgbutton_menu_background"
-                android:src="@drawable/ic_exercise_item_menu"
-                app:layout_constraintBottom_toTopOf="@+id/tableLayout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:src="@drawable/ic_baseline_more_vert_24"
+                app:layout_constraintBottom_toBottomOf="@+id/txtSetName"
+                app:layout_constraintStart_toStartOf="@+id/guideline6" />
 
             <TextView
                 android:id="@+id/txtSetName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
                 android:text="Squat (Barbell)"
                 android:textColor="@color/teal_700"
                 android:textSize="20sp"
@@ -177,6 +175,12 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent=".15"/>
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".93"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

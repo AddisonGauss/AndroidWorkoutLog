@@ -3,6 +3,7 @@ package com.example.workoutlog.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -13,6 +14,8 @@ public class Workout implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private long id;
+
+    private String name;
 
     private Date startTime;
 
@@ -27,10 +30,12 @@ public class Workout implements Parcelable {
         this.finishTime = finishTime;
     }
 
+
     protected Workout(Parcel in) {
         id = in.readLong();
         startTime = (Date) in.readSerializable();
         finishTime = (Date) in.readSerializable();
+        name = in.readString();
     }
 
     public static final Creator<Workout> CREATOR = new Creator<Workout>() {
@@ -69,10 +74,19 @@ public class Workout implements Parcelable {
         this.finishTime = finishTime;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "Workout{" +
                 "id=" + id +
+                ", name='" + name + '\'' +
                 ", startTime=" + startTime +
                 ", finishTime=" + finishTime +
                 '}';
@@ -88,5 +102,8 @@ public class Workout implements Parcelable {
         dest.writeLong(id);
         dest.writeSerializable(startTime);
         dest.writeSerializable(finishTime);
+        dest.writeString(name);
     }
+
+
 }

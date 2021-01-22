@@ -3,6 +3,7 @@ package com.example.workoutlog.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,8 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -23,6 +26,7 @@ import com.example.workoutlog.models.Workout;
 import com.example.workoutlog.models.WorkoutDetails;
 import com.google.gson.Gson;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
@@ -96,13 +100,29 @@ public class WorkoutFragment extends Fragment {
         btnLaunchFragment = view.findViewById(R.id.btnLaunchOtherFragment);
         btnGoToRunningWorkout = view.findViewById(R.id.btnGoToRunningWorkout);
         btnLaunchFragment.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 workoutViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(WorkoutViewModel.class);
 
                 //initialize new workout and insert workout into database to retrieve id and set workoutDetail's workoutId to that id
                 Workout workout = new Workout();
+                LocalTime localTime = LocalTime.now();
+                int timeOfDayHour = localTime.getHour();
+                String name;
+                if(timeOfDayHour >= 0 && timeOfDayHour < 12){
+                   name = "Morning Workout";
+                }else if(timeOfDayHour >= 12 && timeOfDayHour < 16){
+                    name = "Afternoon Workout";
+                }else if(timeOfDayHour >= 16 && timeOfDayHour < 21){
+                    name = "Evening Workout";
+                }else if(timeOfDayHour >= 21 && timeOfDayHour < 24){
+                    name = "Night Workout";
+                } else {
+                    name = "Workout";
+                }
 
+                workout.setName(name);
                 workout.setStartTime(new Date());
                 long id = 0;
                 try {
