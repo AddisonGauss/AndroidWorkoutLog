@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.LeadingMarginSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -23,22 +21,25 @@ import com.example.workoutlog.models.RoutineDetails;
 import com.example.workoutlog.models.Set;
 import com.example.workoutlog.models.WorkoutDetails;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 
 public class FinishedWorkoutFragment extends Fragment {
     private static final String TAG = "FinishedWorkoutFragment";
-
     private WorkoutDetails workoutDetails;
-    private TextView txtFinishedWorkoutDetails;
+    private TextView txtFinishedWorkoutDetails, txtWorkoutName, txtWorkoutDuration, txtWorkoutDate;
     private List<RoutineDetails> listOfFinishedRoutines;
+    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d");
 
     public FinishedWorkoutFragment() {
         // Required empty public constructor
     }
-
 
     public static FinishedWorkoutFragment newInstance() {
         FinishedWorkoutFragment fragment = new FinishedWorkoutFragment();
@@ -51,7 +52,6 @@ public class FinishedWorkoutFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         if (getArguments() != null) {
             workoutDetails = getArguments().getParcelable(Constants.ARG_WORKOUT_DETAILS);
         }
@@ -62,15 +62,24 @@ public class FinishedWorkoutFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_finished_workout, container, false);
-
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "onViewCreated: ");
         super.onViewCreated(view, savedInstanceState);
         txtFinishedWorkoutDetails = view.findViewById(R.id.txtFinishedWorkoutDetails);
+        txtWorkoutName = view.findViewById(R.id.txtFinishedWorkoutName);
+        txtWorkoutDuration = view.findViewById(R.id.txtWorkoutDuration);
+        txtWorkoutDate = view.findViewById(R.id.txtFinishedWorkoutDate);
+
+
+        txtWorkoutName.setText(workoutDetails.getWorkout().getName());
+        txtWorkoutDate.setText(dateFormat.format(workoutDetails.getWorkout().getStartTime()));
+
+        long millis = Math.abs(workoutDetails.getWorkout().getFinishTime().getTime() - workoutDetails.getWorkout().getStartTime().getTime());
+        long minutes = TimeUnit.MINUTES.convert(millis, TimeUnit.MILLISECONDS);
+        txtWorkoutDuration.setText(String.valueOf(minutes));
+        txtWorkoutDuration.append(" minutes");
 
         WorkoutViewModel workoutViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(WorkoutViewModel.class);
         List<RoutineDetails> listOfRoutinesForWorkout = null;
@@ -117,6 +126,5 @@ public class FinishedWorkoutFragment extends Fragment {
         }
 
         txtFinishedWorkoutDetails.setText(content);
-
     }
 }

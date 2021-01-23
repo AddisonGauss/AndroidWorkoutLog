@@ -45,7 +45,6 @@ public class WorkoutRepository {
         routineDetailsDao = workoutDatabase.routineDetailsDao();
     }
 
-
     public long insert(Workout workout) throws ExecutionException, InterruptedException {
         return new InsertWorkoutAsyncTask(workoutDao).execute(workout).get();
     }
@@ -115,7 +114,6 @@ public class WorkoutRepository {
     public List<WorkoutDetails> getListOfAllWorkoutDetails() throws ExecutionException, InterruptedException {
         return new GetAllWorkoutDetailsAsyncTask(workoutDetailsDao).execute().get();
     }
-
 
     //inner classes for asynch tasks
     private static class InsertWorkoutAsyncTask extends AsyncTask<Workout, Void, Long> {
@@ -217,7 +215,6 @@ public class WorkoutRepository {
 
     private static class DeleteUserRoutineExerciseAsyncTask extends AsyncTask<UserRoutineExercise, Void, Void> {
         private IUserRoutineExerciseDao userRoutineExerciseDao;
-
         //class is static so cannot access repository directly
         //so have to pass it over a constructor
         private DeleteUserRoutineExerciseAsyncTask(IUserRoutineExerciseDao userRoutineExerciseDao) {
@@ -325,6 +322,5 @@ public class WorkoutRepository {
             return exerciseDao.getAllExerciseNames();
         }
     }
-
 
 }

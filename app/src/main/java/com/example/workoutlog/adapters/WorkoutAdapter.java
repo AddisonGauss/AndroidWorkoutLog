@@ -1,6 +1,7 @@
 package com.example.workoutlog.adapters;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,7 +23,11 @@ import com.example.workoutlog.helpers.Constants;
 import com.google.android.material.card.MaterialCardView;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -29,7 +35,7 @@ import java.util.concurrent.TimeUnit;
 public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHolder> {
 
     private List<WorkoutDetails> listOfFinishedWorkouts = new ArrayList<>();
-    SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMMM-dd-yyyy");
+    SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMMM d yyyy");
     private Activity activity;
 
     public WorkoutAdapter(Activity activity) {
@@ -58,7 +64,6 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
                 holder.txtWorkoutDuration.append(" minutes");
             }
 
-
             String[] exercisesStringArray = new String[currentWorkoutDetails.getUserRoutineExercises().size()];
             for (int i = 0; i < currentWorkoutDetails.getUserRoutineExercises().size(); i++) {
                 if (i == currentWorkoutDetails.getUserRoutineExercises().size() - 1) {
@@ -66,7 +71,6 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
                 } else {
                     exercisesStringArray[i] = currentWorkoutDetails.getUserRoutineExercises().get(i).getExercise().getName() + ",\t";
                 }
-
             }
             SpannableStringBuilder content = new SpannableStringBuilder();
             for (String t1 : exercisesStringArray) {
@@ -101,6 +105,23 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
     public void setWorkouts(List<WorkoutDetails> workouts) {
         this.listOfFinishedWorkouts = workouts;
         notifyDataSetChanged();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public int getItemPositionWithDate(LocalDate date){
+
+        for(WorkoutDetails workoutDetails: listOfFinishedWorkouts){
+            LocalDate workoutLocalDate = Instant.ofEpochMilli(workoutDetails.getWorkout().getStartTime().getTime())
+                                        .atZone(ZoneId.systemDefault())
+                                        .toLocalDate();
+            System.out.println("DATE TO SEARCH FOR = " + date);
+            System.out.println("WORKOUT DATE = " + workoutLocalDate);
+            if(workoutLocalDate.equals(date)){
+                System.out.println(listOfFinishedWorkouts.indexOf(workoutDetails));
+                return listOfFinishedWorkouts.indexOf(workoutDetails);
+            }
+        }
+        return 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

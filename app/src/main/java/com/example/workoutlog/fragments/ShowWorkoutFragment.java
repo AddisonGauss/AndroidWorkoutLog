@@ -9,8 +9,6 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.LeadingMarginSpan;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,23 +17,20 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.workoutlog.R;
-import com.example.workoutlog.models.UserRoutineExercise;
-import com.example.workoutlog.models.Workout;
-import com.example.workoutlog.models.WorkoutDetails;
 import com.example.workoutlog.database.WorkoutViewModel;
 import com.example.workoutlog.helpers.Constants;
 import com.example.workoutlog.models.RoutineDetails;
 import com.example.workoutlog.models.Set;
+import com.example.workoutlog.models.UserRoutineExercise;
+import com.example.workoutlog.models.Workout;
+import com.example.workoutlog.models.WorkoutDetails;
 
-import java.security.Provider;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,7 +44,7 @@ public class ShowWorkoutFragment extends Fragment {
     private TextView txtWorkoutDate, txtWorkoutDuration, txtExercises, txtWorkoutName;
     private Button btnPerformWorkoutAgain, btnDeleteWorkout;
     private WorkoutDetails workoutDetails;
-    SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMMM-dd-yyyy");
+    SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMMM d yyyy");
     private Boolean isWorkoutRunning;
     private WorkoutViewModel workoutViewModel;
     private UserRoutineExercise userRoutineExercise;
@@ -58,7 +53,6 @@ public class ShowWorkoutFragment extends Fragment {
     public ShowWorkoutFragment() {
         // Required empty public constructor
     }
-
 
     public static ShowWorkoutFragment newInstance() {
         ShowWorkoutFragment fragment = new ShowWorkoutFragment();
@@ -70,7 +64,6 @@ public class ShowWorkoutFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         if (getArguments() != null) {
             workoutDetails = getArguments().getParcelable(Constants.ARG_WORKOUT_DETAILS);
@@ -100,7 +93,6 @@ public class ShowWorkoutFragment extends Fragment {
                 SharedPreferences prefs = getActivity().getSharedPreferences(Constants.ARG_PREFS, Context.MODE_PRIVATE);
                 isWorkoutRunning = prefs.getBoolean(Constants.ARG_IS_RUNNING, false);
 
-
                 if (!isWorkoutRunning) {
                     //if no workout is running, need to send the same workout data to InProgressWorkoutFragment, but need to insert new data into db to retrieve correct ids to reference, also for LiveData to cooperate
                     workoutViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(WorkoutViewModel.class);
@@ -120,7 +112,6 @@ public class ShowWorkoutFragment extends Fragment {
                     WorkoutDetails copyOfWorkoutDetails = new WorkoutDetails();
                     copyOfWorkoutDetails.setUserRoutineExercises(new ArrayList<RoutineDetails>());
                     copyOfWorkoutDetails.setWorkout(workout);
-
 
                     for (int i = 0; i < workoutDetails.getUserRoutineExercises().size(); i++) {
                         userRoutineExercise = new UserRoutineExercise();
@@ -145,7 +136,6 @@ public class ShowWorkoutFragment extends Fragment {
                         }
                         routineDetails.getUserRoutineExercise().setId(userRoutineExerciseId);
 
-
                         //take the previous completed workout's sets for their exercise and create new sets with same rep and weight
                         for (int j = 0; j < workoutDetails.getUserRoutineExercises().get(i).getSets().size(); j++) {
                             Set newSet = new Set();
@@ -168,8 +158,6 @@ public class ShowWorkoutFragment extends Fragment {
                     editor.apply();
                     //send workout details to MainActivity to send to InProgressWorkoutFragment
                     workoutDetailsListener.sendWorkoutDetails(copyOfWorkoutDetails);
-
-
                 } else {
                     Toast.makeText(getContext(), "A workout is already running, please finish", Toast.LENGTH_LONG).show();
                 }
@@ -181,19 +169,18 @@ public class ShowWorkoutFragment extends Fragment {
             public void onClick(View v) {
                 AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
                 alertBuilder.setTitle("Delete Workout?")
-                            .setMessage("Are you sure you want to delete this workout?")
-                            .setPositiveButton("Delete Workout", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    WorkoutViewModel workoutViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(WorkoutViewModel.class);
-                                    workoutViewModel.delete(workoutDetails.getWorkout());
-                                    NavController navController = Navigation.findNavController(getActivity(), R.id.fragment);
-                                    navController.popBackStack(R.id.showWorkoutFragment,true);
-                                    navController.navigate(R.id.historyFragment);
-
-                                }
-                            })
-                            .setNegativeButton("Cancel", null);
+                        .setMessage("Are you sure you want to delete this workout?")
+                        .setPositiveButton("Delete Workout", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                WorkoutViewModel workoutViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(WorkoutViewModel.class);
+                                workoutViewModel.delete(workoutDetails.getWorkout());
+                                NavController navController = Navigation.findNavController(getActivity(), R.id.fragment);
+                                navController.popBackStack(R.id.showWorkoutFragment, true);
+                                navController.navigate(R.id.historyFragment);
+                            }
+                        })
+                        .setNegativeButton("Cancel", null);
                 final AlertDialog alert = alertBuilder.create();
                 alert.setOnShowListener(new DialogInterface.OnShowListener() {
                     @Override
@@ -224,7 +211,6 @@ public class ShowWorkoutFragment extends Fragment {
                 txtWorkoutDuration.append(" minutes");
             }
 
-
             List<List<Set>> listOfListsOfSets = new ArrayList<>();
 
             //get all the completed routines for the finished workout and add to list
@@ -234,7 +220,6 @@ public class ShowWorkoutFragment extends Fragment {
 
             //Each element will hold an array of Strings that contain the exercise name in index 0, each index after will contain a weight and rep value
             List<String[]> listOfStringArrays = new ArrayList<>();
-
 
             for (RoutineDetails routineDetails : workoutDetails.getUserRoutineExercises()) {
                 //add 1 to size to account for the first element holding the exercise name

@@ -22,7 +22,6 @@ public class WorkoutViewModel extends AndroidViewModel {
     private LiveData<List<WorkoutDetails>> allWorkouts;
     private LiveData<List<RoutineDetails>> allRoutinesForCurrentWorkout;
 
-
     public WorkoutViewModel(@NonNull Application application) {
         super(application);
         repository = new WorkoutRepository(application);
@@ -97,5 +96,4 @@ public class WorkoutViewModel extends AndroidViewModel {
     public LiveData<List<RoutineDetails>> getAllRoutinesForCurrentWorkout(long id) {
         return repository.getAllRoutinesForCurrentWorkout(id);
     }
-
 }

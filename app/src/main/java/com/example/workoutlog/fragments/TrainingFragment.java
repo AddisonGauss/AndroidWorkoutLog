@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,7 +27,6 @@ import java.util.concurrent.ExecutionException;
 
 
 public class TrainingFragment extends Fragment {
-
     private FloatingActionButton btnAddExercise;
     private TrainingAdapter trainingAdapter;
     private IExerciseNameListener IExerciseNameListener;
@@ -44,7 +42,6 @@ public class TrainingFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     public static TrainingFragment newInstance() {
         TrainingFragment fragment = new TrainingFragment();
         Bundle args = new Bundle();
@@ -55,7 +52,6 @@ public class TrainingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         if (getArguments() != null) {
         }
@@ -72,8 +68,6 @@ public class TrainingFragment extends Fragment {
                 return o1.getName().compareTo(o2.getName());
             }
         });
-
-
     }
 
     @Override
@@ -81,8 +75,6 @@ public class TrainingFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_training, container, false);
-
-
     }
 
     @Override
@@ -103,7 +95,6 @@ public class TrainingFragment extends Fragment {
             }
         };
 
-
         btnAddExercise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,7 +109,6 @@ public class TrainingFragment extends Fragment {
             trainingAdapter = new TrainingAdapter(IExerciseNameListener, listOfExercises);
             recyclerView.setAdapter(trainingAdapter);
         }
-
     }
 
     @Override
@@ -128,7 +118,6 @@ public class TrainingFragment extends Fragment {
             workoutExerciseListener = (workoutExerciseListener) context;
         } else {
             throw new RuntimeException(context.toString() + " must implement workoutExerciseListener");
-
         }
     }
 
@@ -137,5 +126,4 @@ public class TrainingFragment extends Fragment {
         super.onDetach();
         workoutExerciseListener = null;
     }
-
 }

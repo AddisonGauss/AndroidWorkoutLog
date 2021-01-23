@@ -18,6 +18,9 @@
     <color name="red">#E61919</color>
 
 
+    <color name="mdtp_accent_color">#A6A6A6</color>
+    <color name="mdtp_accent_color_dark">#00796b</color>
+    <color name="mdtp_date_picker_text_highlighted">#000</color>
 
     <!-- Dark theme brand colors. -->
     <color name="design_dark_default_color_primary">#BA86FC</color>

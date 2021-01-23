@@ -3,16 +3,11 @@ package com.example.workoutlog.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -41,7 +36,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
     private Set prevMaxSet = new Set();
 
 
-
     private ISendFromSetAdapterToExercise ISendFromSetAdapterToExercise = new ISendFromSetAdapterToExercise() {
         @Override
         public void onItemClickedAt(RoutineDetails routineDetails) {
@@ -51,7 +45,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
             }
         }
     };
-
 
     public ExerciseAdapter(Context context, IAddSetClickHandler IAddSetClickHandler, List<RoutineDetails> exercises, WorkoutViewModel workoutViewModel) {
         this.context = context;
@@ -79,17 +72,14 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
             holder.btnAddSet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     int setSize = exercises.get(position).getSets().size();
 
                     if (setSize == 0) {
                         Set blankSet = new Set();
                         //first set template will be added to the selected exercise
                         blankSet.setUserRoutineExerciseRoutineId(exercises.get(position).getUserRoutineExercise().getId());
-
                         exercises.get(position).getSets().add(blankSet);
                         setExercises(exercises);
-
                         try {
                             IAddSetClickHandler.onItemClickedAt(blankSet, "insert");
                         } catch (ExecutionException | InterruptedException e) {
@@ -99,11 +89,9 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
                 }
             });
 
-
             holder.imgBtnCurrentExerciseMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     PopupMenu popup = new PopupMenu(context, holder.imgBtnCurrentExerciseMenu);
                     popup.inflate(R.menu.exercise_item_menu);
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -120,15 +108,15 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
                                                     workoutViewModel.deleteUserRoutineExercise(exercises.get(position).getUserRoutineExercise());
                                                 }
                                             }).setNegativeButton("CANCEL", null);
-                                           final AlertDialog builtAlert = alertBuilder.create();
-                                           builtAlert.setOnShowListener(new DialogInterface.OnShowListener() {
-                                               @Override
-                                               public void onShow(DialogInterface dialog) {
-                                                   builtAlert.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(R.attr.colorOnBackground);
-                                                   builtAlert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(R.attr.colorOnBackground);
-                                               }
-                                           });
-                                           builtAlert.show();
+                                    final AlertDialog builtAlert = alertBuilder.create();
+                                    builtAlert.setOnShowListener(new DialogInterface.OnShowListener() {
+                                        @Override
+                                        public void onShow(DialogInterface dialog) {
+                                            builtAlert.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(R.attr.colorOnBackground);
+                                            builtAlert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(R.attr.colorOnBackground);
+                                        }
+                                    });
+                                    builtAlert.show();
                                     return true;
                                 default:
                                     return false;
@@ -152,12 +140,10 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         return exercises.size();
     }
 
-
     public void setExercises(List<RoutineDetails> exercises) {
         this.exercises = exercises;
         notifyDataSetChanged();
     }
-
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private ConstraintLayout parent;
@@ -166,7 +152,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         private TextView txtSetName, txtPrevMaxSet;
         private ImageView imgBtnCurrentExerciseMenu;
 
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtSetName = itemView.findViewById(R.id.txtSetName);
@@ -174,12 +159,8 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
             parent = itemView.findViewById(R.id.parent);
             btnAddSet = itemView.findViewById(R.id.btnAddSet);
             imgBtnCurrentExerciseMenu = itemView.findViewById(R.id.exerciseItemMenu);
-
-
         }
     }
-
-
 }
 
 

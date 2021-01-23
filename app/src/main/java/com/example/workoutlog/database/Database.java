@@ -45,7 +45,6 @@ public abstract class Database extends RoomDatabase {
         Log.d(TAG, "getInstance: ");
         if(instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(), Database.class, "database").fallbackToDestructiveMigration().addCallback(roomCallback).build();
-
         }
         return instance;
     }
@@ -60,8 +59,6 @@ public abstract class Database extends RoomDatabase {
         }
     };
 
-
-
     private static class PopulateDbAsyncTask extends AsyncTask<Void,Void,Void> {
         private static final String TAG = "PopulateDbAsyncTask";
         private IWorkoutDao workoutDao;
@@ -75,7 +72,6 @@ public abstract class Database extends RoomDatabase {
             exerciseDao = db.exerciseDao();
             userRoutineExerciseDao = db.userRoutineExerciseDao();
             setDao = db.setDao();
-
         }
 
         @Override

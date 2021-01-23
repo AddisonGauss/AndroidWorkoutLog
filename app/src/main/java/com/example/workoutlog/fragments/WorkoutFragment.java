@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -34,14 +32,11 @@ import java.util.concurrent.ExecutionException;
 
 public class WorkoutFragment extends Fragment {
     private static final String TAG = "WorkoutFragment";
-
     private Button btnLaunchFragment, btnGoToRunningWorkout;
     private WorkoutViewModel workoutViewModel;
     private Boolean isWorkoutRunning;
     private WorkoutDetailsListener workoutDetailsListener;
     private WorkoutDetails workoutDetails;
-
-
 
     public interface WorkoutDetailsListener {
         void sendWorkoutDetails(WorkoutDetails workoutDetails);
@@ -51,10 +46,7 @@ public class WorkoutFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     public static WorkoutFragment newInstance() {
-        Log.d(TAG, "newInstance: ");
-
         WorkoutFragment fragment = new WorkoutFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -63,20 +55,16 @@ public class WorkoutFragment extends Fragment {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "onActivityCreated: ");
         super.onActivityCreated(savedInstanceState);
-
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
@@ -87,14 +75,12 @@ public class WorkoutFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView: ");
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_workout, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "onViewCreated: ");
         super.onViewCreated(view, savedInstanceState);
 
         btnLaunchFragment = view.findViewById(R.id.btnLaunchOtherFragment);
@@ -110,13 +96,13 @@ public class WorkoutFragment extends Fragment {
                 LocalTime localTime = LocalTime.now();
                 int timeOfDayHour = localTime.getHour();
                 String name;
-                if(timeOfDayHour >= 0 && timeOfDayHour < 12){
-                   name = "Morning Workout";
-                }else if(timeOfDayHour >= 12 && timeOfDayHour < 16){
+                if (timeOfDayHour >= 0 && timeOfDayHour < 12) {
+                    name = "Morning Workout";
+                } else if (timeOfDayHour >= 12 && timeOfDayHour < 17) {
                     name = "Afternoon Workout";
-                }else if(timeOfDayHour >= 16 && timeOfDayHour < 21){
+                } else if (timeOfDayHour >= 17 && timeOfDayHour < 20) {
                     name = "Evening Workout";
-                }else if(timeOfDayHour >= 21 && timeOfDayHour < 24){
+                } else if (timeOfDayHour >= 20 && timeOfDayHour < 24) {
                     name = "Night Workout";
                 } else {
                     name = "Workout";
@@ -146,7 +132,6 @@ public class WorkoutFragment extends Fragment {
                 prefsEditor.apply();
 
                 workoutDetailsListener.sendWorkoutDetails(workoutDetails);
-
             }
         });
 
@@ -158,7 +143,6 @@ public class WorkoutFragment extends Fragment {
             }
         });
     }
-
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -203,7 +187,6 @@ public class WorkoutFragment extends Fragment {
 
             String json = prefs.getString(Constants.ARG_WORKOUT_DETAILS, "");
             workoutDetails = gson.fromJson(json, WorkoutDetails.class);
-
         } else {
             btnGoToRunningWorkout.setVisibility(View.GONE);
             btnLaunchFragment.setVisibility(View.VISIBLE);

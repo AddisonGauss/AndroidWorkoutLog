@@ -48,12 +48,13 @@ public class InProgressWorkoutFragment extends Fragment {
 
     private Button btnAddExercise;
     private TextView txtCancelWorkout;
+    private EditText editTextWorkoutName;
+    private ImageView btnExerciseNameMenu;
     private WorkoutDetails workoutDetails;
     private WorkoutViewModel workoutViewModel;
     private boolean isRunning;
     private ExerciseAdapter exerciseAdapter;
-    private ImageView btnExerciseNameMenu;
-    private EditText editTextWorkoutName;
+    private IAddSetClickHandler IAddSetClickHandler;
 
     public InProgressWorkoutFragment() {
         // Required empty public constructor
@@ -68,20 +69,17 @@ public class InProgressWorkoutFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getActivity().findViewById(R.id.bottomNavigationView).setVisibility(View.GONE);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
         if (workoutDetails == null && getArguments() != null) {
             workoutDetails = getArguments().getParcelable(Constants.ARG_WORKOUT_DETAILS);
         }
 
-
-        IAddSetClickHandler IAddSetClickHandler = new IAddSetClickHandler() {
+        IAddSetClickHandler = new IAddSetClickHandler() {
             @Override
             public void onItemClickedAt(Set set, String operation) throws ExecutionException, InterruptedException {
-
                 if (operation.equals("insert")) {
                     try {
                         long setResult = workoutViewModel.insertSet(set);
@@ -95,46 +93,13 @@ public class InProgressWorkoutFragment extends Fragment {
 
             @Override
             public void onSetsClickedAt(List<Set> sets) {
-
                 try {
                     workoutViewModel.insertAllSets(sets);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
-
         };
-
-        workoutViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(WorkoutViewModel.class);
-
-        final RecyclerView recyclerView = getView().findViewById(R.id.recView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        exerciseAdapter = new ExerciseAdapter(getActivity(), IAddSetClickHandler, workoutDetails.getUserRoutineExercises(), workoutViewModel);
-        recyclerView.setAdapter(exerciseAdapter);
-
-        //uses LiveData to handle any layout changes
-        workoutViewModel.getAllRoutinesForCurrentWorkout(workoutDetails.getWorkout().getId()).observe(getViewLifecycleOwner(), new Observer<List<RoutineDetails>>() {
-            @Override
-            public void onChanged(List<RoutineDetails> workouts) {
-                exerciseAdapter.setExercises(workouts);
-            }
-        });
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            workoutDetails = getArguments().getParcelable(Constants.ARG_WORKOUT_DETAILS);
-        }
     }
 
     @Override
@@ -147,12 +112,28 @@ public class InProgressWorkoutFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getActivity().findViewById(R.id.bottomNavigationView).setVisibility(View.GONE);
         btnAddExercise = view.findViewById(R.id.btnAddExercise);
         txtCancelWorkout = view.findViewById(R.id.txtCancelWorkout);
         btnExerciseNameMenu = view.findViewById(R.id.btnExerciseNameMenu);
         editTextWorkoutName = view.findViewById(R.id.editTxtWorkoutName);
 
         editTextWorkoutName.setText(workoutDetails.getWorkout().getName());
+
+        workoutViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(WorkoutViewModel.class);
+        final RecyclerView recyclerView = getView().findViewById(R.id.recView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        exerciseAdapter = new ExerciseAdapter(getActivity(), IAddSetClickHandler, workoutDetails.getUserRoutineExercises(), workoutViewModel);
+        recyclerView.setAdapter(exerciseAdapter);
+
+        //uses LiveData to handle any layout changes
+        workoutViewModel.getAllRoutinesForCurrentWorkout(workoutDetails.getWorkout().getId()).observe(getViewLifecycleOwner(), new Observer<List<RoutineDetails>>() {
+            @Override
+            public void onChanged(List<RoutineDetails> workouts) {
+                exerciseAdapter.setExercises(workouts);
+            }
+        });
+
         btnExerciseNameMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,15 +142,14 @@ public class InProgressWorkoutFragment extends Fragment {
                 menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        switch(item.getItemId()){
+                        switch (item.getItemId()) {
                             case R.id.editWorkoutName:
                                 editTextWorkoutName.requestFocus();
                                 editTextWorkoutName.setSelection(editTextWorkoutName.getText().length());
-                            return true;
+                                return true;
                             default:
                                 return false;
                         }
-
                     }
                 });
                 menu.show();
@@ -182,8 +162,6 @@ public class InProgressWorkoutFragment extends Fragment {
                 workoutDetails.getWorkout().setName(String.valueOf(editTextWorkoutName.getText()));
             }
         });
-
-
 
         btnAddExercise.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,7 +188,7 @@ public class InProgressWorkoutFragment extends Fragment {
                                 editor.putBoolean(Constants.ARG_IS_RUNNING, false);
                                 editor.apply();
                                 NavController navController = Navigation.findNavController(getActivity(), R.id.fragment);
-                                navController.popBackStack(R.id.workoutFragment,true);
+                                navController.popBackStack(R.id.workoutFragment, true);
                                 navController.navigate(R.id.workoutFragment);
                             }
                         })
@@ -268,7 +246,6 @@ public class InProgressWorkoutFragment extends Fragment {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
@@ -277,6 +254,11 @@ public class InProgressWorkoutFragment extends Fragment {
         isRunning = false;
 
         workoutViewModel.insert(workoutDetails.getWorkout());
+
+        //insert all sets again to prevent any edits to weight/rep amount user might have done and not clicked completed set
+        for(RoutineDetails routineDetails : exerciseAdapter.getCurrentRoutines()){
+            workoutViewModel.insertAllSets(routineDetails.getSets());
+        }
 
         SharedPreferences prefs = getActivity().getSharedPreferences(Constants.ARG_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -289,19 +271,16 @@ public class InProgressWorkoutFragment extends Fragment {
         navController.navigate(R.id.action_inProgressWorkoutFragment_to_finishedWorkoutFragment, args);
     }
 
-
     @Override
     public void onDestroy() {
         getActivity().findViewById(R.id.bottomNavigationView).setVisibility(View.VISIBLE);
         super.onDestroy();
     }
 
-
     @Override
     public void onStop() {
         super.onStop();
     }
-
 
     @Override
     public void onPause() {
@@ -324,6 +303,4 @@ public class InProgressWorkoutFragment extends Fragment {
             prefsEditor.apply();
         }
     }
-
-
 }

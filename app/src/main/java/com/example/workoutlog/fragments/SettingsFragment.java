@@ -19,14 +19,12 @@ import com.example.workoutlog.helpers.Constants;
 
 
 public class SettingsFragment extends Fragment {
-
     private Switch switchToggleNightMode;
     private Boolean isNightMode;
 
     public SettingsFragment() {
         // Required empty public constructor
     }
-
 
     public static SettingsFragment newInstance() {
         SettingsFragment fragment = new SettingsFragment();
@@ -64,7 +62,6 @@ public class SettingsFragment extends Fragment {
                 } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 }
-
             }
         });
     }
@@ -78,7 +75,5 @@ public class SettingsFragment extends Fragment {
         if (isNightMode) {
             switchToggleNightMode.setChecked(true);
         }
-
-
     }
 }
