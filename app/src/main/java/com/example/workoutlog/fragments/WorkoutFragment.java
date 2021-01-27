@@ -187,6 +187,14 @@ public class WorkoutFragment extends Fragment {
 
             String json = prefs.getString(Constants.ARG_WORKOUT_DETAILS, "");
             workoutDetails = gson.fromJson(json, WorkoutDetails.class);
+            workoutViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(WorkoutViewModel.class);
+            try {
+                workoutDetails = workoutViewModel.getWorkoutWithId(workoutDetails.getWorkout().getId());
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } else {
             btnGoToRunningWorkout.setVisibility(View.GONE);
             btnLaunchFragment.setVisibility(View.VISIBLE);

@@ -66,6 +66,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
             holder.txtSetName.setText(exercises.get(position).getExercise().getName());
 
             holder.recyclerView.setLayoutManager(new LinearLayoutManager(holder.recyclerView.getContext()));
+            holder.recyclerView.setHasFixedSize(true);
             SetAdapter setAdapter = new SetAdapter(context, exercises.get(position), IAddSetClickHandler, ISendFromSetAdapterToExercise, holder.btnAddSet, prevMaxSet);
             holder.recyclerView.setAdapter(setAdapter);
 

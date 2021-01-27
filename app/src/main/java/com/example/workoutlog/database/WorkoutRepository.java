@@ -81,6 +81,10 @@ public class WorkoutRepository {
         new DeleteAllWorkoutsAsyncTask(workoutDao).execute();
     }
 
+    public WorkoutDetails getWorkoutWithId(long id) throws ExecutionException, InterruptedException {
+        return new GetWorkoutWithIdAsyncTask(workoutDetailsDao).execute(id).get();
+    }
+
     public LiveData<List<WorkoutDetails>> getAllWorkoutsWithWorkoutId(long id) {
         return workoutDetailsDao.getAllWorkoutsWithWorkoutId(id);
     }
@@ -242,6 +246,19 @@ public class WorkoutRepository {
         protected Void doInBackground(Set... sets) {
             setDao.delete(sets[0]);
             return null;
+        }
+    }
+
+    private static class GetWorkoutWithIdAsyncTask extends AsyncTask<Long, Void, WorkoutDetails>{
+        private IWorkoutDetailsDao workoutDetailsDao;
+
+        private GetWorkoutWithIdAsyncTask(IWorkoutDetailsDao workoutDetailsDao){
+            this.workoutDetailsDao = workoutDetailsDao;
+        }
+
+        @Override
+        protected WorkoutDetails doInBackground(Long... longs) {
+            return workoutDetailsDao.getWorkoutDetailsFromWorkoutId(longs[0]);
         }
     }
 

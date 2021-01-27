@@ -107,7 +107,6 @@ public class HistoryFragment extends Fragment implements DatePickerDialog.OnDate
         switch (item.getItemId()) {
             case (R.id.workoutHistoryCalendar):
                 Calendar now = Calendar.getInstance();
-                now.set(2021, 1, 1);
                 DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(this,now);
                 datePickerDialog.setHighlightedDays(calendarArray);
                 datePickerDialog.setAccentColor(getResources().getColor(R.color.teal_700));
@@ -133,9 +132,7 @@ public class HistoryFragment extends Fragment implements DatePickerDialog.OnDate
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        System.out.println(monthOfYear +1);
         LocalDate givenDate = LocalDate.of(year, monthOfYear + 1 , dayOfMonth);
-        System.out.println(givenDate);
         int position = workoutAdapter.getItemPositionWithDate(givenDate);
         linearLayoutManager.scrollToPositionWithOffset(position,0);
     }

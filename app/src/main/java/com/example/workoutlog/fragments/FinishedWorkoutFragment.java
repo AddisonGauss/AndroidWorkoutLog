@@ -21,10 +21,8 @@ import com.example.workoutlog.models.RoutineDetails;
 import com.example.workoutlog.models.Set;
 import com.example.workoutlog.models.WorkoutDetails;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;

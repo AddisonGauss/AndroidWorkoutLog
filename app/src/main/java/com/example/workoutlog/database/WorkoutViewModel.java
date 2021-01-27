@@ -60,6 +60,9 @@ public class WorkoutViewModel extends AndroidViewModel {
 
     public void deleteUserRoutineExercise(UserRoutineExercise userRoutineExercise) {repository.deleteUserRoutineExercise(userRoutineExercise);}
 
+    public WorkoutDetails getWorkoutWithId(long id) throws ExecutionException, InterruptedException {
+        return repository.getWorkoutWithId(id);
+    }
 
     public BestSet getBestSetFromWorkoutWithExercise(long workoutId, long exerciseId) throws ExecutionException, InterruptedException {
         return repository.getBestSetFromWorkoutWithExercise(workoutId, exerciseId);

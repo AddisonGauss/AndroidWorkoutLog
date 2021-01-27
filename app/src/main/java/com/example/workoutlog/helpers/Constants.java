@@ -6,5 +6,7 @@ public class Constants {
     public static final String ARG_PREFS = "prefs";
     public static final String ARG_EXERCISE_TO_CHART = "exerciseToChart";
     public static final String NIGHT_MODE = "NIGHT_MODE";
+    public static final String START_DATE_TIME = "START_DATE_TIME";
+    public static final String FINISH_DATE_TIME = "FINISH_DATE_TIME";
 
 }

@@ -2,7 +2,6 @@ package com.example.workoutlog.fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -40,11 +39,13 @@ import com.example.workoutlog.models.Set;
 import com.example.workoutlog.models.WorkoutDetails;
 import com.google.gson.Gson;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class InProgressWorkoutFragment extends Fragment {
+public class InProgressWorkoutFragment extends Fragment implements DatePickerFragment.dateSelect {
 
     private Button btnAddExercise;
     private TextView txtCancelWorkout;
@@ -55,6 +56,7 @@ public class InProgressWorkoutFragment extends Fragment {
     private boolean isRunning;
     private ExerciseAdapter exerciseAdapter;
     private IAddSetClickHandler IAddSetClickHandler;
+
 
     public InProgressWorkoutFragment() {
         // Required empty public constructor
@@ -123,6 +125,7 @@ public class InProgressWorkoutFragment extends Fragment {
         workoutViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(WorkoutViewModel.class);
         final RecyclerView recyclerView = getView().findViewById(R.id.recView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
         exerciseAdapter = new ExerciseAdapter(getActivity(), IAddSetClickHandler, workoutDetails.getUserRoutineExercises(), workoutViewModel);
         recyclerView.setAdapter(exerciseAdapter);
 
@@ -133,6 +136,7 @@ public class InProgressWorkoutFragment extends Fragment {
                 exerciseAdapter.setExercises(workouts);
             }
         });
+
 
         btnExerciseNameMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,6 +150,11 @@ public class InProgressWorkoutFragment extends Fragment {
                             case R.id.editWorkoutName:
                                 editTextWorkoutName.requestFocus();
                                 editTextWorkoutName.setSelection(editTextWorkoutName.getText().length());
+                                return true;
+                            case R.id.editWorkoutDate:
+                                DatePickerFragment datePickerFragment = new DatePickerFragment(workoutDetails.getWorkout().getStartTime(), InProgressWorkoutFragment.this::setDate);
+                                datePickerFragment.setTargetFragment(InProgressWorkoutFragment.this, 1);
+                                datePickerFragment.show(getParentFragmentManager(), "datePickerFragment");
                                 return true;
                             default:
                                 return false;
@@ -250,13 +259,16 @@ public class InProgressWorkoutFragment extends Fragment {
     }
 
     private void saveWorkout() throws ExecutionException, InterruptedException {
-        workoutDetails.getWorkout().setFinishTime(new Date());
+        if (workoutDetails.getWorkout().getFinishTime() == null) {
+            workoutDetails.getWorkout().setFinishTime(new Date());
+        }
+
         isRunning = false;
 
         workoutViewModel.insert(workoutDetails.getWorkout());
 
         //insert all sets again to prevent any edits to weight/rep amount user might have done and not clicked completed set
-        for(RoutineDetails routineDetails : exerciseAdapter.getCurrentRoutines()){
+        for (RoutineDetails routineDetails : exerciseAdapter.getCurrentRoutines()) {
             workoutViewModel.insertAllSets(routineDetails.getSets());
         }
 
@@ -303,4 +315,25 @@ public class InProgressWorkoutFragment extends Fragment {
             prefsEditor.apply();
         }
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public void setDate(LocalDateTime dateTimeStart, LocalDateTime dateTimeFinish) throws ExecutionException, InterruptedException {
+        if (dateTimeStart != null && dateTimeFinish == null) {
+            workoutDetails.getWorkout().setStartTime(Date.from(dateTimeStart.atZone(ZoneId.systemDefault()).toInstant()));
+        } else if (dateTimeStart != null && dateTimeFinish != null) {
+            workoutDetails.getWorkout().setStartTime(Date.from(dateTimeStart.atZone(ZoneId.systemDefault()).toInstant()));
+            workoutDetails.getWorkout().setFinishTime(Date.from(dateTimeFinish.atZone(ZoneId.systemDefault()).toInstant()));
+        }
+        workoutViewModel.insert(workoutDetails.getWorkout());
+
+//        SharedPreferences prefs = getActivity().getSharedPreferences(Constants.ARG_PREFS, Context.MODE_PRIVATE);
+//        SharedPreferences.Editor prefsEditor = prefs.edit();
+//        Gson gson = new Gson();
+//        String json = gson.toJson(workoutDetails);
+//        prefsEditor.putString(Constants.ARG_WORKOUT_DETAILS, json);
+//        prefsEditor.apply();
+    }
+
+
 }
