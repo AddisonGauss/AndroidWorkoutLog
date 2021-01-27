@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.example.workoutlog.helpers.Constants;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -52,6 +54,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     public DatePickerFragment(Date start, dateSelect dateListener) {
         this.start = start.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         this.dateListener = dateListener;
+        this.finish = null;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -138,18 +141,22 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
             case Constants.START_DATE_TIME:
                 start = localDate.atTime(LocalTime.now());
                 txtStartTime.setText(dateTimeFormatter.format(start));
+                break;
             case Constants.FINISH_DATE_TIME:
                 finish = localDate.atTime(LocalTime.now());
                 txtFinishTime.setText(dateTimeFormatter.format(finish));
+                break;
             default:
-
+                break;
         }
 
         TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(this::onTimeSet, start.getHour(), start.getMinute(), false);
         if (type.equals(Constants.FINISH_DATE_TIME) && start.getDayOfMonth() == finish.getDayOfMonth() && start.getMonthValue() == finish.getMonthValue() && start.getYear() == finish.getYear()) {
             timePickerDialog.setMinTime(start.getHour(), start.getMinute(), start.getSecond());
         }
-        timePickerDialog.showNow(getActivity().getSupportFragmentManager(), "timePicker");
+        timePickerDialog.show(getActivity().getSupportFragmentManager(), "timePicker");
+
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -162,10 +169,13 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
             case Constants.START_DATE_TIME:
                 start = start.with(localDateTime);
                 txtStartTime.setText(dateTimeFormatter.format(start));
+                break;
             case Constants.FINISH_DATE_TIME:
                 finish = finish.with(localDateTime);
                 txtFinishTime.setText(dateTimeFormatter.format(finish));
+                break;
             default:
+                break;
         }
     }
 
@@ -175,7 +185,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         if (getTargetFragment() instanceof dateSelect) {
             dateListener = (dateSelect) getTargetFragment();
         } else {
-            throw new RuntimeException(context.toString() + " must implement date");
+            throw new RuntimeException(context.toString() + " must implement dateListener");
         }
     }
 
