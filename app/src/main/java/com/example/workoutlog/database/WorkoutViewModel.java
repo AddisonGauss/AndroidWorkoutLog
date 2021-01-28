@@ -69,6 +69,10 @@ public class WorkoutViewModel extends AndroidViewModel {
         return repository.getWorkoutWithId(id);
     }
 
+    public float getMaxWeightFromWorkoutWithExercise(long workoutId, long exerciseId) throws ExecutionException, InterruptedException {
+        return repository.getMaxWeightFromWorkoutWithExercise(workoutId, exerciseId);
+    }
+
     public BestSet getBestSetFromWorkoutWithExercise(long workoutId, long exerciseId) throws ExecutionException, InterruptedException {
         return repository.getBestSetFromWorkoutWithExercise(workoutId, exerciseId);
     }

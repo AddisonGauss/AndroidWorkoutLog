@@ -123,6 +123,10 @@ public class WorkoutRepository {
         return new GetAllWorkoutDetailsAsyncTask(workoutDetailsDao).execute().get();
     }
 
+    public float getMaxWeightFromWorkoutWithExercise(long workoutId, long exerciseId) throws ExecutionException, InterruptedException {
+        return new GetMaxWeightFromWorkoutWithExerciseAsyncTask(setDao).execute(workoutId,exerciseId).get();
+    }
+
     //inner classes for asynch tasks
     private static class InsertWorkoutAsyncTask extends AsyncTask<Workout, Void, Long> {
         private IWorkoutDao workoutDao;
@@ -341,6 +345,19 @@ public class WorkoutRepository {
         @Override
         protected BestSet doInBackground(Long... longs) {
             return setDao.getBestSetFromWorkoutWithExercise(longs[0], longs[1]);
+        }
+    }
+
+    private static class GetMaxWeightFromWorkoutWithExerciseAsyncTask extends AsyncTask<Long, Void, Float>{
+        private ISetDao setDao;
+
+        private GetMaxWeightFromWorkoutWithExerciseAsyncTask(ISetDao setDao) {
+            this.setDao = setDao;
+        }
+
+        @Override
+        protected Float doInBackground(Long... longs) {
+            return setDao.getMaxWeightFromWorkoutWithExercise(longs[0], longs[1]);
         }
     }
 

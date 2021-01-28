@@ -40,7 +40,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     private dateSelect dateListener;
     private LocalDateTime start;
     private LocalDateTime finish;
-    private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/DD/YYYY 'at' hh:mma");
+    private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy' at ' hh:mma");
     private LocalDate localDate;
     private LocalDateTime localDateTime;
     private String type;

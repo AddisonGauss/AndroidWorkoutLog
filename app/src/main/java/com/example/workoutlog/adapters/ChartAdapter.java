@@ -26,6 +26,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.ViewHolder> {
@@ -50,7 +51,6 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (chartDataList != null && chartDataList.size() > 0 && chartDataList.get(position).getyValues().size() > 0) {
 
-            System.out.println(chartDataList.size());
             holder.mChart.setDragEnabled(true);
             holder.mChart.setScaleEnabled(true);
             holder.mChart.setTouchEnabled(true);
@@ -73,7 +73,6 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.ViewHolder> 
 
             xAxis.setValueFormatter(new MyXAxisValueFormatter(chartDataList.get(position).getDates()));
 
-
             LineDataSet set1 = new LineDataSet(chartDataList.get(position).getyValues(), "Data set 1");
 
             set1.setValueFormatter(new YAxisFormatter());
@@ -94,7 +93,9 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.ViewHolder> 
 
             LineData data = new LineData(dataSets);
             holder.mChart.setData(data);
+
             holder.mChart.invalidate();
+            holder.mChart.setExtraLeftOffset(25f);
             holder.mChart.getDescription().setEnabled(true);
 
             Description description = new Description();

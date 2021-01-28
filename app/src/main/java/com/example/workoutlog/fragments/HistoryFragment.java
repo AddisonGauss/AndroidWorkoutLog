@@ -30,6 +30,7 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -82,8 +83,15 @@ public class HistoryFragment extends Fragment implements DatePickerDialog.OnDate
         recyclerView.setAdapter(workoutAdapter);
         WorkoutViewModel workoutViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(WorkoutViewModel.class);
         workoutViewModel.getAllWorkoutsAll().observe(getViewLifecycleOwner(), new Observer<List<WorkoutDetails>>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onChanged(List<WorkoutDetails> workouts) {
+                workouts.sort(new Comparator<WorkoutDetails>() {
+                    @Override
+                    public int compare(WorkoutDetails o1, WorkoutDetails o2) {
+                        return o1.getWorkout().getStartTime().compareTo(o2.getWorkout().getStartTime());
+                    }
+                });
                 workoutAdapter.setWorkouts(workouts);
                 calendarArray = new Calendar[workouts.size()];
                 for(int i = 0; i < workouts.size(); i++){

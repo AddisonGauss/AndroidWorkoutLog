@@ -35,6 +35,10 @@ public interface ISetDao {
     @Query("SELECT * FROM set_table")
     LiveData<List<Set>> getAllSets();
 
+    @Transaction
+    @Query("SELECT MAX(set_table.weight) as weight FROM set_table,user_routine_exercise_table,exercise_table,workout_table WHERE set_table.userRoutineExerciseRoutineId = user_routine_exercise_table.id AND user_routine_exercise_table.exerciseTypeId = :exerciseId AND user_routine_exercise_table.workoutId= :workoutId")
+    float getMaxWeightFromWorkoutWithExercise(long workoutId, long exerciseId);
+
 
     @Transaction
     @Query("SELECT set_table.id,complete,displayNumber,MAX(weight) as weight, MAX(reps) as reps,hintReps, hintWeight FROM set_table,user_routine_exercise_table WHERE set_table.userRoutineExerciseRoutineId = user_routine_exercise_table.id AND user_routine_exercise_table.exerciseTypeId=:exerciseId")
