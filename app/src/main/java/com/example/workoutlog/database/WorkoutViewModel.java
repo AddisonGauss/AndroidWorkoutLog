@@ -30,12 +30,17 @@ public class WorkoutViewModel extends AndroidViewModel {
     public long insert(Workout workout) throws ExecutionException, InterruptedException {
         return repository.insert(workout);
     }
+
     public long insertSet(Set set) throws ExecutionException, InterruptedException {
         return repository.insertSet(set);
     }
 
     public void insertAllSets(List<Set> setList) {
         repository.insertAllSets(setList);
+    }
+
+    public long insertExercise(Exercise exercise) throws ExecutionException, InterruptedException {
+        return repository.insertExercise(exercise);
     }
 
     public long insertUserRoutineExercise(UserRoutineExercise userRoutineExercise) throws ExecutionException, InterruptedException {

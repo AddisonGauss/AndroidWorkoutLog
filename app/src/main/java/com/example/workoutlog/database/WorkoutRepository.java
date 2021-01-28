@@ -57,6 +57,10 @@ public class WorkoutRepository {
         new InsertAllSetsAsyncTask(setDao).execute(setList);
     }
 
+    public long insertExercise(Exercise exercise) throws ExecutionException, InterruptedException {
+        return new InsertExerciseAsyncTask(exerciseDao).execute(exercise).get();
+    }
+
     public long insertUserRoutineExercise(UserRoutineExercise userRoutineExercise) throws ExecutionException, InterruptedException {
         return new InsertUserRoutineExercise(userRoutineExerciseDao).execute(userRoutineExercise).get();
     }
@@ -158,6 +162,19 @@ public class WorkoutRepository {
         protected Void doInBackground(List<Set>... lists) {
             setDao.insertAll(lists[0]);
             return null;
+        }
+    }
+
+    private static class InsertExerciseAsyncTask extends AsyncTask<Exercise, Void, Long> {
+        private IExerciseDao exerciseDao;
+
+        private InsertExerciseAsyncTask(IExerciseDao exerciseDao){
+            this.exerciseDao = exerciseDao;
+        }
+
+        @Override
+        protected Long doInBackground(Exercise... exercises) {
+            return exerciseDao.insert(exercises[0]);
         }
     }
 

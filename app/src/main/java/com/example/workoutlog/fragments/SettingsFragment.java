@@ -8,19 +8,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.workoutlog.R;
 import com.example.workoutlog.helpers.Constants;
+import com.example.workoutlog.models.WorkoutDetails;
 
 
 public class SettingsFragment extends Fragment {
     private Switch switchToggleNightMode;
     private Boolean isNightMode;
+    private TextView txtAddExercise;
+
+    public interface AddExerciseListener {
+        void sendWorkoutDetails(WorkoutDetails workoutDetails);
+    }
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -52,6 +61,7 @@ public class SettingsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         switchToggleNightMode = view.findViewById(R.id.switchNightMode);
+        txtAddExercise = view.findViewById(R.id.txtAddExercise);
 
         switchToggleNightMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -62,6 +72,14 @@ public class SettingsFragment extends Fragment {
                 } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 }
+            }
+        });
+
+        txtAddExercise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController(getActivity(), R.id.fragment);
+                navController.navigate(R.id.action_settingsFragment_to_editExerciseFragment);
             }
         });
     }
