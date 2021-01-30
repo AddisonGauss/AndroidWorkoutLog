@@ -2,14 +2,6 @@ package com.example.workoutlog.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +9,18 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.workoutlog.R;
 import com.example.workoutlog.database.WorkoutViewModel;
 import com.example.workoutlog.models.Exercise;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
-
-import static androidx.core.content.ContextCompat.getSystemService;
 
 
 public class EditExerciseFragment extends Fragment {
@@ -85,13 +80,12 @@ public class EditExerciseFragment extends Fragment {
         constraintLayout = view.findViewById(R.id.edit_exercise_layout);
 
 
-
         workoutViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(WorkoutViewModel.class);
 
         btnAddExercise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!String.valueOf(editTxtExerciseName.getText()).trim().isEmpty() && !String.valueOf(editTxtExerciseTargetBodyPart.getText()).trim().isEmpty()){
+                if (!String.valueOf(editTxtExerciseName.getText()).trim().isEmpty() && !String.valueOf(editTxtExerciseTargetBodyPart.getText()).trim().isEmpty()) {
                     String name = String.valueOf(editTxtExerciseName.getText());
                     String targetedBodyPart = String.valueOf(editTxtExerciseTargetBodyPart.getText());
 
@@ -120,7 +114,7 @@ public class EditExerciseFragment extends Fragment {
         });
     }
 
-    public void showSnackbar(String message){
+    public void showSnackbar(String message) {
         Snackbar snackbar = Snackbar.make(constraintLayout, message, Snackbar.LENGTH_INDEFINITE)
                 .setAction("DISMISS", new View.OnClickListener() {
                     @Override
@@ -134,9 +128,9 @@ public class EditExerciseFragment extends Fragment {
 
     private void closeKeyboard() {
         View view = getActivity().getCurrentFocus();
-        if(view != null){
+        if (view != null) {
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(editTxtExerciseName.getWindowToken(), 0);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             view.clearFocus();
         }
 

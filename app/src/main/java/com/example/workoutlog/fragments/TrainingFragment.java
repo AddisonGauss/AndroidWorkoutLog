@@ -56,7 +56,7 @@ public class TrainingFragment extends Fragment {
         if (getArguments() != null) {
         }
 
-        WorkoutViewModel workoutViewModel = workoutViewModel = new ViewModelProvider.AndroidViewModelFactory((getActivity().getApplication())).create(WorkoutViewModel.class);
+        WorkoutViewModel workoutViewModel = new ViewModelProvider.AndroidViewModelFactory((getActivity().getApplication())).create(WorkoutViewModel.class);
         try {
             listOfExercises = workoutViewModel.getAllExercises();
         } catch (ExecutionException | InterruptedException e) {
@@ -65,7 +65,7 @@ public class TrainingFragment extends Fragment {
         Collections.sort(listOfExercises, new Comparator<Exercise>() {
             @Override
             public int compare(Exercise o1, Exercise o2) {
-                return o1.getName().compareTo(o2.getName());
+                return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
             }
         });
     }

@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    android:clickable="true"
+    >
 
 
     <androidx.core.widget.NestedScrollView
@@ -14,49 +17,53 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+               >
 
                 <EditText
                     android:id="@+id/editTxtWorkoutName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:inputType="text"
-                    android:imeOptions="flagNoExtractUi"
-                    android:maxLines="1"
+                    android:layout_marginTop="8dp"
                     android:background="@null"
+                    android:imeOptions="flagNoExtractUi|actionDone"
+                    android:inputType="textNoSuggestions"
+                    android:maxLines="1"
                     android:text="Workout"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="24sp"
                     android:textStyle="bold"
+                    app:layout_constrainedWidth="true"
                     app:layout_constraintEnd_toStartOf="@+id/guideline6"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constrainedWidth="true"
                     app:layout_constraintWidth_min="5dp"
-                   />
+                    />
 
                 <ImageView
                     android:id="@+id/btnExerciseNameMenu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
                     android:src="@drawable/ic_baseline_more_vert_24"
                     app:layout_constraintBottom_toBottomOf="@+id/editTxtWorkoutName"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/editTxtWorkoutName"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@+id/editTxtWorkoutName"
+                    />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline6"
@@ -71,7 +78,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
+                android:layout_height="wrap_content"
+                ></androidx.recyclerview.widget.RecyclerView>
 
             <Button
                 android:id="@+id/btnAddExercise"

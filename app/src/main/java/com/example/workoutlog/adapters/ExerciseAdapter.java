@@ -51,6 +51,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         this.exercises = exercises;
         this.IAddSetClickHandler = IAddSetClickHandler;
         this.workoutViewModel = workoutViewModel;
+
     }
 
     @NonNull
@@ -63,12 +64,14 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (exercises != null && exercises.size() > 0) {
+
             holder.txtSetName.setText(exercises.get(position).getExercise().getName());
 
-            holder.recyclerView.setLayoutManager(new LinearLayoutManager(holder.recyclerView.getContext()));
+            holder.recyclerView.setLayoutManager(new LinearLayoutManager(context));
             holder.recyclerView.setHasFixedSize(true);
             SetAdapter setAdapter = new SetAdapter(context, exercises.get(position), IAddSetClickHandler, ISendFromSetAdapterToExercise, holder.btnAddSet, prevMaxSet);
             holder.recyclerView.setAdapter(setAdapter);
+            setAdapter.setSets(exercises.get(position).getSets());
 
             holder.btnAddSet.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -153,6 +156,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         private TextView txtSetName, txtPrevMaxSet;
         private ImageView imgBtnCurrentExerciseMenu;
 
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtSetName = itemView.findViewById(R.id.txtSetName);
@@ -160,6 +164,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
             parent = itemView.findViewById(R.id.parent);
             btnAddSet = itemView.findViewById(R.id.btnAddSet);
             imgBtnCurrentExerciseMenu = itemView.findViewById(R.id.exerciseItemMenu);
+
         }
     }
 }

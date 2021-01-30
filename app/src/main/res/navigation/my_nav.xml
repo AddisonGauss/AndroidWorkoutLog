@@ -38,6 +38,7 @@
     <fragment
         android:id="@+id/inProgressWorkoutFragment"
         android:name="com.example.workoutlog.fragments.InProgressWorkoutFragment"
+        android:label=" "
         tools:layout="@layout/fragment_in_progress_workout_fragment">
         <action
             android:id="@+id/action_insideDashboardFragment_to_trainingFragment"

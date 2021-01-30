@@ -22,6 +22,7 @@
         app:borderWidth="0dp"
         android:elevation="6dp"
         app:fabSize="normal"
+        android:background="@null"
         android:src="@drawable/ic_check_white"
         app:backgroundTint="@color/design_dark_default_color_secondary_variant"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -1,14 +1,15 @@
 package com.example.workoutlog.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -39,6 +40,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
     private Set prevMaxSet;
     private Set currentSet;
 
+
     public SetAdapter(Context mContext, RoutineDetails currentExercise, IAddSetClickHandler sendExternalClick, ISendFromSetAdapterToExercise sendExerciseAdapterTextInfo, Button addSetButton, Set prevMaxSet) {
         this.mContext = mContext;
         this.currentExercise = currentExercise;
@@ -49,6 +51,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
         this.sendExerciseAdapterTextInfo = sendExerciseAdapterTextInfo;
         this.addSetButton = addSetButton;
         this.prevMaxSet = prevMaxSet;
+
     }
 
     @NonNull
@@ -80,12 +83,17 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
             } else {
                 holder.editTxtReps.setText(String.valueOf(currentSet.getReps()));
             }
-            if (currentSet.isComplete()) {
 
+            if (!String.valueOf(holder.editTxtReps.getText()).equals("") && !String.valueOf(holder.editTxtWeight.getText()).equals("")) {
+                holder.btnSetComplete.setActivated(true);
+            }
+
+            if (currentSet.isComplete()) {
+                holder.btnSetComplete.setBackground(mContext.getResources().getDrawable(R.drawable.check_button_pressed_background));
+                holder.btnSetComplete.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_check_white));
                 holder.txtSetNumber.setTextColor(Color.BLACK);
                 holder.txtPrevMaxSet.setTextColor(Color.BLACK);
 
-                holder.btnSetComplete.setPressed(true);
 
                 holder.parent.setBackgroundColor(mContext.getResources().getColor(R.color.light_green));
 
@@ -96,9 +104,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                 holder.editTxtReps.setText(String.valueOf(currentSet.getReps()));
             }
 
-            if (!String.valueOf(holder.editTxtReps.getText()).equals("") && !String.valueOf(holder.editTxtWeight.getText()).equals("")) {
-                holder.btnSetComplete.setActivated(true);
-            }
 
             holder.btnRemoveSet.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -187,13 +192,34 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                 }
             });
 
+            holder.editTxtReps.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        hideKeyboard(v);
+                    }
+                }
+            });
+
+            holder.editTxtWeight.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        hideKeyboard(v);
+                    }
+                }
+            });
+
+
             holder.btnSetComplete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     Set currentSet = currentExercise.getSets().get(position);
                     currentSet.setComplete(!currentSet.isComplete());
 
                     if (currentSet.isComplete()) {
+
                         //if marked complete and no text has been entered, add the hint data to set and display complete design
                         if (String.valueOf(holder.editTxtReps.getText()).equals((""))) {
                             currentSet.setReps(Double.parseDouble(String.valueOf(holder.editTxtReps.getHint())));
@@ -204,6 +230,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                     }
                     //send the current exercise's sets to insert into database to prevent view from not updating this and any other set's text boxes that were edited after adding.
                     sendExternalClick.onSetsClickedAt(currentExercise.getSets());
+
                 }
             });
         }
@@ -214,9 +241,10 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
         return currentExercise.getSets().size();
     }
 
-    public List<Set> getSets(){
+    public List<Set> getSets() {
         return currentExercise.getSets();
     }
+
     public void addToSets(Set set) {
         set.setUserRoutineExerciseRoutineId(currentExercise.getUserRoutineExercise().getId());
         currentExercise.getSets().add(set);
@@ -250,10 +278,10 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
         }
     }
 
-    @Override
-    public void onViewDetachedFromWindow(@NonNull ViewHolder holder) {
-        super.onViewDetachedFromWindow(holder);
-        Log.d(TAG, "onViewDetachedFromWindow: ");
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
 }
  

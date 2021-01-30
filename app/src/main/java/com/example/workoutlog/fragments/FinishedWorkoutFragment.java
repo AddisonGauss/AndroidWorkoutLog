@@ -21,6 +21,7 @@ import com.example.workoutlog.models.RoutineDetails;
 import com.example.workoutlog.models.Set;
 import com.example.workoutlog.models.WorkoutDetails;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,8 @@ public class FinishedWorkoutFragment extends Fragment {
     private TextView txtFinishedWorkoutDetails, txtWorkoutName, txtWorkoutDuration, txtWorkoutDate;
     private List<RoutineDetails> listOfFinishedRoutines;
     SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d");
+    private String weight, reps;
+    NumberFormat numberFormat = NumberFormat.getNumberInstance();
 
     public FinishedWorkoutFragment() {
         // Required empty public constructor
@@ -106,7 +109,21 @@ public class FinishedWorkoutFragment extends Fragment {
                 if (i == 0) {
                     setStringArray[i] = routineDetails.getExercise().getName() + "\n";
                 }
-                setStringArray[i + 1] = "\t" + (i + 1) + ". " + routineDetails.getSets().get(i).getWeight() + " x " + routineDetails.getSets().get(i).getReps() + "\n";
+
+                //don't display decimals if weight/reps don't have any - else do display the decimal
+                if (routineDetails.getSets().get(i).getWeight() % 1 == 0) {
+                    numberFormat.setMaximumFractionDigits(0);
+                    weight = numberFormat.format(routineDetails.getSets().get(i).getWeight());
+                } else {
+                    weight = String.valueOf(routineDetails.getSets().get(i).getWeight());
+                }
+                if (routineDetails.getSets().get(i).getReps() % 1 == 0) {
+                    numberFormat.setMaximumFractionDigits(0);
+                    reps = numberFormat.format(routineDetails.getSets().get(i).getReps());
+                } else {
+                    reps = String.valueOf(routineDetails.getSets().get(i).getReps());
+                }
+                setStringArray[i + 1] = "\t\t\t" + (i + 1) + ". " + weight + " lbs" + " x " + reps + "\n";
             }
             listOfStringArrays.add(setStringArray);
         }

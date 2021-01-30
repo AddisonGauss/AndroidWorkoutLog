@@ -5,12 +5,15 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -148,8 +151,10 @@ public class InProgressWorkoutFragment extends Fragment implements DatePickerFra
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.editWorkoutName:
+
                                 editTextWorkoutName.requestFocus();
                                 editTextWorkoutName.setSelection(editTextWorkoutName.getText().length());
+                                showKeyboard();
                                 return true;
                             case R.id.editWorkoutDate:
                                 DatePickerFragment datePickerFragment = new DatePickerFragment(workoutDetails.getWorkout().getStartTime(), InProgressWorkoutFragment.this::setDate);
@@ -220,6 +225,11 @@ public class InProgressWorkoutFragment extends Fragment implements DatePickerFra
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.workout_menu, menu);
+        int positionOfMenuItem = 0;
+        MenuItem item = menu.getItem(positionOfMenuItem);
+        SpannableString s = new SpannableString("FINISH");
+        s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.design_default_color_on_primary)), 0, s.length(), 0);
+        item.setTitle(s);
     }
 
     @Override
@@ -326,14 +336,14 @@ public class InProgressWorkoutFragment extends Fragment implements DatePickerFra
             workoutDetails.getWorkout().setFinishTime(Date.from(dateTimeFinish.atZone(ZoneId.systemDefault()).toInstant()));
         }
         workoutViewModel.insert(workoutDetails.getWorkout());
-
-//        SharedPreferences prefs = getActivity().getSharedPreferences(Constants.ARG_PREFS, Context.MODE_PRIVATE);
-//        SharedPreferences.Editor prefsEditor = prefs.edit();
-//        Gson gson = new Gson();
-//        String json = gson.toJson(workoutDetails);
-//        prefsEditor.putString(Constants.ARG_WORKOUT_DETAILS, json);
-//        prefsEditor.apply();
     }
 
+    private void showKeyboard() {
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.toggleSoftInputFromWindow(view.getWindowToken(), InputMethodManager.SHOW_FORCED, 0);
+        }
+    }
 
 }

@@ -139,6 +139,8 @@ public class MainActivity extends AppCompatActivity implements TrainingFragment.
 
     }
 
+
+
     @Override
     protected void onStop() {
         super.onStop();
