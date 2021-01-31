@@ -76,6 +76,7 @@ public class ProfileFragment extends Fragment {
             //loop through all exercises and search for all workouts with that exercise
             for (int i = 0; i < exerciseList.size(); i++) {
                 listOfWorkoutDetails = workoutViewModel.getAllWorkoutDetailsWithExercise(exerciseList.get(i).getId());
+                //sort by workout start time
                 listOfWorkoutDetails.sort(new Comparator<WorkoutDetails>() {
                     @Override
                     public int compare(WorkoutDetails o1, WorkoutDetails o2) {

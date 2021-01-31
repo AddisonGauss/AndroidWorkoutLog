@@ -40,7 +40,7 @@ import java.util.concurrent.TimeUnit;
 
 
 public class ShowWorkoutFragment extends Fragment {
-    private static final String TAG = "ShowWorkoutFragment";
+
     private TextView txtWorkoutDate, txtWorkoutDuration, txtExercises, txtWorkoutName;
     private Button btnPerformWorkoutAgain, btnDeleteWorkout;
     private WorkoutDetails workoutDetails;
@@ -237,7 +237,6 @@ public class ShowWorkoutFragment extends Fragment {
             for (String[] stringArray : listOfStringArrays) {
                 for (String t1 : stringArray) {
                     if (t1 != null) {
-                        System.out.println(t1);
                         int contentStart = content.length();
                         content.append(t1);
                         int contentEnd = content.length();

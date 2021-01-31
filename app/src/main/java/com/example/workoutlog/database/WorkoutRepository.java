@@ -104,9 +104,11 @@ public class WorkoutRepository {
     public BestSet getBestSetFromWorkoutWithExercise(long workoutId, long exerciseId) throws ExecutionException, InterruptedException {
         return new GetBestSetFromWorkoutWithExerciseAsyncTask(setDao).execute(workoutId, exerciseId).get();
     }
+
     public List<BestSet> getListOfBestSets() throws ExecutionException, InterruptedException {
         return new GetAllBestSetsAsyncTask(setDao).execute().get();
     }
+
     public List<Exercise> getAllExercises() throws ExecutionException, InterruptedException {
         return new GetAllExercisesAsyncTask(exerciseDao).execute().get();
     }
@@ -124,7 +126,7 @@ public class WorkoutRepository {
     }
 
     public float getMaxWeightFromWorkoutWithExercise(long workoutId, long exerciseId) throws ExecutionException, InterruptedException {
-        return new GetMaxWeightFromWorkoutWithExerciseAsyncTask(setDao).execute(workoutId,exerciseId).get();
+        return new GetMaxWeightFromWorkoutWithExerciseAsyncTask(setDao).execute(workoutId, exerciseId).get();
     }
 
     //inner classes for asynch tasks
@@ -172,7 +174,7 @@ public class WorkoutRepository {
     private static class InsertExerciseAsyncTask extends AsyncTask<Exercise, Void, Long> {
         private IExerciseDao exerciseDao;
 
-        private InsertExerciseAsyncTask(IExerciseDao exerciseDao){
+        private InsertExerciseAsyncTask(IExerciseDao exerciseDao) {
             this.exerciseDao = exerciseDao;
         }
 
@@ -240,6 +242,7 @@ public class WorkoutRepository {
 
     private static class DeleteUserRoutineExerciseAsyncTask extends AsyncTask<UserRoutineExercise, Void, Void> {
         private IUserRoutineExerciseDao userRoutineExerciseDao;
+
         //class is static so cannot access repository directly
         //so have to pass it over a constructor
         private DeleteUserRoutineExerciseAsyncTask(IUserRoutineExerciseDao userRoutineExerciseDao) {
@@ -270,10 +273,10 @@ public class WorkoutRepository {
         }
     }
 
-    private static class GetWorkoutWithIdAsyncTask extends AsyncTask<Long, Void, WorkoutDetails>{
+    private static class GetWorkoutWithIdAsyncTask extends AsyncTask<Long, Void, WorkoutDetails> {
         private IWorkoutDetailsDao workoutDetailsDao;
 
-        private GetWorkoutWithIdAsyncTask(IWorkoutDetailsDao workoutDetailsDao){
+        private GetWorkoutWithIdAsyncTask(IWorkoutDetailsDao workoutDetailsDao) {
             this.workoutDetailsDao = workoutDetailsDao;
         }
 
@@ -348,7 +351,7 @@ public class WorkoutRepository {
         }
     }
 
-    private static class GetMaxWeightFromWorkoutWithExerciseAsyncTask extends AsyncTask<Long, Void, Float>{
+    private static class GetMaxWeightFromWorkoutWithExerciseAsyncTask extends AsyncTask<Long, Void, Float> {
         private ISetDao setDao;
 
         private GetMaxWeightFromWorkoutWithExerciseAsyncTask(ISetDao setDao) {

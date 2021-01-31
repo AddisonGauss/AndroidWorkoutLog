@@ -30,10 +30,9 @@ import java.util.concurrent.TimeUnit;
 
 
 public class FinishedWorkoutFragment extends Fragment {
-    private static final String TAG = "FinishedWorkoutFragment";
+
     private WorkoutDetails workoutDetails;
     private TextView txtFinishedWorkoutDetails, txtWorkoutName, txtWorkoutDuration, txtWorkoutDate;
-    private List<RoutineDetails> listOfFinishedRoutines;
     SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d");
     private String weight, reps;
     NumberFormat numberFormat = NumberFormat.getNumberInstance();

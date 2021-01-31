@@ -31,7 +31,7 @@ import java.util.concurrent.ExecutionException;
 
 
 public class WorkoutFragment extends Fragment {
-    private static final String TAG = "WorkoutFragment";
+
     private Button btnLaunchFragment, btnGoToRunningWorkout;
     private WorkoutViewModel workoutViewModel;
     private Boolean isWorkoutRunning;

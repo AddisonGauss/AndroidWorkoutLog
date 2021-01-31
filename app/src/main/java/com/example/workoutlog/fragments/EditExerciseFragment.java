@@ -25,31 +25,20 @@ import java.util.concurrent.ExecutionException;
 
 public class EditExerciseFragment extends Fragment {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private EditText editTxtExerciseName, editTxtExerciseTargetBodyPart;
     private Button btnAddExercise;
     private WorkoutViewModel workoutViewModel;
     private ConstraintLayout constraintLayout;
 
-    public interface AddExerciseListener {
-        void sendNewExerciseToAddToDb(Exercise exercise);
-    }
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public EditExerciseFragment() {
         // Required empty public constructor
     }
 
 
-    public static EditExerciseFragment newInstance(String param1, String param2) {
+    public static EditExerciseFragment newInstance() {
         EditExerciseFragment fragment = new EditExerciseFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,8 +47,6 @@ public class EditExerciseFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 

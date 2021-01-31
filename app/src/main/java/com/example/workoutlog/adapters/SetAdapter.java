@@ -159,8 +159,9 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                             holder.btnSetComplete.setActivated(true);
                         }
                     } else {
-                        //nothing is typed in the edit text's weight so set the checkmark to appear unclickable
+                        //nothing is typed in the edit text's weight so set the checkmark to appear unclickable and set edittext hint to 0
                         holder.btnSetComplete.setActivated(false);
+                        holder.editTxtWeight.setHint("0");
                         currentExercise.getSets().get(position).setWeight(0);
                     }
                 }
@@ -187,6 +188,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                     } else {
                         //nothing is typed in the edit text's reps so set the checkmark to appear unclickable
                         holder.btnSetComplete.setActivated(false);
+                        holder.editTxtReps.setHint("0");
                         currentExercise.getSets().get(position).setReps(0);
                     }
                 }
