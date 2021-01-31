@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,6 +37,7 @@ public class ProfileFragment extends Fragment {
     private SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMM-dd");
     private ChartAdapter chartAdapter;
     private List<ChartData> chartDataList;
+    private TextView txtNoChartData;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -67,12 +69,17 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        txtNoChartData = view.findViewById(R.id.txtNoChartData);
 
         WorkoutViewModel workoutViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(WorkoutViewModel.class);
         chartDataList = new ArrayList<>();
         try {
             List<Exercise> exerciseList = workoutViewModel.getAllExercises();
-
+            if(workoutViewModel.getAllWorkoutDetails().size() == 0){
+                txtNoChartData.setVisibility(View.VISIBLE);
+            } else {
+                txtNoChartData.setVisibility(View.GONE);
+            }
             //loop through all exercises and search for all workouts with that exercise
             for (int i = 0; i < exerciseList.size(); i++) {
                 listOfWorkoutDetails = workoutViewModel.getAllWorkoutDetailsWithExercise(exerciseList.get(i).getId());

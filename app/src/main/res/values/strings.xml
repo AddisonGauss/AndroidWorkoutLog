@@ -2,6 +2,8 @@
     <string name="app_name">WorkoutLog</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="minutes"> minutes</string>
+    <string name="minutes_format">%1$dm</string>
+    <string name="hours_minutes_seconds_format">%1$dh %2$dm %3$ds</string>
     <string name="lbs_decimal">%1$.01f lbs</string>
     <string name="lbs_no_decimal">%1$.00f lbs</string>
 </resources>

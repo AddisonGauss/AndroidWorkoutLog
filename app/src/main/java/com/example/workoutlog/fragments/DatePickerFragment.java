@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,6 +23,7 @@ import com.example.workoutlog.helpers.Constants;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -43,6 +46,10 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     private LocalDate localDate;
     private LocalDateTime localDateTime;
     private String type;
+    private Switch switchManualSetTime;
+    private boolean isManualTime;
+    private SharedPreferences prefs;
+    private int hours, minutes, seconds;
 
     public interface dateSelect {
         void setDate(LocalDateTime dateTimeStart, LocalDateTime dateTimeFinish) throws ExecutionException, InterruptedException;
@@ -56,6 +63,16 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
+    public DatePickerFragment(Date start, Date finish, dateSelect dateListener) {
+        this.start = start.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        if (finish != null) {
+            this.finish = finish.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        }
+        this.dateListener = dateListener;
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,8 +83,66 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         txtFinishTime = view.findViewById(R.id.dialog_txtFinishTime);
         btnCancel = view.findViewById(R.id.btnCancel);
         btnOk = view.findViewById(R.id.btnOk);
+        switchManualSetTime = view.findViewById(R.id.switchManualSetTime);
+
+        prefs = getActivity().getSharedPreferences(Constants.ARG_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
 
         txtStartTime.setText(start.format(dateTimeFormatter));
+
+        if (finish == null) {
+            seconds = (int) Duration.between(start, LocalDateTime.now()).getSeconds();
+            hours = seconds / 3600;
+            seconds -= hours * 3600;
+            minutes = seconds / 60;
+            seconds -= minutes * 60;
+
+            txtFinishTime.setText("Running...");
+            txtDuration.setText(String.format(getResources().getString(R.string.hours_minutes_seconds_format), hours, minutes, seconds));
+        } else {
+            txtFinishTime.setText(finish.format(dateTimeFormatter));
+
+            seconds = (int) Duration.between(start, finish).getSeconds();
+            hours = seconds / 3600;
+            seconds -= hours * 3600;
+            minutes = seconds / 60;
+            seconds -= minutes * 60;
+
+            txtDuration.setText(String.format(getResources().getString(R.string.hours_minutes_seconds_format), hours, minutes, seconds));
+        }
+
+        switchManualSetTime.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    isManualTime = true;
+
+                    finish = finish == null ? LocalDateTime.now() : finish;
+                    txtFinishTime.setText(finish.format(dateTimeFormatter));
+
+                    seconds = (int) Duration.between(start, finish).getSeconds();
+                    hours = seconds / 3600;
+                    seconds -= hours * 3600;
+                    minutes = seconds / 60;
+                    seconds -= minutes * 60;
+
+                    txtDuration.setText(String.format(getResources().getString(R.string.hours_minutes_seconds_format), hours, minutes, seconds));
+                } else {
+                    isManualTime = false;
+                    finish = null;
+                    txtFinishTime.setText("Running...");
+
+                    seconds = (int) Duration.between(start, LocalDateTime.now()).getSeconds();
+                    hours = seconds / 3600;
+                    seconds -= hours * 3600;
+                    minutes = seconds / 60;
+                    seconds -= minutes * 60;
+
+                    txtDuration.setText(String.format(getResources().getString(R.string.hours_minutes_seconds_format), hours, minutes, seconds));
+                }
+            }
+        });
+
 
         txtStartTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +186,8 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
             @Override
             public void onClick(View v) {
                 try {
+                    prefsEditor.putBoolean(Constants.MANUAL_TIME, isManualTime);
+                    prefsEditor.apply();
                     dateListener.setDate(start, finish);
                     getDialog().dismiss();
                 } catch (ExecutionException e) {
@@ -154,7 +231,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         }
         timePickerDialog.show(getActivity().getSupportFragmentManager(), "timePicker");
 
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -175,6 +251,14 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
             default:
                 break;
         }
+
+        seconds = (int) Duration.between(start, finish).getSeconds();
+        hours = seconds / 3600;
+        seconds -= hours * 3600;
+        minutes = seconds / 60;
+        seconds -= minutes * 60;
+
+        txtDuration.setText(String.format(getResources().getString(R.string.hours_minutes_seconds_format), hours, minutes, seconds));
     }
 
     @Override
@@ -191,5 +275,16 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     public void onDetach() {
         super.onDetach();
         dateListener = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        prefs = getActivity().getSharedPreferences(Constants.ARG_PREFS, Context.MODE_PRIVATE);
+        isManualTime = prefs.getBoolean(Constants.MANUAL_TIME, false);
+
+        if (isManualTime) {
+            switchManualSetTime.setChecked(true);
+        }
     }
 }

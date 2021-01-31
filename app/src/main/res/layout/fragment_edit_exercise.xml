@@ -20,7 +20,9 @@
         android:inputType="text|textNoSuggestions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColorHint="@color/ltgray"
+        android:textColor="@color/black"/>
 
     <EditText
         android:id="@+id/editTxtExerciseTarget"
@@ -32,7 +34,9 @@
         android:background="@drawable/rounded_edittext_states"
         app:layout_constraintStart_toStartOf="@+id/editTxtExerciseName"
         app:layout_constraintTop_toBottomOf="@+id/editTxtExerciseName"
-        android:hint="Targeted body part"/>
+        android:hint="Targeted body part"
+        android:textColorHint="@color/ltgray"
+        android:textColor="@color/black"/>
 
     <Button
         android:id="@+id/edit_exercise_btnAddExercise"
@@ -42,5 +46,6 @@
         android:text="Add Exercise"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTxtExerciseTarget" />
+        app:layout_constraintTop_toBottomOf="@+id/editTxtExerciseTarget"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

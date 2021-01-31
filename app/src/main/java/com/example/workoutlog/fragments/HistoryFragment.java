@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,6 +40,7 @@ public class HistoryFragment extends Fragment implements DatePickerDialog.OnDate
     private Calendar [] calendarArray;
     private LinearLayoutManager linearLayoutManager;
     private WorkoutAdapter workoutAdapter;
+    private TextView txtNoHistoryDataFound;
     private DatePickerDialog datePicker;
     public HistoryFragment() {
         // Required empty public constructor
@@ -75,6 +77,7 @@ public class HistoryFragment extends Fragment implements DatePickerDialog.OnDate
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
+        txtNoHistoryDataFound = view.findViewById(R.id.txtNoWorkoutsFound);
 
         final RecyclerView recyclerView = getView().findViewById(R.id.recHistory);
         linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -92,13 +95,19 @@ public class HistoryFragment extends Fragment implements DatePickerDialog.OnDate
                         return o1.getWorkout().getStartTime().compareTo(o2.getWorkout().getStartTime());
                     }
                 });
-                workoutAdapter.setWorkouts(workouts);
-                calendarArray = new Calendar[workouts.size()];
-                for(int i = 0; i < workouts.size(); i++){
-                    Date date = workouts.get(i).getWorkout().getStartTime();
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(date);
-                    calendarArray[i] = calendar;
+                if(workouts.size() == 0) {
+                    txtNoHistoryDataFound.setVisibility(View.VISIBLE);
+                } else {
+                    txtNoHistoryDataFound.setVisibility(View.GONE);
+
+                    workoutAdapter.setWorkouts(workouts);
+                    calendarArray = new Calendar[workouts.size()];
+                    for (int i = 0; i < workouts.size(); i++) {
+                        Date date = workouts.get(i).getWorkout().getStartTime();
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(date);
+                        calendarArray[i] = calendar;
+                    }
                 }
             }
         });

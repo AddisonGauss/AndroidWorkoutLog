@@ -157,7 +157,7 @@ public class InProgressWorkoutFragment extends Fragment implements DatePickerFra
                                 showKeyboard();
                                 return true;
                             case R.id.editWorkoutDate:
-                                DatePickerFragment datePickerFragment = new DatePickerFragment(workoutDetails.getWorkout().getStartTime(), InProgressWorkoutFragment.this::setDate);
+                                DatePickerFragment datePickerFragment = new DatePickerFragment(workoutDetails.getWorkout().getStartTime(), workoutDetails.getWorkout().getFinishTime(),InProgressWorkoutFragment.this::setDate);
                                 datePickerFragment.setTargetFragment(InProgressWorkoutFragment.this, 1);
                                 datePickerFragment.show(getParentFragmentManager(), "datePickerFragment");
                                 return true;
@@ -331,6 +331,7 @@ public class InProgressWorkoutFragment extends Fragment implements DatePickerFra
     public void setDate(LocalDateTime dateTimeStart, LocalDateTime dateTimeFinish) throws ExecutionException, InterruptedException {
         if (dateTimeStart != null && dateTimeFinish == null) {
             workoutDetails.getWorkout().setStartTime(Date.from(dateTimeStart.atZone(ZoneId.systemDefault()).toInstant()));
+            workoutDetails.getWorkout().setFinishTime(null);
         } else if (dateTimeStart != null && dateTimeFinish != null) {
             workoutDetails.getWorkout().setStartTime(Date.from(dateTimeStart.atZone(ZoneId.systemDefault()).toInstant()));
             workoutDetails.getWorkout().setFinishTime(Date.from(dateTimeFinish.atZone(ZoneId.systemDefault()).toInstant()));

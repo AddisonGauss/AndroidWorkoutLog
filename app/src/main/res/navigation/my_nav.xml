@@ -86,8 +86,8 @@
     <fragment
         android:id="@+id/editExerciseFragment"
         android:name="com.example.workoutlog.fragments.EditExerciseFragment"
-        android:label="fragment_edit_exercise"
-        tools:layout="@layout/fragment_edit_exercise" >
+        android:label="Add your own exercise"
+        tools:layout="@layout/fragment_edit_exercise">
         <action
             android:id="@+id/action_editExerciseFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
