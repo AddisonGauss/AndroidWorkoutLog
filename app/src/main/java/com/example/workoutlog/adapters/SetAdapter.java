@@ -72,25 +72,20 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
             holder.txtSetNumber.setText(String.valueOf(currentSet.getDisplayNumber()));
 
             //if max weight doesn't contain a decimal value don't show .0 else show decimal value
-            if(prevMaxWeightForExercise % 1 == 0){
-                prevMax = String.format(mContext.getResources().getString(R.string.lbs_no_decimal), prevMaxWeightForExercise);
-            } else {
-                prevMax = String.format(mContext.getResources().getString(R.string.lbs_decimal), prevMaxWeightForExercise);
-            }
-
+            prevMax = prevMaxWeightForExercise % 1 == 0 ? String.format(mContext.getResources().getString(R.string.lbs_no_decimal), prevMaxWeightForExercise) : String.format(mContext.getResources().getString(R.string.lbs_decimal), prevMaxWeightForExercise);
             holder.txtPrevMaxSet.setText(prevMax);
 
-            //display hint data in edittext's hint if currentset's values are 0
+            //display hint data in edittext's hint if currentset's values are 0 and only display decimal value if there is one
             if (currentSet.getWeight() == 0) {
-                holder.editTxtWeight.setHint(String.valueOf(currentSet.getHintWeight()));
+                holder.editTxtWeight.setHint(String.format("%.00f", currentSet.getHintWeight()));
             } else {
-                holder.editTxtWeight.setText(String.valueOf(currentSet.getWeight()));
+                holder.editTxtWeight.setText(currentSet.getWeight() % 1 == 0 ? String.format("%.00f", currentSet.getWeight()) : String.valueOf(currentSet.getWeight()));
             }
 
             if (currentSet.getReps() == 0) {
-                holder.editTxtReps.setHint(String.valueOf(currentSet.getHintReps()));
+                holder.editTxtReps.setHint(String.format("%.00f", currentSet.getHintReps()));
             } else {
-                holder.editTxtReps.setText(String.valueOf(currentSet.getReps()));
+                holder.editTxtReps.setText(currentSet.getReps() % 1 == 0 ? String.format("%.00f", currentSet.getReps()) : String.valueOf(currentSet.getReps()));
             }
 
             //if there is valid numbers in both weight and reps, show activated checkmark set complete button
@@ -111,8 +106,9 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                 holder.editTxtWeight.setBackgroundColor(mContext.getResources().getColor(R.color.light_green));
                 holder.editTxtReps.setBackgroundColor(mContext.getResources().getColor(R.color.light_green));
 
-                holder.editTxtWeight.setText(String.valueOf(currentSet.getWeight()));
-                holder.editTxtReps.setText(String.valueOf(currentSet.getReps()));
+                //display decimal only if not zero
+                holder.editTxtWeight.setText(currentSet.getWeight() % 1 == 0 ? String.format("%.00f", currentSet.getWeight()) : String.valueOf(currentSet.getWeight()));
+                holder.editTxtReps.setText(currentSet.getReps() % 1 == 0 ? String.format("%.00f", currentSet.getReps()) : String.valueOf(currentSet.getReps()));
             }
 
 
@@ -174,6 +170,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                         //nothing is typed in the edit text's weight so set the checkmark to appear unclickable and set edittext hint to 0
                         holder.btnSetComplete.setActivated(false);
                         holder.editTxtWeight.setHint("0");
+                        currentExercise.getSets().get(position).setHintWeight(0);
                         currentExercise.getSets().get(position).setWeight(0);
                     }
                 }
@@ -201,6 +198,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                         //nothing is typed in the edit text's reps so set the checkmark to appear unclickable
                         holder.btnSetComplete.setActivated(false);
                         holder.editTxtReps.setHint("0");
+                        currentExercise.getSets().get(position).setHintReps(0);
                         currentExercise.getSets().get(position).setReps(0);
                     }
                 }
