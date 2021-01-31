@@ -31,6 +31,7 @@ import com.example.workoutlog.models.UserRoutineExercise;
 import com.example.workoutlog.models.Workout;
 import com.example.workoutlog.models.WorkoutDetails;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,11 +45,13 @@ public class ShowWorkoutFragment extends Fragment {
     private TextView txtWorkoutDate, txtWorkoutDuration, txtExercises, txtWorkoutName;
     private Button btnPerformWorkoutAgain, btnDeleteWorkout;
     private WorkoutDetails workoutDetails;
-    SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMMM d yyyy");
+    private SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMMM d yyyy");
     private Boolean isWorkoutRunning;
     private WorkoutViewModel workoutViewModel;
     private UserRoutineExercise userRoutineExercise;
     private WorkoutFragment.WorkoutDetailsListener workoutDetailsListener;
+    private String weight, reps;
+    private NumberFormat numberFormat = NumberFormat.getNumberInstance();
 
     public ShowWorkoutFragment() {
         // Required empty public constructor
@@ -228,7 +231,20 @@ public class ShowWorkoutFragment extends Fragment {
                     if (i == 0) {
                         setStringArray[i] = routineDetails.getExercise().getName() + "\n";
                     }
-                    setStringArray[i + 1] = "\t" + (i + 1) + ". " + routineDetails.getSets().get(i).getWeight() + " x " + routineDetails.getSets().get(i).getReps() + "\n";
+                    //don't display decimals if weight/reps don't have any - else do display the decimal
+                    if (routineDetails.getSets().get(i).getWeight() % 1 == 0) {
+                        numberFormat.setMaximumFractionDigits(0);
+                        weight = numberFormat.format(routineDetails.getSets().get(i).getWeight());
+                    } else {
+                        weight = String.valueOf(routineDetails.getSets().get(i).getWeight());
+                    }
+                    if (routineDetails.getSets().get(i).getReps() % 1 == 0) {
+                        numberFormat.setMaximumFractionDigits(0);
+                        reps = numberFormat.format(routineDetails.getSets().get(i).getReps());
+                    } else {
+                        reps = String.valueOf(routineDetails.getSets().get(i).getReps());
+                    }
+                    setStringArray[i + 1] = "\t\t" + (i + 1) + ". " + weight + " lbs" + " x " + reps + "\n";
                 }
                 listOfStringArrays.add(setStringArray);
             }

@@ -18,8 +18,8 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.workoutlog.R;
-import com.example.workoutlog.models.WorkoutDetails;
 import com.example.workoutlog.helpers.Constants;
+import com.example.workoutlog.models.WorkoutDetails;
 import com.google.android.material.card.MaterialCardView;
 
 import java.text.SimpleDateFormat;
@@ -27,7 +27,6 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -108,16 +107,14 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public int getItemPositionWithDate(LocalDate date){
+    public int getItemPositionWithDate(LocalDate date) {
 
-        for(WorkoutDetails workoutDetails: listOfFinishedWorkouts){
+        for (WorkoutDetails workoutDetails : listOfFinishedWorkouts) {
             LocalDate workoutLocalDate = Instant.ofEpochMilli(workoutDetails.getWorkout().getStartTime().getTime())
-                                        .atZone(ZoneId.systemDefault())
-                                        .toLocalDate();
-            System.out.println("DATE TO SEARCH FOR = " + date);
-            System.out.println("WORKOUT DATE = " + workoutLocalDate);
-            if(workoutLocalDate.equals(date)){
-                System.out.println(listOfFinishedWorkouts.indexOf(workoutDetails));
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+
+            if (workoutLocalDate.equals(date)) {
                 return listOfFinishedWorkouts.indexOf(workoutDetails);
             }
         }

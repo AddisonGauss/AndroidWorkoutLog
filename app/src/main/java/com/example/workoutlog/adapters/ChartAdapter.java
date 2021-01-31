@@ -13,8 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.workoutlog.R;
 import com.example.workoutlog.models.ChartData;
-import com.example.workoutlog.models.Exercise;
-import com.example.workoutlog.models.WorkoutDetails;
+
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
@@ -26,12 +25,11 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
 
 public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.ViewHolder> {
-    private List<Exercise> exerciseList;
-    private List<List<WorkoutDetails>> listOfListsOfWorkoutDetails;
+
     private List<ChartData> chartDataList;
     private Context context;
 

@@ -33,9 +33,9 @@ public class FinishedWorkoutFragment extends Fragment {
 
     private WorkoutDetails workoutDetails;
     private TextView txtFinishedWorkoutDetails, txtWorkoutName, txtWorkoutDuration, txtWorkoutDate;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d yyyy");
     private String weight, reps;
-    NumberFormat numberFormat = NumberFormat.getNumberInstance();
+    private NumberFormat numberFormat = NumberFormat.getNumberInstance();
 
     public FinishedWorkoutFragment() {
         // Required empty public constructor
@@ -122,7 +122,7 @@ public class FinishedWorkoutFragment extends Fragment {
                 } else {
                     reps = String.valueOf(routineDetails.getSets().get(i).getReps());
                 }
-                setStringArray[i + 1] = "\t\t\t" + (i + 1) + ". " + weight + " lbs" + " x " + reps + "\n";
+                setStringArray[i + 1] = "\t\t" + (i + 1) + ". " + weight + " lbs" + " x " + reps + "\n";
             }
             listOfStringArrays.add(setStringArray);
         }

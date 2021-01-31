@@ -1,7 +1,6 @@
 package com.example.workoutlog.adapters;
 
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,7 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
     private List<Exercise> listOfExercises;
     private IExerciseNameListener listener;
 
-    public TrainingAdapter(IExerciseNameListener listener,List<Exercise> listOfExercises) {
+    public TrainingAdapter(IExerciseNameListener listener, List<Exercise> listOfExercises) {
         this.listOfExercises = listOfExercises;
         this.listener = listener;
     }
@@ -97,7 +96,6 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
             parent = itemView.findViewById(R.id.parent);
             txtExerciseName = itemView.findViewById(R.id.txtExerciseName);
             txtTargetedBodyPart = itemView.findViewById(R.id.txtTargetBodyPart);
-
         }
     }
 }

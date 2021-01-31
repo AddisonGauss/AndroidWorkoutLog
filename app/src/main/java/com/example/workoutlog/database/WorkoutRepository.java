@@ -2,7 +2,7 @@ package com.example.workoutlog.database;
 
 import android.app.Application;
 import android.os.AsyncTask;
-import android.util.Log;
+
 
 import androidx.lifecycle.LiveData;
 
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class WorkoutRepository {
-    private static final String TAG = "WorkoutRepository";
+
     private IWorkoutDao workoutDao;
     private IWorkoutDetailsDao workoutDetailsDao;
     private LiveData<List<WorkoutDetails>> allWorkoutDetails;
@@ -35,7 +35,7 @@ public class WorkoutRepository {
     private List<RoutineDetails> allRoutineDetails;
 
     public WorkoutRepository(Application application) {
-        Log.d(TAG, "WorkoutRepository: ");
+
         Database workoutDatabase = Database.getInstance(application);
         workoutDao = workoutDatabase.workoutDao();
         workoutDetailsDao = workoutDatabase.workoutDetailsDao();
@@ -125,7 +125,7 @@ public class WorkoutRepository {
         return new GetAllWorkoutDetailsAsyncTask(workoutDetailsDao).execute().get();
     }
 
-    public float getMaxWeightFromWorkoutWithExercise(long workoutId, long exerciseId) throws ExecutionException, InterruptedException {
+    public double getMaxWeightFromWorkoutWithExercise(long workoutId, long exerciseId) throws ExecutionException, InterruptedException {
         return new GetMaxWeightFromWorkoutWithExerciseAsyncTask(setDao).execute(workoutId, exerciseId).get();
     }
 
@@ -351,7 +351,7 @@ public class WorkoutRepository {
         }
     }
 
-    private static class GetMaxWeightFromWorkoutWithExerciseAsyncTask extends AsyncTask<Long, Void, Float> {
+    private static class GetMaxWeightFromWorkoutWithExerciseAsyncTask extends AsyncTask<Long, Void, Double> {
         private ISetDao setDao;
 
         private GetMaxWeightFromWorkoutWithExerciseAsyncTask(ISetDao setDao) {
@@ -359,7 +359,7 @@ public class WorkoutRepository {
         }
 
         @Override
-        protected Float doInBackground(Long... longs) {
+        protected Double doInBackground(Long... longs) {
             return setDao.getMaxWeightFromWorkoutWithExercise(longs[0], longs[1]);
         }
     }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +15,6 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.workoutlog.R;
 import com.example.workoutlog.database.WorkoutViewModel;
-import com.example.workoutlog.fragments.InProgressWorkoutFragment;
 import com.example.workoutlog.fragments.TrainingFragment;
 import com.example.workoutlog.fragments.WorkoutFragment;
 import com.example.workoutlog.helpers.Constants;
@@ -32,12 +30,11 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity implements TrainingFragment.workoutExerciseListener, WorkoutFragment.WorkoutDetailsListener {
-    private static final String TAG = "MainActivity";
+
     private BottomNavigationView bottomNavigationView;
     private WorkoutViewModel workoutViewModel;
     private UserRoutineExercise userRoutineExercise;
     private RoutineDetails routineDetails;
-    private InProgressWorkoutFragment inProgressWorkoutFragment;
     private WorkoutDetails workoutDetails;
     private Boolean isRunning;
     private Boolean isNightMode;
@@ -140,7 +137,6 @@ public class MainActivity extends AppCompatActivity implements TrainingFragment.
     }
 
 
-
     @Override
     protected void onStop() {
         super.onStop();
@@ -162,10 +158,7 @@ public class MainActivity extends AppCompatActivity implements TrainingFragment.
         if (isNightMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
-
-
     }
-
 
 }
 

@@ -71,8 +71,8 @@
         <action
             android:id="@+id/action_historyFragment_to_showWorkoutFragment"
             app:destination="@id/showWorkoutFragment"
-            app:popUpTo="@id/my_nav"
-            app:popUpToInclusive="true" />
+            app:popUpTo="@id/historyFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/showWorkoutFragment"

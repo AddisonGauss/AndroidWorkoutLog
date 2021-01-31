@@ -33,7 +33,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
     public List<RoutineDetails> exercises;
     private WorkoutViewModel workoutViewModel;
     private IAddSetClickHandler IAddSetClickHandler;
-    private Set prevMaxSet = new Set();
+    private double prevMaxWeightForExercise;
 
 
     private ISendFromSetAdapterToExercise ISendFromSetAdapterToExercise = new ISendFromSetAdapterToExercise() {
@@ -51,7 +51,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         this.exercises = exercises;
         this.IAddSetClickHandler = IAddSetClickHandler;
         this.workoutViewModel = workoutViewModel;
-
     }
 
     @NonNull
@@ -66,10 +65,17 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         if (exercises != null && exercises.size() > 0) {
 
             holder.txtSetName.setText(exercises.get(position).getExercise().getName());
+            try {
+                prevMaxWeightForExercise = workoutViewModel.getMaxWeightFromWorkoutWithExercise(exercises.get(position).getUserRoutineExercise().getWorkoutId(), exercises.get(position).getExercise().getId());
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             holder.recyclerView.setLayoutManager(new LinearLayoutManager(context));
             holder.recyclerView.setHasFixedSize(true);
-            SetAdapter setAdapter = new SetAdapter(context, exercises.get(position), IAddSetClickHandler, ISendFromSetAdapterToExercise, holder.btnAddSet, prevMaxSet);
+            SetAdapter setAdapter = new SetAdapter(context, exercises.get(position), IAddSetClickHandler, ISendFromSetAdapterToExercise, holder.btnAddSet, prevMaxWeightForExercise);
             holder.recyclerView.setAdapter(setAdapter);
             setAdapter.setSets(exercises.get(position).getSets());
 

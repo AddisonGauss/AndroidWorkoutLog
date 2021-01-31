@@ -31,17 +31,18 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
-    private static final String TAG = "SetAdapter";
+
     private Context mContext;
     private RoutineDetails currentExercise;
     public IAddSetClickHandler sendExternalClick;
     public ISendFromSetAdapterToExercise sendExerciseAdapterTextInfo;
     private Button addSetButton;
-    private Set prevMaxSet;
+    private double prevMaxWeightForExercise;
     private Set currentSet;
+    private String prevMax;
 
 
-    public SetAdapter(Context mContext, RoutineDetails currentExercise, IAddSetClickHandler sendExternalClick, ISendFromSetAdapterToExercise sendExerciseAdapterTextInfo, Button addSetButton, Set prevMaxSet) {
+    public SetAdapter(Context mContext, RoutineDetails currentExercise, IAddSetClickHandler sendExternalClick, ISendFromSetAdapterToExercise sendExerciseAdapterTextInfo, Button addSetButton, double prevMaxWeightForExercise) {
         this.mContext = mContext;
         this.currentExercise = currentExercise;
         if (currentExercise.getSets() == null) {
@@ -50,7 +51,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
         this.sendExternalClick = sendExternalClick;
         this.sendExerciseAdapterTextInfo = sendExerciseAdapterTextInfo;
         this.addSetButton = addSetButton;
-        this.prevMaxSet = prevMaxSet;
+        this.prevMaxWeightForExercise = prevMaxWeightForExercise;
 
     }
 
@@ -66,10 +67,18 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
         if (currentExercise.getSets() != null && currentExercise.getSets().size() > 0) {
 
             currentSet = currentExercise.getSets().get(position);
-            currentSet.setDisplayNumber(position + 1);
 
+            currentSet.setDisplayNumber(position + 1);
             holder.txtSetNumber.setText(String.valueOf(currentSet.getDisplayNumber()));
-            holder.txtPrevMaxSet.setText(prevMaxSet.getWeight() + " x " + prevMaxSet.getReps());
+
+            //if max weight doesn't contain a decimal value don't show .0 else show decimal value
+            if(prevMaxWeightForExercise % 1 == 0){
+                prevMax = String.format(mContext.getResources().getString(R.string.lbs_no_decimal), prevMaxWeightForExercise);
+            } else {
+                prevMax = String.format(mContext.getResources().getString(R.string.lbs_decimal), prevMaxWeightForExercise);
+            }
+
+            holder.txtPrevMaxSet.setText(prevMax);
 
             //display hint data in edittext's hint if currentset's values are 0
             if (currentSet.getWeight() == 0) {
@@ -84,10 +93,12 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                 holder.editTxtReps.setText(String.valueOf(currentSet.getReps()));
             }
 
+            //if there is valid numbers in both weight and reps, show activated checkmark set complete button
             if (!String.valueOf(holder.editTxtReps.getText()).equals("") && !String.valueOf(holder.editTxtWeight.getText()).equals("")) {
                 holder.btnSetComplete.setActivated(true);
             }
 
+            //if set complete button has been clicked, change color of recycler view item, change background of weight/rep edittexts, and change the color/icon of the set complete button
             if (currentSet.isComplete()) {
                 holder.btnSetComplete.setBackground(mContext.getResources().getDrawable(R.drawable.check_button_pressed_background));
                 holder.btnSetComplete.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_check_white));
@@ -125,6 +136,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
 
                     Set editedSet = new Set();
                     //takes the last edittext's text data or the edittext's hint data and creates a new set with that hint data to display on next recycler view cycle
+                    //this makes it easy to repeat the same weight/reps without having to enter the values again, just need to click the set complete button
                     editedSet.setHintWeight(Double.parseDouble(String.valueOf(String.valueOf(holder.editTxtWeight.getText()).equals("") ? currentSet.getHintWeight() : holder.editTxtWeight.getText())));
                     editedSet.setHintReps(Double.parseDouble(String.valueOf(String.valueOf(holder.editTxtReps.getText()).equals("") ? currentSet.getHintReps() : holder.editTxtReps.getText())));
 
@@ -194,6 +206,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                 }
             });
 
+            //this fixes an issue of the keyboard staying open if you click out of the edittext
             holder.editTxtReps.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
@@ -203,6 +216,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                 }
             });
 
+            //this fixes an issue of the keyboard staying open if you click out of the edittext
             holder.editTxtWeight.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
@@ -230,9 +244,8 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                             currentSet.setWeight(Double.parseDouble(String.valueOf(holder.editTxtWeight.getHint())));
                         }
                     }
-                    //send the current exercise's sets to insert into database to prevent view from not updating this and any other set's text boxes that were edited after adding.
+                    //send the current exercise's sets to insert into database to prevent view from not updating this and any other set's text boxes that might have been edited after adding.
                     sendExternalClick.onSetsClickedAt(currentExercise.getSets());
-
                 }
             });
         }
