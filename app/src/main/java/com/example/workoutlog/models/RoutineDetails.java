@@ -17,10 +17,10 @@ public class RoutineDetails implements Parcelable {
     @Relation(parentColumn = "id", entityColumn = "userRoutineExerciseRoutineId", entity = Set.class)
     private List<Set> sets = new ArrayList<>();
 
-    @Relation(parentColumn = "exerciseTypeId",entityColumn = "id", entity= Exercise.class)
+    @Relation(parentColumn = "exerciseTypeId", entityColumn = "id", entity = Exercise.class)
     Exercise exercise;
 
-    public RoutineDetails(){
+    public RoutineDetails() {
     }
 
 

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".fragments.HistoryFragment">
 
-
     <TextView
         android:id="@+id/txtNoWorkoutsFound"
         android:layout_width="wrap_content"
@@ -22,7 +21,7 @@
         android:id="@+id/recHistory"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="55dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

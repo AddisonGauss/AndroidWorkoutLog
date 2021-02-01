@@ -243,6 +243,10 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
             case Constants.START_DATE_TIME:
                 start = start.with(localDateTime);
                 txtStartTime.setText(dateTimeFormatter.format(start));
+                if(finish.isBefore(start)){
+                    finish = start;
+                    txtFinishTime.setText(dateTimeFormatter.format(finish));
+                }
                 break;
             case Constants.FINISH_DATE_TIME:
                 finish = finish.with(localDateTime);

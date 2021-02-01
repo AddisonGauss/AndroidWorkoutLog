@@ -95,6 +95,12 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
 
             //if set complete button has been clicked, change color of recycler view item, change background of weight/rep edittexts, and change the color/icon of the set complete button
             if (currentSet.isComplete()) {
+                //disable weight/rep edittext
+                holder.editTxtWeight.setEnabled(false);
+                holder.editTxtWeight.setFocusable(false);
+                holder.editTxtReps.setEnabled(false);
+                holder.editTxtReps.setFocusable(false);
+
                 holder.btnSetComplete.setBackground(mContext.getResources().getDrawable(R.drawable.check_button_pressed_background));
                 holder.btnSetComplete.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_check_white));
                 holder.txtSetNumber.setTextColor(Color.BLACK);
@@ -109,6 +115,11 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                 //display decimal only if not zero
                 holder.editTxtWeight.setText(currentSet.getWeight() % 1 == 0 ? String.format("%.00f", currentSet.getWeight()) : String.valueOf(currentSet.getWeight()));
                 holder.editTxtReps.setText(currentSet.getReps() % 1 == 0 ? String.format("%.00f", currentSet.getReps()) : String.valueOf(currentSet.getReps()));
+            } else {
+                holder.editTxtWeight.setEnabled(true);
+                holder.editTxtWeight.setFocusable(true);
+                holder.editTxtReps.setEnabled(true);
+                holder.editTxtReps.setFocusable(true);
             }
 
 
@@ -233,7 +244,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                     currentSet.setComplete(!currentSet.isComplete());
 
                     if (currentSet.isComplete()) {
-
                         //if marked complete and no text has been entered, add the hint data to set and display complete design
                         if (String.valueOf(holder.editTxtReps.getText()).equals((""))) {
                             currentSet.setReps(Double.parseDouble(String.valueOf(holder.editTxtReps.getHint())));

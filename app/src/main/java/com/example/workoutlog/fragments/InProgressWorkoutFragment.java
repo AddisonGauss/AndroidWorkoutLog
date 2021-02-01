@@ -117,7 +117,7 @@ public class InProgressWorkoutFragment extends Fragment implements DatePickerFra
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().findViewById(R.id.bottomNavigationView).setVisibility(View.GONE);
+        //getActivity().findViewById(R.id.bottomNavigationView).setVisibility(View.GONE);
         btnAddExercise = view.findViewById(R.id.btnAddExercise);
         txtCancelWorkout = view.findViewById(R.id.txtCancelWorkout);
         btnExerciseNameMenu = view.findViewById(R.id.btnExerciseNameMenu);
@@ -157,7 +157,7 @@ public class InProgressWorkoutFragment extends Fragment implements DatePickerFra
                                 showKeyboard();
                                 return true;
                             case R.id.editWorkoutDate:
-                                DatePickerFragment datePickerFragment = new DatePickerFragment(workoutDetails.getWorkout().getStartTime(), workoutDetails.getWorkout().getFinishTime(),InProgressWorkoutFragment.this::setDate);
+                                DatePickerFragment datePickerFragment = new DatePickerFragment(workoutDetails.getWorkout().getStartTime(), workoutDetails.getWorkout().getFinishTime(), InProgressWorkoutFragment.this::setDate);
                                 datePickerFragment.setTargetFragment(InProgressWorkoutFragment.this, 1);
                                 datePickerFragment.show(getParentFragmentManager(), "datePickerFragment");
                                 return true;

@@ -1,5 +1,6 @@
 package com.example.workoutlog.fragments;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -23,6 +25,7 @@ import com.example.workoutlog.models.WorkoutDetails;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -36,6 +39,7 @@ public class FinishedWorkoutFragment extends Fragment {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d yyyy");
     private String weight, reps;
     private NumberFormat numberFormat = NumberFormat.getNumberInstance();
+    int hours,minutes,seconds;
 
     public FinishedWorkoutFragment() {
         // Required empty public constructor
@@ -64,6 +68,7 @@ public class FinishedWorkoutFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_finished_workout, container, false);
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -76,10 +81,16 @@ public class FinishedWorkoutFragment extends Fragment {
         txtWorkoutName.setText(workoutDetails.getWorkout().getName());
         txtWorkoutDate.setText(dateFormat.format(workoutDetails.getWorkout().getStartTime()));
 
+
         long millis = Math.abs(workoutDetails.getWorkout().getFinishTime().getTime() - workoutDetails.getWorkout().getStartTime().getTime());
-        long minutes = TimeUnit.MINUTES.convert(millis, TimeUnit.MILLISECONDS);
-        txtWorkoutDuration.setText(String.valueOf(minutes));
-        txtWorkoutDuration.append(" minutes");
+        seconds = (int) TimeUnit.SECONDS.convert(millis, TimeUnit.MILLISECONDS);
+
+        hours = seconds / 3600;
+        seconds -= hours * 3600;
+        minutes = seconds / 60;
+        seconds -= minutes * 60;
+
+        txtWorkoutDuration.setText(String.format(getResources().getString(R.string.hours_minutes_seconds_format), hours, minutes, seconds));
 
         WorkoutViewModel workoutViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(WorkoutViewModel.class);
         List<RoutineDetails> listOfRoutinesForWorkout = null;

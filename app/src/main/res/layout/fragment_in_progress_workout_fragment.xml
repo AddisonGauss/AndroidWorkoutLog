@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
     android:clickable="true"
+    android:layout_marginBottom="55dp"
     >
 
 
@@ -96,8 +97,9 @@
                 android:gravity="center"
                 android:text="Cancel Workout"
                 android:textColor="@color/red"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:paddingBottom="15dp"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

@@ -16,7 +16,7 @@ public class Exercise implements Parcelable {
 
     private String targetedBodyPart;
 
-    private boolean isSelected =false;
+    private boolean isSelected;
 
     public Exercise() {
 
