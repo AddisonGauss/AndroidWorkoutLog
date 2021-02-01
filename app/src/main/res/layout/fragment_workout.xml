@@ -6,25 +6,36 @@
     android:layout_height="match_parent"
     tools:context=".fragments.WorkoutFragment">
 
-    <!-- TODO: Update blank fragment layout -->
 
     <Button
         android:id="@+id/btnLaunchOtherFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:backgroundTint="@color/teal_700"
         android:text="Start A New Workout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/txtNumberOfWorkouts" />
 
     <Button
         android:id="@+id/btnGoToRunningWorkout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:backgroundTint="@color/teal_700"
         android:text="Go To Running Workout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtNumberOfWorkouts" />
+
+    <TextView
+        android:id="@+id/txtNumberOfWorkouts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

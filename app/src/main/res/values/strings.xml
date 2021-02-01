@@ -6,4 +6,5 @@
     <string name="hours_minutes_seconds_format">%1$dh %2$dm %3$ds</string>
     <string name="lbs_decimal">%1$.01f lbs</string>
     <string name="lbs_no_decimal">%1$.00f lbs</string>
+    <string name="number_of_workouts">You have %1$d workouts</string>
 </resources>

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +25,8 @@ import com.example.workoutlog.models.Workout;
 import com.example.workoutlog.models.WorkoutDetails;
 import com.google.gson.Gson;
 
+import org.w3c.dom.Text;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,6 +40,8 @@ public class WorkoutFragment extends Fragment {
     private Boolean isWorkoutRunning;
     private WorkoutDetailsListener workoutDetailsListener;
     private WorkoutDetails workoutDetails;
+    private TextView txtNumberOfWorkouts;
+    private int size;
 
     public interface WorkoutDetailsListener {
         void sendWorkoutDetails(WorkoutDetails workoutDetails);
@@ -85,11 +90,25 @@ public class WorkoutFragment extends Fragment {
 
         btnLaunchFragment = view.findViewById(R.id.btnLaunchOtherFragment);
         btnGoToRunningWorkout = view.findViewById(R.id.btnGoToRunningWorkout);
+        txtNumberOfWorkouts = view.findViewById(R.id.txtNumberOfWorkouts);
+
+        workoutViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(WorkoutViewModel.class);
+
+        try {
+            size = workoutViewModel.getAllWorkoutDetails().size();
+            txtNumberOfWorkouts.setText(String.format(getResources().getString(R.string.number_of_workouts), size));
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
         btnLaunchFragment.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                workoutViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(WorkoutViewModel.class);
+
 
                 //initialize new workout and insert workout into database to retrieve id and set workoutDetail's workoutId to that id
                 Workout workout = new Workout();
