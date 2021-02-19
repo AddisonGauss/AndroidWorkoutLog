@@ -33,7 +33,7 @@ public class TrainingFragment extends Fragment {
     private workoutExerciseListener workoutExerciseListener;
     private List<Exercise> listOfExercises;
 
-    //used to send selected exercises to main activity
+    //used to send selected exercise/exercises to main activity which then sends the selected exercises back to the fragment that needed it
     public interface workoutExerciseListener {
         void sendExercise(List<Exercise> selectedExercisesToAdd);
     }
@@ -62,6 +62,7 @@ public class TrainingFragment extends Fragment {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
+        //sort exercise names alphabetically
         Collections.sort(listOfExercises, new Comparator<Exercise>() {
             @Override
             public int compare(Exercise o1, Exercise o2) {

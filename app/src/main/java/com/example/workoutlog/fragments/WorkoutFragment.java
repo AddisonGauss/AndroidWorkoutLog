@@ -111,6 +111,7 @@ public class WorkoutFragment extends Fragment {
 
 
                 //initialize new workout and insert workout into database to retrieve id and set workoutDetail's workoutId to that id
+                //get local time of day and make it the workout name accordingly
                 Workout workout = new Workout();
                 LocalTime localTime = LocalTime.now();
                 int timeOfDayHour = localTime.getHour();
@@ -128,8 +129,12 @@ public class WorkoutFragment extends Fragment {
                 }
 
                 workout.setName(name);
+                //initialize start time
                 workout.setStartTime(new Date());
+
+
                 long id = 0;
+                //insert created workout into db and get its id back to set
                 try {
                     id = workoutViewModel.insert(workout);
                 } catch (ExecutionException | InterruptedException e) {
@@ -139,8 +144,10 @@ public class WorkoutFragment extends Fragment {
 
                 WorkoutDetails workoutDetails = new WorkoutDetails();
                 workoutDetails.setWorkout(workout);
+                //each workout can have a set of routines and each routine will have an exercise will sets and reps
                 workoutDetails.setUserRoutineExercises(new ArrayList<RoutineDetails>());
 
+                //set boolean to store in shared preferences so it knows a workout is in progress
                 isWorkoutRunning = true;
 
                 Gson gson = new Gson();
@@ -150,10 +157,12 @@ public class WorkoutFragment extends Fragment {
                 prefsEditor.putString(Constants.ARG_WORKOUT_DETAILS, json);
                 prefsEditor.apply();
 
+                //send this data back to main activity which will then open the InProgressWorkoutFragment
                 workoutDetailsListener.sendWorkoutDetails(workoutDetails);
             }
         });
 
+        //if a workout is already in progress this button will show instead and data will already have been retrieved from sharedpreferences
         btnGoToRunningWorkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

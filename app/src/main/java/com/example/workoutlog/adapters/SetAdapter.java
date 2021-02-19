@@ -131,7 +131,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                     } catch (ExecutionException | InterruptedException e) {
                         e.printStackTrace();
                     }
-
                 }
             });
 
@@ -160,6 +159,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
 
             //sets values after editText is changed to prevent losing entered data whenever livedata is changed
             holder.editTxtWeight.addTextChangedListener(new TextWatcher() {
+
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 }
@@ -245,6 +245,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
 
                     if (currentSet.isComplete()) {
                         //if marked complete and no text has been entered, add the hint data to set and display complete design
+                        //makes it easy to repeat same weight/reps as the previously added set
                         if (String.valueOf(holder.editTxtReps.getText()).equals((""))) {
                             currentSet.setReps(Double.parseDouble(String.valueOf(holder.editTxtReps.getHint())));
                         }

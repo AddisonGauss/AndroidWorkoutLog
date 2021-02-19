@@ -29,6 +29,7 @@ public class Set implements Parcelable {
     //used for editText's hint value
     private double hintReps;
 
+    //each set will belong to an exercise, a workout, and a user if i get that far
     @ForeignKey(entity = UserRoutineExercise.class, parentColumns = "id", childColumns = "userRoutineExerciseId", onDelete = CASCADE)
     private Long userRoutineExerciseRoutineId;
 

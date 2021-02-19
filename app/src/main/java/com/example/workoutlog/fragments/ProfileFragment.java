@@ -71,6 +71,7 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         txtNoChartData = view.findViewById(R.id.txtNoChartData);
 
+        //to display workout data charts
         WorkoutViewModel workoutViewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(WorkoutViewModel.class);
         chartDataList = new ArrayList<>();
         try {
@@ -83,7 +84,7 @@ public class ProfileFragment extends Fragment {
             //loop through all exercises and search for all workouts with that exercise
             for (int i = 0; i < exerciseList.size(); i++) {
                 listOfWorkoutDetails = workoutViewModel.getAllWorkoutDetailsWithExercise(exerciseList.get(i).getId());
-                //sort by workout start time
+                //sort by workout start time so the x values on the graph aren't out of order if workout dates are changed
                 listOfWorkoutDetails.sort(new Comparator<WorkoutDetails>() {
                     @Override
                     public int compare(WorkoutDetails o1, WorkoutDetails o2) {

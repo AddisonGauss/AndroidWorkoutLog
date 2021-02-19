@@ -18,6 +18,7 @@ import com.example.workoutlog.models.Exercise;
 import java.util.ArrayList;
 import java.util.List;
 
+//will display list of exercises to select from
 public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHolder> {
 
     private List<Exercise> listOfExercises;
