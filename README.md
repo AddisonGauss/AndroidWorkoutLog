@@ -1,0 +1,2 @@
+# android-workout-log
+A work in progress android app to log/track workouts and to help me understand the android SDK. Uses a single activity architecture with fragments and Navigation component. For the data, it is just stored locally with Android's room SQLite ORM for now. Charts were made from MPAndroidChart at https://github.com/PhilJay/MPAndroidChart and the date/time views made with MaterialDateTimePicker at https://github.com/wdullaer/MaterialDateTimePicker. 
